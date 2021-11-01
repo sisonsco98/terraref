@@ -9,11 +9,14 @@ import (
 	"encoding/json"	// json.Unmarshal
 )
 
-/*** STRUCTS / SLICE USED TO UNMARSHAL THE terraform.tfstate FILE ***/
+/*** GLOBAL VARIABLES ***/
+
+var Outputs[] string
+var Providers[] string
+
+/*** STRUCTS USED TO UNMARSHAL THE terraform.tfstate FILE ***/
 
 var T Terraform
-var Outputs[] string
-
 type Terraform struct {
 	Resources []struct {
 		Type      string `json:"type"`
@@ -48,14 +51,24 @@ func Parser() {
 	json.Unmarshal(inFile, &outputBlock)
 	json.Unmarshal(inFile, &T)
 
-	// parse the string to get the outputs
+	// parse the output string to get the outputs
 	// ex: map[ab:map[type:string value:34.105.77.168] ip:map[type:string value:34.105.77.168]]
-	str := fmt.Sprintln(outputBlock["outputs"])
+	outputStr := fmt.Sprintln(outputBlock["outputs"])
 	outputRegex := regexp.MustCompile(`(([a-z_]*):map)+`)
-	output := outputRegex.FindAllStringSubmatch(str, -1)
+	output := outputRegex.FindAllStringSubmatch(outputStr, -1)
 
 	// iterates through matches and stores each output in Outputs[] slice
 	for i := range output {
 		Outputs = append(Outputs, output[i][2])
+	}
+
+	// parser provider string to get just the provider within the quotes
+	// ex. provider["registry.terraform.io/hashicorp/google"]
+	providerRegex := regexp.MustCompile(`[^"]*()[^"]*`)
+
+	// iterates through matches and stores each output in Providers[] slice
+	for i := 0; i < len(T.Resources); i++ {
+		provider := providerRegex.FindAllStringSubmatch(T.Resources[i].Provider, -1)
+		Providers = append(Providers, provider[1][0])
 	}
 }

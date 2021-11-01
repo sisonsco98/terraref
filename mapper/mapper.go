@@ -22,7 +22,7 @@ func Mapper() {
 
 	/*** PRINT PARSED DATA TO THE terraform.drawio FILE ***/
 
-	// iterates through matches and prints each output
+	// iterates through outputs slice and prints each output
 	for i := range parser.Outputs {
 		fmt.Fprintln(outFile, "Outputs:", parser.Outputs[i])
 	}
@@ -57,6 +57,7 @@ func Mapper() {
 				fmt.Fprintln(outFile, "\t\t", "Dependencies:", parser.T.Resources[i].Instances[j].Dependencies[k])
 			}
 		}
+		fmt.Fprintln(outFile)
 	}
 	
 	// close file

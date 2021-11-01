@@ -32,7 +32,7 @@ type Terraform struct {
 
 func Parser() {
 
-	/*** READ IN terraform.tfstate FILE (entire file) ***/
+	/*** READ IN THE terraform.tfstate FILE (entire file) ***/
 
 	inFile, errRead := ioutil.ReadFile("terraform.tfstate")
 	// error reading file
@@ -43,9 +43,10 @@ func Parser() {
 
 	/*** UNMARSHAL THE terraform.tfstate FILE ***/
 
-	// "outputs" block
+	// unmarshal "outputs" block and "resources" block
 	var outputBlock map [string] interface{}
 	json.Unmarshal(inFile, &outputBlock)
+	json.Unmarshal(inFile, &T)
 
 	// parse the string to get the outputs
 	// ex: map[ab:map[type:string value:34.105.77.168] ip:map[type:string value:34.105.77.168]]
@@ -57,7 +58,4 @@ func Parser() {
 	for i := range output {
 		Outputs = append(Outputs, output[i][2])
 	}
-
-	// "resources" block, using structs defined above
-	json.Unmarshal(inFile, &T)
 }

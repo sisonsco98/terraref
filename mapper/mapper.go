@@ -9,9 +9,9 @@ import (
 
 func Mapper() {
 
-	/*** CREATE THE terraform.xml FILE ***/
+	/*** CREATE THE terraform.drawio FILE ***/
 
-	outFile, errCreate := os.Create("terraform.xml")
+	outFile, errCreate := os.Create("terraform.drawio")
 	// error creating file
 	if errCreate != nil {
 		log.Println("Error creating file.", errCreate)
@@ -20,7 +20,7 @@ func Mapper() {
 	// keep open
 	defer outFile.Close()
 
-	/*** PRINT PARSED DATA TO THE terraform.xml FILE ***/
+	/*** PRINT PARSED DATA TO THE terraform.drawio FILE ***/
 
 	// iterates through matches and prints each output
 	for i := range parser.Outputs {

@@ -10,6 +10,7 @@ Resources:
 			 ID: projects/test-project-327805/global/firewalls/flask-app-firewall
 			 Name: flask-app-firewall
 			 Project: test-project-327805
+
 	 Type: google_compute_instance
 	 Name: default
 	 Provider: provider["registry.terraform.io/hashicorp/google"]
@@ -19,9 +20,11 @@ Resources:
 			 Name: flask-vm-dc251eee68354b50
 			 Project: test-project-327805
 		 Dependencies: random_id.instance_id
+
 	 Type: random_id
 	 Name: instance_id
 	 Provider: provider["registry.terraform.io/hashicorp/random"]
 	 Instances:
 		 Attributes:
 			 ID: 3CUe7mg1S1A
+

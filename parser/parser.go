@@ -9,7 +9,7 @@ import (
 	"encoding/json"	// json.Unmarshal
 )
 
-/*** GLOBAL VARIABLES ***/
+/*** GLOBAL SLICES FOR OUTPUTS AND PROVIDERS FROM THE terraform.tfstate FILE ***/
 
 var Outputs[] string
 var Providers[] string

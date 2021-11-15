@@ -9,208 +9,208 @@ var ShapeLookup = map [string] string {
 
 	/*** GCP / SERVICE CARDS ***/
 
-	"Gateway"								:	"shape=mxgraph.gcp2.gateway",
-	"Memcache"								:	"shape=mxgraph.gcp2.memcache",
-	"Logs API"								:	"shape=mxgraph.gcp2.logs_api",
-	"Cluster"								:	"shape=mxgraph.gcp2.cluster",
-	"NAT"									:	"shape=mxgraph.gcp2.nat",
-	"Squid Proxy"							:	"shape=mxgraph.gcp2.squid_proxy",
-	"Bucket"								:	"shape=mxgraph.gcp2.bucket",
-	"Service Discovery"						:	"shape=mxgraph.gcp2.service_discovery",
-	"Task Queues"							:	"shape=mxgraph.gcp2.task_queues",
-	"Image Services"						:	"shape=mxgraph.gcp2.image_services",
-	"Dedicated Game Server"					:	"shape=mxgraph.gcp2.dedicated_game_server",
-	"Frontend Platform Services"			:	"shape=mxgraph.gcp2.frontend_platform_services",
-	"Google Edge POP"						:	"shape=mxgraph.gcp2.google_network_edge_cache",
-	"External Payment Form"					:	"shape=mxgraph.gcp2.external_payment_form",
-	"Internal Payment Authorization"		:	"shape=mxgraph.gcp2.internal_payment_authorization",
-	"VPN Gateway"							:	"shape=mxgraph.gcp2.gateway",
-	"Application System(s)"					:	"shape=mxgraph.gcp2.application_system",
-	"Virtual File System"					:	"shape=mxgraph.gcp2.virtual_file_system",
-	"CDN Interconnect"						:	"shape=mxgraph.gcp2.google_network_edge_cache",
-	"Scheduled Tasks"						:	"shape=mxgraph.gcp2.scheduled_tasks",
-	"HTTPS Load Balancer"					:	"shape=mxgraph.gcp2.network_load_balancer",
-	"Persistent Disk Snapshot"				:	"shape=mxgraph.gcp2.persistent_disk_snapshot",
-	"Persistent Disk"						:	"shape=mxgraph.gcp2.persistent_disk_snapshot",
-	"Network Load Balancer"					:	"shape=mxgraph.gcp2.network_load_balancer",
-	"Google Network w/ Edge Cache"			:	"shape=mxgraph.gcp2.google_network_edge_cache",
-	"Push Notification Service"				:	"shape=mxgraph.gcp2.push_notification_service",
-	"Blank One Line (w/ bubble)"			:	"shape=mxgraph.gcp2.blank",
-	"Blank One Line (w/o bubble)"			:	"",
-	"Blank Two and Three Line (w/ Bubble)"	:	"shape=mxgraph.gcp2.blank",
-	"Blank Two and Three Line (w/o bubble)"	:	"",
+	// "Gateway"								:	"shape=mxgraph.gcp2.gateway",
+	// "Memcache"								:	"shape=mxgraph.gcp2.memcache",
+	// "Logs API"								:	"shape=mxgraph.gcp2.logs_api",
+	// "Cluster"								:	"shape=mxgraph.gcp2.cluster",
+	// "NAT"									:	"shape=mxgraph.gcp2.nat",
+	// "Squid Proxy"							:	"shape=mxgraph.gcp2.squid_proxy",
+	// "Bucket"								:	"shape=mxgraph.gcp2.bucket",
+	// "Service Discovery"						:	"shape=mxgraph.gcp2.service_discovery",
+	// "Task Queues"							:	"shape=mxgraph.gcp2.task_queues",
+	// "Image Services"						:	"shape=mxgraph.gcp2.image_services",
+	// "Dedicated Game Server"					:	"shape=mxgraph.gcp2.dedicated_game_server",
+	// "Frontend Platform Services"			:	"shape=mxgraph.gcp2.frontend_platform_services",
+	// "Google Edge POP"						:	"shape=mxgraph.gcp2.google_network_edge_cache",
+	// "External Payment Form"					:	"shape=mxgraph.gcp2.external_payment_form",
+	// "Internal Payment Authorization"		:	"shape=mxgraph.gcp2.internal_payment_authorization",
+	// "VPN Gateway"							:	"shape=mxgraph.gcp2.gateway",
+	// "Application System(s)"					:	"shape=mxgraph.gcp2.application_system",
+	// "Virtual File System"					:	"shape=mxgraph.gcp2.virtual_file_system",
+	// "CDN Interconnect"						:	"shape=mxgraph.gcp2.google_network_edge_cache",
+	// "Scheduled Tasks"						:	"shape=mxgraph.gcp2.scheduled_tasks",
+	// "HTTPS Load Balancer"					:	"shape=mxgraph.gcp2.network_load_balancer",
+	// "Persistent Disk Snapshot"				:	"shape=mxgraph.gcp2.persistent_disk_snapshot",
+	// "Persistent Disk"						:	"shape=mxgraph.gcp2.persistent_disk_snapshot",
+	// "Network Load Balancer"					:	"shape=mxgraph.gcp2.network_load_balancer",
+	// "Google Network w/ Edge Cache"			:	"shape=mxgraph.gcp2.google_network_edge_cache",
+	// "Push Notification Service"				:	"shape=mxgraph.gcp2.push_notification_service",
+	// "Blank One Line (w/ bubble)"			:	"shape=mxgraph.gcp2.blank",
+	// "Blank One Line (w/o bubble)"			:	"",
+	// "Blank Two and Three Line (w/ Bubble)"	:	"shape=mxgraph.gcp2.blank",
+	// "Blank Two and Three Line (w/o bubble)"	:	"",
 
-	/*** GCP / USER AND DEVICE CARDS ***/
+	// /*** GCP / USER AND DEVICE CARDS ***/
 
-	"Application"							:	"",
-	"Beacon"								:	"",
-	"Circuit Board"							:	"",
-	"Database"								:	"",
-	"Desktop"								:	"",
-	"Desktop and Mobile"					:	"",
-	"Game"									:	"",
-	"Gateway"								:	"",
-	"Laptop"								:	"",
-	"Lightbulb"								:	"",
-	"List"									:	"",
-	"Live"									:	"",
-	"Local-Compute"							:	"",
-	"Mobile Devices"						:	"",
-	"Payment"								:	"",
-	"Phone"									:	"",
-	"Record"								:	"",
-	"Report"								:	"",
-	"Retail"								:	"",
-	"Speaker"								:	"",
-	"Storage"								:	"",
-	"Stream"								:	"",
-	"Users"									:	"",
-	"Webcam"								:	"",
+	// "Application"							:	"",
+	// "Beacon"								:	"",
+	// "Circuit Board"							:	"",
+	// "Database"								:	"",
+	// "Desktop"								:	"",
+	// "Desktop and Mobile"					:	"",
+	// "Game"									:	"",
+	// "Gateway"								:	"",
+	// "Laptop"								:	"",
+	// "Lightbulb"								:	"",
+	// "List"									:	"",
+	// "Live"									:	"",
+	// "Local-Compute"							:	"",
+	// "Mobile Devices"						:	"",
+	// "Payment"								:	"",
+	// "Phone"									:	"",
+	// "Record"								:	"",
+	// "Report"								:	"",
+	// "Retail"								:	"",
+	// "Speaker"								:	"",
+	// "Storage"								:	"",
+	// "Stream"								:	"",
+	// "Users"									:	"",
+	// "Webcam"								:	"",
 
-	/*** GCP / COMPUTE ***/
+	// /*** GCP / COMPUTE ***/
 
-	"Compute Engine"						:	"",
-	"GPU"									:	"",
-	"App Engine"							:	"",
-	"Cloud Functions"						:	"",
-	"Kubernetes Engine"						:	"",
-	"Container-Optimized OS"				:	"",
-	"Cloud Run"								:	"",
-	"GKE-on-Prem"							:	"",
+	// "Compute Engine"						:	"",
+	// "GPU"									:	"",
+	// "App Engine"							:	"",
+	// "Cloud Functions"						:	"",
+	// "Kubernetes Engine"						:	"",
+	// "Container-Optimized OS"				:	"",
+	// "Cloud Run"								:	"",
+	// "GKE-on-Prem"							:	"",
 
-	/*** GCP / API MANAGEMENT ***/
+	// /*** GCP / API MANAGEMENT ***/
 
-	"API Analytics"							:	"",
-	"Apigee Sense"							:	"",
-	"API Monetization"						:	"",
-	"Cloud Endpoints"						:	"",
-	"Apigee API Platform"					:	"",
-	"Developer Portal"						:	"",
+	// "API Analytics"							:	"",
+	// "Apigee Sense"							:	"",
+	// "API Monetization"						:	"",
+	// "Cloud Endpoints"						:	"",
+	// "Apigee API Platform"					:	"",
+	// "Developer Portal"						:	"",
 
-	/*** GCP / SECURITY ***/
+	// /*** GCP / SECURITY ***/
 
-	"Cloud IAM"								:	"",
-	"BeyondCorp"							:	"",
-	"Cloud Resource Manager"				:	"",
-	"Data Loss Prevention API"				:	"",
-	"Cloud Security Scanner"				:	"",
-	"Key Management Service"				:	"",
-	"Identity-Aware Proxy"					:	"",
-	"Cloud Security Command Center"			:	"",
-	"Security Key Enforcement"				:	"",
+	// "Cloud IAM"								:	"",
+	// "BeyondCorp"							:	"",
+	// "Cloud Resource Manager"				:	"",
+	// "Data Loss Prevention API"				:	"",
+	// "Cloud Security Scanner"				:	"",
+	// "Key Management Service"				:	"",
+	// "Identity-Aware Proxy"					:	"",
+	// "Cloud Security Command Center"			:	"",
+	// "Security Key Enforcement"				:	"",
 
-	/*** GCP / DATA ANALYTICS ***/
+	// /*** GCP / DATA ANALYTICS ***/
 
-	"BigQuery"								:	"",
-	"Cloud Datalab"							:	"",
-	"Cloud Dataflow"						:	"",
-	"Cloud Pub/Sub"							:	"",
-	"Cloud Dataproc"						:	"",
-	"Genomics"								:	"",
-	"Cloud Dataprep"						:	"",
-	"Cloud Composer"						:	"",
-	"Cloud Data Catalog"					:	"",
-	"Cloud Data Fusion"						:	"",
+	// "BigQuery"								:	"",
+	// "Cloud Datalab"							:	"",
+	// "Cloud Dataflow"						:	"",
+	// "Cloud Pub/Sub"							:	"",
+	// "Cloud Dataproc"						:	"",
+	// "Genomics"								:	"",
+	// "Cloud Dataprep"						:	"",
+	// "Cloud Composer"						:	"",
+	// "Cloud Data Catalog"					:	"",
+	// "Cloud Data Fusion"						:	"",
 
-	/*** GCP / DATA TRANSFER ***/
+	// /*** GCP / DATA TRANSFER ***/
 
-	"Transfer Appliance"					:	"",
+	// "Transfer Appliance"					:	"",
 
-	/*** GCP / CLOUD AI ***/
+	// /*** GCP / CLOUD AI ***/
 
-	"Cloud Machine Learning"				:	"",
-	"Natural Language API"					:	"",
-	"Vision API"							:	"",
-	"Translation API"						:	"",
-	"Speech API"							:	"",
-	"Jobs API"								:	"",
-	"Cloud Video Intelligence API"			:	"",
-	"Advanced Solutions Lab"				:	"",
+	// "Cloud Machine Learning"				:	"",
+	// "Natural Language API"					:	"",
+	// "Vision API"							:	"",
+	// "Translation API"						:	"",
+	// "Speech API"							:	"",
+	// "Jobs API"								:	"",
+	// "Cloud Video Intelligence API"			:	"",
+	// "Advanced Solutions Lab"				:	"",
 
-	/*** GCP / INTERNET OF THINGS ***/
+	// /*** GCP / INTERNET OF THINGS ***/
 
-	"Cloud IoT Core"						:	"",
+	// "Cloud IoT Core"						:	"",
 
-	/*** GCP / DATABASES ***/
+	// /*** GCP / DATABASES ***/
 
-	"Cloud SQL"								:	"",
-	"Cloud Bigtable"						:	"",
-	"Cloud Spanner"							:	"",
-	"Cloud Memorystore"						:	"",
-	"Cloud Firestore"						:	"",
-	"Cloud Datastore"						:	"",
+	// "Cloud SQL"								:	"",
+	// "Cloud Bigtable"						:	"",
+	// "Cloud Spanner"							:	"",
+	// "Cloud Memorystore"						:	"",
+	// "Cloud Firestore"						:	"",
+	// "Cloud Datastore"						:	"",
 
-	/*** GCP / STORAGE ***/
+	// /*** GCP / STORAGE ***/
 
-	"Cloud Storage"							:	"",
-	"Persistent Disk"						:	"",
-	"Cloud Firestore"						:	"",
+	// "Cloud Storage"							:	"",
+	// "Persistent Disk"						:	"",
+	// "Cloud Firestore"						:	"",
 
-	/*** GCP / MANAGEMENT TOOLS ***/
+	// /*** GCP / MANAGEMENT TOOLS ***/
 
-	"Stackdriver"							:	"",
-	"Debugger"								:	"",
-	"Monitoring"							:	"",
-	"Deployment Manager"					:	"",
-	"Logging"								:	"",
-	"Cloud Console"							:	"",
-	"Error Reporting"						:	"",
-	"Cloud Shell"							:	"",
-	"Trace"									:	"",
-	"Cloud Mobile App"						:	"",
-	"Profiler"								:	"",
-	"Billing API"							:	"",
-	"Cloud APIs"							:	"",
+	// "Stackdriver"							:	"",
+	// "Debugger"								:	"",
+	// "Monitoring"							:	"",
+	// "Deployment Manager"					:	"",
+	// "Logging"								:	"",
+	// "Cloud Console"							:	"",
+	// "Error Reporting"						:	"",
+	// "Cloud Shell"							:	"",
+	// "Trace"									:	"",
+	// "Cloud Mobile App"						:	"",
+	// "Profiler"								:	"",
+	// "Billing API"							:	"",
+	// "Cloud APIs"							:	"",
 
-	/*** GCP / NETWORKING ***/
+	// /*** GCP / NETWORKING ***/
 
-	"Virtual Private Cloud"					:	"",
-	"Dedicated Interconnect"				:	"",
-	"Cloud Load Balancing"					:	"",
-	"Cloud DNS"								:	"",
-	"Cloud CDN"								:	"",
-	"Cloud Network"							:	"",
-	"Cloud External IP Addresses"			:	"",
-	"Cloud Routes"							:	"",
-	"Cloud Firewall Rules"					:	"",
-	"Cloud VPN"								:	"",
-	"Cloud Router"							:	"",
-	"Cloud Armor"							:	"",
-	"Standard Network Tier"					:	"",
-	"Premium Network Tier"					:	"",
-	"Partner Interconnect"					:	"",
+	// "Virtual Private Cloud"					:	"",
+	// "Dedicated Interconnect"				:	"",
+	// "Cloud Load Balancing"					:	"",
+	// "Cloud DNS"								:	"",
+	// "Cloud CDN"								:	"",
+	// "Cloud Network"							:	"",
+	// "Cloud External IP Addresses"			:	"",
+	// "Cloud Routes"							:	"",
+	// "Cloud Firewall Rules"					:	"",
+	// "Cloud VPN"								:	"",
+	// "Cloud Router"							:	"",
+	// "Cloud Armor"							:	"",
+	// "Standard Network Tier"					:	"",
+	// "Premium Network Tier"					:	"",
+	// "Partner Interconnect"					:	"",
 	
-	/*** GCP / DEVELOPER TOOLS ***/
+	// /*** GCP / DEVELOPER TOOLS ***/
 
-	"Cloud SDK"								:	"",
-	"Cloud Build"							:	"",
-	"Gradle App Engine Plugin"				:	"",
-	"Cloud Tools for Visual Studio"			:	"",
-	"Cloud Source Repositories"				:	"",
-	"Maven App Engine Plugin"				:	"",
-	"Cloud Tools for Eclipse"				:	"",
-	"Cloud Tools for IntelliJ"				:	"",
-	"Cloud Test Lab"						:	"",
-	"Cloud Tools for PowerShell"			:	"",
-	"IDE Plugins"							:	"",
-	"Container Registry"					:	"",
+	"Cloud Build"							:	"shape=mxgraph.gcp2.hexIcon;prIcon=container_builder",			//	"Cloud&#xa;Build"
+	"Cloud SDK"								:	"shape=mxgraph.gcp2.hexIcon;prIcon=placeholder",				//	"Cloud&#xa;SDK"
+	"Cloud Source Repositories"				:	"shape=mxgraph.gcp2.hexIcon;prIcon=placeholder",				//	"Cloud Source&#xa;Repositories"
+	"Cloud Test Lab"						:	"shape=mxgraph.gcp2.hexIcon;prIcon=placeholder",				//	"Cloud&#xa;Test Lab"
+	"Cloud Tools for Eclipse"				:	"shape=mxgraph.gcp2.hexIcon;prIcon=placeholder",				//	"Cloud Tools&#xa;for Eclipse"
+	"Cloud Tools for IntelliJ"				:	"shape=mxgraph.gcp2.hexIcon;prIcon=placeholder",				//	"Cloud Tools&#xa;for IntelliJ"
+	"Cloud Tools for PowerShell"			:	"shape=mxgraph.gcp2.hexIcon;prIcon=cloud_tools_for_powershell",	//	"Cloud Tools for&#xa;PowerShell"
+	"Cloud Tools for Visual Studio"			:	"shape=mxgraph.gcp2.hexIcon;prIcon=cloud_tools_for_powershell",	//	"Cloud Tools for&#xa;Visual Studio"
+	"Container Registry"					:	"shape=mxgraph.gcp2.hexIcon;prIcon=container_registry",			//	"Container&#xa;Registry"
+	"Gradle App Engine Plugin"				:	"shape=mxgraph.gcp2.hexIcon;prIcon=placeholder",				//	"Gradle App&#xa;Engine Plugin"
+	"IDE Plugins"							:	"shape=mxgraph.gcp2.hexIcon;prIcon=cloud_tools_for_powershell",	//	"IDE Plugins"
+	"Maven App Engine Plugin"				:	"shape=mxgraph.gcp2.hexIcon;prIcon=placeholder",				//	"Maven App&#xa;Engine Plugin"
 	
 	/*** GCP / PRODUCT CARDS ***/
 
-	"Kubernetes"							:	"",
-	"TensorFlow"							:	"",
-	"Forseti Security"						:	"",
-	"Istio"									:	"",
-	"Firebase"								:	"",
-	"Fastly"								:	"",
-	"AdMob"									:	"",
-	"Google Play Game Services"				:	"",
-	"Campaign Manager"						:	"",
-	"Google Analytics"						:	"",
-	"Google Ads"							:	"",
-	"Avere Physical Appliance"				:	"",
-	"Google Analytics 360"					:	"",
-	"Google Ad Manager"						:	"",
+	"AdMob"									:   "shape=mxgraph.gcp2.admob",											// "AdMob"
+	"Avere Physical Appliance"				:   "shape=mxgraph.gcp2.avere",											// "Avere Physical&#xa;Appliance"
+	"Campaign Manager"						:   "shape=mxgraph.gcp2.campaign_manager",								// "Campaign&#xa;Manager"
+	"Fastly"								:   "shape=mxgraph.gcp2.fastly",										// "Fastly"
+	"Firebase"								:   "shape=mxgraph.gcp2.firebase",										// "Firebase"
+	"Forseti Security"						:   "shape=mxgraph.gcp2.forseti_logo",									// "Forseti&#xa;Security"
+	"Google Ad Manager"						:   "shape=mxgraph.gcp2.google_ad_manager",								// "Google Ad&#xa;Manager"
+	"Google Ads"							:   "shape=mxgraph.gcp2.google_ads",									// "Google&#xa;Ads"
+	"Google Analytics 360"					:   "shape=mxgraph.gcp2.google_analytics_360",							// "Google&#xa;Analytics 360"
+	"Google Analytics"						:   "shape=mxgraph.gcp2.google_analytics",								// "Google&#xa;Analytics"
+	"Google Play Game Services"				:   "shape=mxgraph.gcp2.google_play_game_service",						// "Google Play&#xa;Game Services"
+	"Istio"									:   "shape=mxgraph.gcp2.istio_logo",									// "Istio"
+	"Kubernetes"							:   "shape=mxgraph.gcp2.kubernetes_logo",								// "Kubernetes"
+	"TensorFlow"							:   "shape=mxgraph.gcp2.tensorflow_logo",								// "TensorFlow"
 	
 	/*** GCP ICONS ***/
 
@@ -344,208 +344,210 @@ var classLookup = map [string] int {
 
 	/*** GCP / SERVICE CARDS ***/
 
-	"Gateway"								:	1,
-	"Memcache"								:	1,
-	"Logs API"								:	1,
-	"Cluster"								:	1,
-	"NAT"									:	1,
-	"Squid Proxy"							:	1,
-	"Bucket"								:	1,
-	"Service Discovery"						:	1,
-	"Task Queues"							:	1,
-	"Image Services"						:	1,
-	"Dedicated Game Server"					:	1,
-	"Frontend Platform Services"			:	1,
-	"Google Edge POP"						:	1,
-	"External Payment Form"					:	1,
-	"Internal Payment Authorization"		:	1,
-	"VPN Gateway"							:	1,
-	"Application System(s)"					:	1,
-	"Virtual File System"					:	1,
-	"CDN Interconnect"						:	1,
-	"Scheduled Tasks"						:	1,
-	"HTTPS Load Balancer"					:	1,
-	"Persistent Disk Snapshot"				:	1,
-	"Persistent Disk"						:	1,
-	"Network Load Balancer"					:	1,
-	"Google Network w/ Edge Cache"			:	1,
-	"Push Notification Service"				:	1,
-	"Blank One Line (w/ bubble)"			:	1,
-	"Blank One Line (w/o bubble)"			:	1,
-	"Blank Two and Three Line (w/ Bubble)"	:	1,
-	"Blank Two and Three Line (w/o bubble)"	:	1,
+	// "Gateway"								:	1,
+	// "Memcache"								:	1,
+	// "Logs API"								:	1,
+	// "Cluster"								:	1,
+	// "NAT"									:	1,
+	// "Squid Proxy"							:	1,
+	// "Bucket"								:	1,
+	// "Service Discovery"						:	1,
+	// "Task Queues"							:	1,
+	// "Image Services"						:	1,
+	// "Dedicated Game Server"					:	1,
+	// "Frontend Platform Services"			:	1,
+	// "Google Edge POP"						:	1,
+	// "External Payment Form"					:	1,
+	// "Internal Payment Authorization"		:	1,
+	// "VPN Gateway"							:	1,
+	// "Application System(s)"					:	1,
+	// "Virtual File System"					:	1,
+	// "CDN Interconnect"						:	1,
+	// "Scheduled Tasks"						:	1,
+	// "HTTPS Load Balancer"					:	1,
+	// "Persistent Disk Snapshot"				:	1,
+	// "Persistent Disk"						:	1,
+	// "Network Load Balancer"					:	1,
+	// "Google Network w/ Edge Cache"			:	1,
+	// "Push Notification Service"				:	1,
+	// "Blank One Line (w/ bubble)"			:	1,
+	// "Blank One Line (w/o bubble)"			:	1,
+	// "Blank Two and Three Line (w/ Bubble)"	:	1,
+	// "Blank Two and Three Line (w/o bubble)"	:	1,
 
-	/*** GCP / USER AND DEVICE CARDS ***/
+	// /*** GCP / USER AND DEVICE CARDS ***/
 
-	"Application"							:	2,
-	"Beacon"								:	2,
-	"Circuit Board"							:	2,
-	"Database"								:	2,
-	"Desktop"								:	2,
-	"Desktop and Mobile"					:	2,
-	"Game"									:	2,
-	"Gateway"								:	2,
-	"Laptop"								:	2,
-	"Lightbulb"								:	2,
-	"List"									:	2,
-	"Live"									:	2,
-	"Local-Compute"							:	2,
-	"Mobile Devices"						:	2,
-	"Payment"								:	2,
-	"Phone"									:	2,
-	"Record"								:	2,
-	"Report"								:	2,
-	"Retail"								:	2,
-	"Speaker"								:	2,
-	"Storage"								:	2,
-	"Stream"								:	2,
-	"Users"									:	2,
-	"Webcam"								:	2,
+	// "Application"							:	2,
+	// "Beacon"								:	2,
+	// "Circuit Board"							:	2,
+	// "Database"								:	2,
+	// "Desktop"								:	2,
+	// "Desktop and Mobile"					:	2,
+	// "Game"									:	2,
+	// "Gateway"								:	2,
+	// "Laptop"								:	2,
+	// "Lightbulb"								:	2,
+	// "List"									:	2,
+	// "Live"									:	2,
+	// "Local-Compute"							:	2,
+	// "Mobile Devices"						:	2,
+	// "Payment"								:	2,
+	// "Phone"									:	2,
+	// "Record"								:	2,
+	// "Report"								:	2,
+	// "Retail"								:	2,
+	// "Speaker"								:	2,
+	// "Storage"								:	2,
+	// "Stream"								:	2,
+	// "Users"									:	2,
+	// "Webcam"								:	2,
 
-	/*** GCP / COMPUTE ***/
+	// /*** GCP / COMPUTE ***/
 
-	"Compute Engine"						:	3,
-	"GPU"									:	3,
-	"App Engine"							:	3,
-	"Cloud Functions"						:	3,
-	"Kubernetes Engine"						:	3,
-	"Container-Optimized OS"				:	3,
-	"Cloud Run"								:	3,
-	"GKE-on-Prem"							:	3,
+	// "Compute Engine"						:	3,
+	// "GPU"									:	3,
+	// "App Engine"							:	3,
+	// "Cloud Functions"						:	3,
+	// "Kubernetes Engine"						:	3,
+	// "Container-Optimized OS"				:	3,
+	// "Cloud Run"								:	3,
+	// "GKE-on-Prem"							:	3,
 
-	/*** GCP / API MANAGEMENT ***/
+	// /*** GCP / API MANAGEMENT ***/
 
-	"API Analytics"							:	3,
-	"Apigee Sense"							:	3,
-	"API Monetization"						:	3,
-	"Cloud Endpoints"						:	3,
-	"Apigee API Platform"					:	3,
-	"Developer Portal"						:	3,
+	// "API Analytics"							:	3,
+	// "Apigee Sense"							:	3,
+	// "API Monetization"						:	3,
+	// "Cloud Endpoints"						:	3,
+	// "Apigee API Platform"					:	3,
+	// "Developer Portal"						:	3,
 
-	/*** GCP / SECURITY ***/
+	// /*** GCP / SECURITY ***/
 
-	"Cloud IAM"								:	3,
-	"BeyondCorp"							:	3,
-	"Cloud Resource Manager"				:	3,
-	"Data Loss Prevention API"				:	3,
-	"Cloud Security Scanner"				:	3,
-	"Key Management Service"				:	3,
-	"Identity-Aware Proxy"					:	3,
-	"Cloud Security Command Center"			:	3,
-	"Security Key Enforcement"				:	3,
+	// "Cloud IAM"								:	3,
+	// "BeyondCorp"							:	3,
+	// "Cloud Resource Manager"				:	3,
+	// "Data Loss Prevention API"				:	3,
+	// "Cloud Security Scanner"				:	3,
+	// "Key Management Service"				:	3,
+	// "Identity-Aware Proxy"					:	3,
+	// "Cloud Security Command Center"			:	3,
+	// "Security Key Enforcement"				:	3,
 
-	/*** GCP / DATA ANALYTICS ***/
+	// /*** GCP / DATA ANALYTICS ***/
 
-	"BigQuery"								:	3,
-	"Cloud Datalab"							:	3,
-	"Cloud Dataflow"						:	3,
-	"Cloud Pub/Sub"							:	3,
-	"Cloud Dataproc"						:	3,
-	"Genomics"								:	3,
-	"Cloud Dataprep"						:	3,
-	"Cloud Composer"						:	3,
-	"Cloud Data Catalog"					:	3,
-	"Cloud Data Fusion"						:	3,
+	// "BigQuery"								:	3,
+	// "Cloud Datalab"							:	3,
+	// "Cloud Dataflow"						:	3,
+	// "Cloud Pub/Sub"							:	3,
+	// "Cloud Dataproc"						:	3,
+	// "Genomics"								:	3,
+	// "Cloud Dataprep"						:	3,
+	// "Cloud Composer"						:	3,
+	// "Cloud Data Catalog"					:	3,
+	// "Cloud Data Fusion"						:	3,
 
-	/*** GCP / DATA TRANSFER ***/
+	// /*** GCP / DATA TRANSFER ***/
 
-	"Transfer Appliance"					:	3,
+	// "Transfer Appliance"					:	3,
 
-	/*** GCP / CLOUD AI ***/
+	// /*** GCP / CLOUD AI ***/
 
-	"Cloud Machine Learning"				:	3,
-	"Natural Language API"					:	3,
-	"Vision API"							:	3,
-	"Translation API"						:	3,
-	"Speech API"							:	3,
-	"Jobs API"								:	3,
-	"Cloud Video Intelligence API"			:	3,
-	"Advanced Solutions Lab"				:	3,
+	// "Cloud Machine Learning"				:	3,
+	// "Natural Language API"					:	3,
+	// "Vision API"							:	3,
+	// "Translation API"						:	3,
+	// "Speech API"							:	3,
+	// "Jobs API"								:	3,
+	// "Cloud Video Intelligence API"			:	3,
+	// "Advanced Solutions Lab"				:	3,
 
-	/*** GCP / INTERNET OF THINGS ***/
+	// /*** GCP / INTERNET OF THINGS ***/
 
-	"Cloud IoT Core"						:	3,
+	// "Cloud IoT Core"						:	3,
 
-	/*** GCP / DATABASES ***/
+	// /*** GCP / DATABASES ***/
 
-	"Cloud SQL"								:	3,
-	"Cloud Bigtable"						:	3,
-	"Cloud Spanner"							:	3,
-	"Cloud Memorystore"						:	3,
-	"Cloud Firestore"						:	3,
-	"Cloud Datastore"						:	3,
+	// "Cloud SQL"								:	3,
+	// "Cloud Bigtable"						:	3,
+	// "Cloud Spanner"							:	3,
+	// "Cloud Memorystore"						:	3,
+	// "Cloud Firestore"						:	3,
+	// "Cloud Datastore"						:	3,
 
-	/*** GCP / STORAGE ***/
+	// /*** GCP / STORAGE ***/
 
-	"Cloud Storage"							:	3,
-	"Persistent Disk"						:	3,
-	"Cloud Firestore"						:	3,
+	// "Cloud Storage"							:	3,
+	// "Persistent Disk"						:	3,
+	// "Cloud Firestore"						:	3,
 
-	/*** GCP / MANAGEMENT TOOLS ***/
+	// /*** GCP / MANAGEMENT TOOLS ***/
 
-	"Stackdriver"							:	3,
-	"Debugger"								:	3,
-	"Monitoring"							:	3,
-	"Deployment Manager"					:	3,
-	"Logging"								:	3,
-	"Cloud Console"							:	3,
-	"Error Reporting"						:	3,
-	"Cloud Shell"							:	3,
-	"Trace"									:	3,
-	"Cloud Mobile App"						:	3,
-	"Profiler"								:	3,
-	"Billing API"							:	3,
-	"Cloud APIs"							:	3,
+	// "Stackdriver"							:	3,
+	// "Debugger"								:	3,
+	// "Monitoring"							:	3,
+	// "Deployment Manager"					:	3,
+	// "Logging"								:	3,
+	// "Cloud Console"							:	3,
+	// "Error Reporting"						:	3,
+	// "Cloud Shell"							:	3,
+	// "Trace"									:	3,
+	// "Cloud Mobile App"						:	3,
+	// "Profiler"								:	3,
+	// "Billing API"							:	3,
+	// "Cloud APIs"							:	3,
 
-	/*** GCP / NETWORKING ***/
+	// /*** GCP / NETWORKING ***/
 
-	"Virtual Private Cloud"					:	3,
-	"Dedicated Interconnect"				:	3,
-	"Cloud Load Balancing"					:	3,
-	"Cloud DNS"								:	3,
-	"Cloud CDN"								:	3,
-	"Cloud Network"							:	3,
-	"Cloud External IP Addresses"			:	3,
-	"Cloud Routes"							:	3,
-	"Cloud Firewall Rules"					:	3,
-	"Cloud VPN"								:	3,
-	"Cloud Router"							:	3,
-	"Cloud Armor"							:	3,
-	"Standard Network Tier"					:	3,
-	"Premium Network Tier"					:	3,
-	"Partner Interconnect"					:	3,
+	// "Virtual Private Cloud"					:	3,
+	// "Dedicated Interconnect"				:	3,
+	// "Cloud Load Balancing"					:	3,
+	// "Cloud DNS"								:	3,
+	// "Cloud CDN"								:	3,
+	// "Cloud Network"							:	3,
+	// "Cloud External IP Addresses"			:	3,
+	// "Cloud Routes"							:	3,
+	// "Cloud Firewall Rules"					:	3,
+	// "Cloud VPN"								:	3,
+	// "Cloud Router"							:	3,
+	// "Cloud Armor"							:	3,
+	// "Standard Network Tier"					:	3,
+	// "Premium Network Tier"					:	3,
+	// "Partner Interconnect"					:	3,
 	
-	/*** GCP / DEVELOPER TOOLS ***/
+//// NEED TO CHECK FOR DUPLICATES /////
 
-	"Cloud SDK"								:	3,
+	// /*** GCP / DEVELOPER TOOLS ***/
+
 	"Cloud Build"							:	3,
-	"Gradle App Engine Plugin"				:	3,
-	"Cloud Tools for Visual Studio"			:	3,
+	"Cloud SDK"								:	3,
 	"Cloud Source Repositories"				:	3,
-	"Maven App Engine Plugin"				:	3,
+	"Cloud Test Lab"						:	3,
 	"Cloud Tools for Eclipse"				:	3,
 	"Cloud Tools for IntelliJ"				:	3,
-	"Cloud Test Lab"						:	3,
 	"Cloud Tools for PowerShell"			:	3,
-	"IDE Plugins"							:	3,
+	"Cloud Tools for Visual Studio"			:	3,
 	"Container Registry"					:	3,
+	"Gradle App Engine Plugin"				:	3,
+	"IDE Plugins"							:	3,
+	"Maven App Engine Plugin"				:	3,
 	
 	/*** GCP / PRODUCT CARDS ***/
 
+	"AdMob"									:	4,
+	"Avere Physical Appliance"				:	4,
+	"Campaign Manager"						:	4,
+	"Fastly"								:	4,
+	"Firebase"								:	4,
+	"Forseti Security"						:	4,
+	"Google Ad Manager"						:	4,
+	"Google Ads"							:	4,
+	"Google Analytics 360"					:	4,
+	"Google Analytics"						:	4,
+	"Google Play Game Services"				:	4,
+	"Istio"									:	4,
 	"Kubernetes"							:	4,
 	"TensorFlow"							:	4,
-	"Forseti Security"						:	4,
-	"Istio"									:	4,
-	"Firebase"								:	4,
-	"Fastly"								:	4,
-	"AdMob"									:	4,
-	"Google Play Game Services"				:	4,
-	"Campaign Manager"						:	4,
-	"Google Analytics"						:	4,
-	"Google Ads"							:	4,
-	"Avere Physical Appliance"				:	4,
-	"Google Analytics 360"					:	4,
-	"Google Ad Manager"						:	4,
 	
 	/*** GCP ICONS ***/
 
@@ -689,3 +691,166 @@ func Lookup(name string) int {
 
 	return -1
 }
+
+/*	GCP DEVELOPER TOOLS
+
+
+	*/
+
+/*	GCP PRODUCT CARDS
+
+	"Kubernetes"                            :   "shape=mxgraph.gcp2.kubernetes_logo",	// "Kubernetes"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="180" y="40" width="130" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-154" value="Kubernetes" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-153">
+	<mxGeometry width="45" height="43.65" relative="1" as="geometry">
+		<mxPoint x="5" y="7.675000000000001" as="offset" />
+	</mxGeometry>
+	</mxCell>
+
+	"TensorFlow"                            :   "shape=mxgraph.gcp2.tensorflow_logo",	// "TensorFlow"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="180" y="80" width="130" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-156" value="TensorFlow" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-155">
+	<mxGeometry width="42.3" height="45" relative="1" as="geometry">
+		<mxPoint x="5" y="7" as="offset" />
+	</mxGeometry>
+	</mxCell>
+
+	"Forseti Security"                      :   "shape=mxgraph.gcp2.forseti_logo",	// "Forseti&#xa;Security"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="250" y="50" width="110" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-158" value="Forseti&#xa;Security" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-157">
+	<mxGeometry width="44.1" height="45" relative="1" as="geometry">
+		<mxPoint x="5" y="7" as="offset" />
+	</mxGeometry>
+	</mxCell>
+
+	"Istio"                                 :   "shape=mxgraph.gcp2.istio_logo",	// "Istio"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="220" y="140" width="80" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-160" value="Istio" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-159">
+	<mxGeometry width="30.150000000000002" height="45" relative="1" as="geometry">
+		<mxPoint x="5" y="7" as="offset" />
+	</mxGeometry>
+	</mxCell>
+
+	"Firebase"                              :   "shape=mxgraph.gcp2.firebase",	// "Firebase"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="310" y="190" width="100" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-162" value="Firebase" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-161">
+	<mxGeometry width="32.4" height="45" relative="1" as="geometry">
+		<mxPoint x="5" y="7" as="offset" />
+	</mxGeometry>
+	</mxCell>
+
+	"AdMob"                                 :   "shape=mxgraph.gcp2.admob",	// "AdMob"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="280" y="180" width="110" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-166" value="AdMob" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-165">
+	<mxGeometry width="45" height="45" relative="1" as="geometry">
+		<mxPoint x="5" y="7" as="offset" />
+	</mxGeometry>
+	</mxCell>
+
+	"Campaign Manager"                      :   "shape=mxgraph.gcp2.campaign_manager",	// "Campaign&#xa;Manager"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="280" y="190" width="120" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-170" value="Campaign&#xa;Manager" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-169">
+	<mxGeometry width="45" height="45" relative="1" as="geometry">
+		<mxPoint x="5" y="7" as="offset" />
+	</mxGeometry>
+	</mxCell>
+
+	"Google Analytics"                      :   "shape=mxgraph.gcp2.google_analytics",	// "Google&#xa;Analytics"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="305" y="170" width="120" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-172" value="Google&#xa;Analytics" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-171">
+	<mxGeometry width="45" height="45" relative="1" as="geometry">
+		<mxPoint x="5" y="7" as="offset" />
+	</mxGeometry>
+	</mxCell>
+
+	"Google Ads"                            :   "shape=mxgraph.gcp2.google_ads",	// "Google&#xa;Ads"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="160" y="180" width="100" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-174" value="Google&#xa;Ads" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-173">
+	<mxGeometry width="45" height="45" relative="1" as="geometry">
+		<mxPoint x="5" y="7" as="offset" />
+	</mxGeometry>
+	</mxCell>
+
+	"Google Analytics 360"                  :   "shape=mxgraph.gcp2.google_analytics_360",	// "Google&#xa;Analytics 360"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="170" y="200" width="140" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-178" value="Google&#xa;Analytics 360" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-177">
+	<mxGeometry width="45" height="44.1" relative="1" as="geometry">
+		<mxPoint x="5" y="7.45" as="offset" />
+	</mxGeometry>
+	</mxCell>
+
+	"Google Ad Manager"                     :   "shape=mxgraph.gcp2.google_ad_manager",	// "Google Ad&#xa;Manager"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="340" y="230" width="120" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-180" value="Google Ad&#xa;Manager" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-179">
+	<mxGeometry width="45" height="45" relative="1" as="geometry">
+		<mxPoint x="5" y="7" as="offset" />
+	</mxGeometry>
+	</mxCell>
+
+	"Avere Physical Appliance"              :   "shape=mxgraph.gcp2.avere",	// "Avere Physical&#xa;Appliance"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="260" y="160" width="150" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-176" value="Avere Physical&#xa;Appliance" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-175">
+	<mxGeometry width="45" height="14.850000000000001" relative="1" as="geometry">
+		<mxPoint x="5" y="22.075" as="offset" />
+	</mxGeometry>
+	</mxCell>
+
+	"Fastly"                                :   "shape=mxgraph.gcp2.fastly",	// "Fastly"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="160" y="110" width="100" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-182" value="Fastly" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-181">
+	<mxGeometry width="45" height="17.55" relative="1" as="geometry">
+		<mxPoint x="5" y="20.725" as="offset" />
+	</mxGeometry>
+	</mxCell>
+
+	"Google Play Game Services"             :   "shape=mxgraph.gcp2.google_play_game_service",	// "Google Play&#xa;Game Services"
+
+	<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
+	<mxGeometry x="140" y="160" width="150" height="60" as="geometry" />
+	</mxCell>
+	<mxCell id="sksrVD8GqV6zCDYqazPW-168" value="Google Play&#xa;Game Services" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="sksrVD8GqV6zCDYqazPW-167">
+	<mxGeometry width="45" height="31.049999999999997" relative="1" as="geometry">
+		<mxPoint x="5" y="13.975000000000001" as="offset" />
+	</mxGeometry>
+	</mxCell>
+	
+	*/

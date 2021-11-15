@@ -77,19 +77,6 @@ func Mapper() {
 	
 		/*** GCP / SERVICE CARDS ***/
 
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="100" height="44" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="Gateway" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;shape=mxgraph.gcp2.gateway;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry y="0.5" width="32" height="32" relative="1" as="geometry">
-						<mxPoint x="5" y="-16" as="offset" />
-					</mxGeometry>
-				</mxCell>
-
-				"Gateway"	:	"shape=mxgraph.gcp2.gateway"
-			*/
-
 		case 1:
 
 			mxCell = root.CreateElement("mxCell")
@@ -129,19 +116,6 @@ func Mapper() {
 
 		/*** GCP / USER AND DEVICE CARDS ***/
 
-			// "shape=mxgraph.gcp2.application;"
-
-			/*
-				<mxCell id="2" value="Application" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="70" height="85" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;shape=mxgraph.gcp2.application;part=1;" vertex="1" parent="2">
-					<mxGeometry x="0.5" width="50" height="40" relative="1" as="geometry">
-					    <mxPoint x="-25" y="15" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
-
 		case 2:
 			
 			mxCell = root.CreateElement("mxCell")
@@ -180,184 +154,17 @@ func Mapper() {
 		/****************************************************************************************************/
 			
 		/*** GCP / COMPUTE ***/
-
-			// "shape=mxgraph.gcp2.hexIcon;prIcon=compute_engine;"
-
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="110" height="60" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="Compute&#xa;Engine" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;shape=mxgraph.gcp2.hexIcon;prIcon=compute_engine;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
-						<mxPoint x="5" y="-19.5" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
-
 		/*** GCP / API MANAGEMENT ***/
-
-			// "shape=mxgraph.gcp2.hexIcon;prIcon=api_analytics;"
-
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="110" height="60" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="API&#xa;Analytics" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;shape=mxgraph.gcp2.hexIcon;prIcon=api_analytics;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
-						<mxPoint x="5" y="-19.5" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
-
 		/*** GCP / SECURITY ***/
-
-			// "shape=mxgraph.gcp2.hexIcon;prIcon=cloud_iam;"
-
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="100" height="60" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="Cloud&#xa;IAM" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;shape=mxgraph.gcp2.hexIcon;prIcon=cloud_iam;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
-						<mxPoint x="5" y="-19.5" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
-
 		/*** GCP / DATA ANALYTICS ***/
-
-			// "shape=mxgraph.gcp2.hexIcon;prIcon=bigquery;"
-
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="120" height="60" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="BigQuery" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;shape=mxgraph.gcp2.hexIcon;prIcon=bigquery;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
-						<mxPoint x="5" y="-19.5" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
-
 		/*** GCP / DATA TRANSFER ***/
-
-			// "shape=mxgraph.gcp2.hexIcon;prIcon=transfer_appliance;"
-
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="120" height="60" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="Transfer&#xa;Appliance" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;shape=mxgraph.gcp2.hexIcon;prIcon=transfer_appliance;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
-						<mxPoint x="5" y="-19.5" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
-
 		/*** GCP / CLOUD AI ***/
-
-			// "shape=mxgraph.gcp2.hexIcon;prIcon=cloud_machine_learning;"
-
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="150" height="60" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="Cloud Machine&#xa;Learning" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;shape=mxgraph.gcp2.hexIcon;prIcon=cloud_machine_learning;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
-						<mxPoint x="5" y="-19.5" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
-
 		/*** GCP / INTERNET OF THINGS ***/
-
-			// "shape=mxgraph.gcp2.hexIcon;prIcon=cloud_iot_core;"
-
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="110" height="60" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="Cloud&#xa;IoT Core" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;shape=mxgraph.gcp2.hexIcon;prIcon=cloud_iot_core;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
-						<mxPoint x="5" y="-19.5" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
-
 		/*** GCP / DATABASES ***/
-
-			// "shape=mxgraph.gcp2.hexIcon;prIcon=cloud_sql;"
-
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="100" height="60" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="Cloud&#xa;SQL" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;shape=mxgraph.gcp2.hexIcon;prIcon=cloud_sql;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
-						<mxPoint x="5" y="-19.5" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
-
 		/*** GCP / STORAGE ***/
-
-			// "shape=mxgraph.gcp2.hexIcon;prIcon=cloud_storage;"
-
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="110" height="60" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="Cloud&#xa;Storage" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;shape=mxgraph.gcp2.hexIcon;prIcon=cloud_storage;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
-						<mxPoint x="5" y="-19.5" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
-
 		/*** GCP / MANAGEMENT TOOLS ***/
-
-			// "shape=mxgraph.gcp2.hexIcon;prIcon=stackdriver;"
-
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="130" height="60" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="Stackdriver" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;shape=mxgraph.gcp2.hexIcon;prIcon=stackdriver;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
-						<mxPoint x="5" y="-19.5" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
-
 		/*** GCP / NETWORKING ***/
-
-			// "shape=mxgraph.gcp2.hexIcon;prIcon=virtual_private_cloud;"
-
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="140" height="60" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="Virtual&#xa;Private Cloud" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;shape=mxgraph.gcp2.hexIcon;prIcon=virtual_private_cloud;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
-						<mxPoint x="5" y="-19.5" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
-	
 		/*** GCP / DEVELOPER TOOLS ***/
-
-			// "shape=mxgraph.gcp2.hexIcon;prIcon=placeholder;"
-
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="100" height="60" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="Cloud&#xa;SDK" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;shape=mxgraph.gcp2.hexIcon;prIcon=placeholder;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
-						<mxPoint x="5" y="-19.5" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
 
 		case 3:
 
@@ -397,19 +204,6 @@ func Mapper() {
 		/****************************************************************************************************/
 	
 		/*** GCP / PRODUCT CARDS ***/
-
-			// "shape=mxgraph.gcp2.kubernetes_logo"
-
-			/*
-				<mxCell id="2" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="130" height="60" as="geometry" />
-				</mxCell>
-				<mxCell id="3" value="Kubernetes" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;shape=mxgraph.gcp2.kubernetes_logo;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" vertex="1" parent="2">
-					<mxGeometry width="45" height="43.65" relative="1" as="geometry">
-						<mxPoint x="5" y="7.675000000000001" as="offset" />
-					</mxGeometry>
-				</mxCell>
-			*/
 		
 		case 4:
 
@@ -424,7 +218,7 @@ func Mapper() {
 			mxGeometry.CreateAttr("x", "360")		// DETERMINE METHOD FOR SETTING THIS
 			mxGeometry.CreateAttr("y", "120")		// DETERMINE METHOD FOR SETTING THIS
 			mxGeometry.CreateAttr("width", "150")
-			mxGeometry.CreateAttr("height", "75")
+			mxGeometry.CreateAttr("height", "60")
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxCell = root.CreateElement("mxCell")
@@ -441,21 +235,13 @@ func Mapper() {
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxPoint := mxGeometry.CreateElement("mxPoint")
-			mxPoint.CreateAttr("x", "5")			// INCONSISTENT, SOME MAY LOOK OFF (esp. Avere Physical Appliance, Fastly, Google Play Game Services)
+			mxPoint.CreateAttr("x", "5")
 			mxPoint.CreateAttr("y", "7")			// INCONSISTENT, SOME MAY LOOK OFF (esp. Avere Physical Appliance, Fastly, Google Play Game Services)
 			mxPoint.CreateAttr("as", "offset")
 
 		/****************************************************************************************************/
 
 		/*** GCP ICONS ***/
-
-			// "shape=mxgraph.gcp2.hexIcon;prIcon=cloud_machine_learning;"
-
-			/*
-				<mxCell id="2" value="AI Platform" style="sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;shape=mxgraph.gcp2.hexIcon;prIcon=cloud_machine_learning" vertex="1" parent="1">
-					<mxGeometry x="40" y="40" width="66" height="58.5" as="geometry" />
-				</mxCell>
-			*/
 
 		case 5:
 
@@ -473,8 +259,7 @@ func Mapper() {
 			mxGeometry.CreateAttr("height", "58.5")
 			mxGeometry.CreateAttr("as", "geometry")
 
-		// GCP ICONS / Developer Tools / Cloud Scheduler
-		case 6:
+		case 6:		// Cloud Scheduler
 			
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", "2")			// fmt.Sprint(i + 2)

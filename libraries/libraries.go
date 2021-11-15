@@ -75,131 +75,131 @@ var ShapeLookup = map[string]string{
 
 	/*** GCP / COMPUTE ***/
 
-	"Compute Engine"
-	"GPU"
-	"App Engine"
-	"Cloud Functions"
-	"Kubernetes Engine"
-	"Container-Optimized OS"
-	"Cloud Run"
-	"GKE-on-Prem"
+	"Compute Engine"						:	"",
+	"GPU"									:	"",
+	"App Engine"							:	"",
+	"Cloud Functions"						:	"",
+	"Kubernetes Engine"						:	"",
+	"Container-Optimized OS"				:	"",
+	"Cloud Run"								:	"",
+	"GKE-on-Prem"							:	"",
 
 	/*** GCP / API MANAGEMENT ***/
 
-	"API Analytics"
-	"Apigee Sense"
-	"API Monetization"
-	"Cloud Endpoints"
-	"Apigee API Platform"
-	"Developer Portal"
+	"API Analytics"							:	"",
+	"Apigee Sense"							:	"",
+	"API Monetization"						:	"",
+	"Cloud Endpoints"						:	"",
+	"Apigee API Platform"					:	"",
+	"Developer Portal"						:	"",
 
 	/*** GCP / SECURITY ***/
 
-	"Cloud IAM"
-	"BeyondCorp"
-	"Cloud Resource Manager"
-	"Data Loss Prevention API"
-	"Cloud Security Scanner"
-	"Key Management Service"
-	"Identity-Aware Proxy"
-	"Cloud Security Command Center"
-	"Security Key Enforcement"
+	"Cloud IAM"								:	"",
+	"BeyondCorp"							:	"",
+	"Cloud Resource Manager"				:	"",
+	"Data Loss Prevention API"				:	"",
+	"Cloud Security Scanner"				:	"",
+	"Key Management Service"				:	"",
+	"Identity-Aware Proxy"					:	"",
+	"Cloud Security Command Center"			:	"",
+	"Security Key Enforcement"				:	"",
 
 	/*** GCP / DATA ANALYTICS ***/
 
-	"BigQuery"
-	"Cloud Datalab"
-	"Cloud Dataflow"
-	"Cloud Pub/Sub"
-	"Cloud Dataproc"
-	"Genomics"
-	"Cloud Dataprep"
-	"Cloud Composer"
-	"Cloud Data Catalog"
-	"Cloud Data Fusion"
+	"BigQuery"								:	"",
+	"Cloud Datalab"							:	"",
+	"Cloud Dataflow"						:	"",
+	"Cloud Pub/Sub"							:	"",
+	"Cloud Dataproc"						:	"",
+	"Genomics"								:	"",
+	"Cloud Dataprep"						:	"",
+	"Cloud Composer"						:	"",
+	"Cloud Data Catalog"					:	"",
+	"Cloud Data Fusion"						:	"",
 
 	/*** GCP / DATA TRANSFER ***/
 
-	"Transfer Appliance"
+	"Transfer Appliance"					:	"",
 
 	/*** GCP / CLOUD AI ***/
 
-	"Cloud Machine Learning"
-	"Natural Language API"
-	"Vision API"
-	"Translation API"
-	"Speech API"
-	"Jobs API"
-	"Cloud Video Intelligence API"
-	"Advanced Solutions Lab"
+	"Cloud Machine Learning"				:	"",
+	"Natural Language API"					:	"",
+	"Vision API"							:	"",
+	"Translation API"						:	"",
+	"Speech API"							:	"",
+	"Jobs API"								:	"",
+	"Cloud Video Intelligence API"			:	"",
+	"Advanced Solutions Lab"				:	"",
 
 	/*** GCP / INTERNET OF THINGS ***/
 
-	"Cloud IoT Core"
+	"Cloud IoT Core"						:	"",
 
 	/*** GCP / DATABASES ***/
 
-	"Cloud SQL"
-	"Cloud Bigtable"
-	"Cloud Spanner"
-	"Cloud Memorystore"
-	"Cloud Firestore"		//*****
-	"Cloud Datastore"
+	"Cloud SQL"								:	"",
+	"Cloud Bigtable"						:	"",
+	"Cloud Spanner"							:	"",
+	"Cloud Memorystore"						:	"",
+	"Cloud Firestore"						:	"",
+	"Cloud Datastore"						:	"",
 
 	/*** GCP / STORAGE ***/
 
-	"Cloud Storage"
-	"Persistent Disk"
-	"Cloud Firestore"		//*****
+	"Cloud Storage"							:	"",
+	"Persistent Disk"						:	"",
+	"Cloud Firestore"						:	"",
 
 	/*** GCP / MANAGEMENT TOOLS ***/
 
-	"Stackdriver"
-	"Debugger"
-	"Monitoring"
-	"Deployment Manager"
-	"Logging"
-	"Cloud Console"
-	"Error Reporting"
-	"Cloud Shell"
-	"Trace"
-	"Cloud Mobile App"
-	"Profiler"
-	"Billing API"
-	"Cloud APIs"
+	"Stackdriver"							:	"",
+	"Debugger"								:	"",
+	"Monitoring"							:	"",
+	"Deployment Manager"					:	"",
+	"Logging"								:	"",
+	"Cloud Console"							:	"",
+	"Error Reporting"						:	"",
+	"Cloud Shell"							:	"",
+	"Trace"									:	"",
+	"Cloud Mobile App"						:	"",
+	"Profiler"								:	"",
+	"Billing API"							:	"",
+	"Cloud APIs"							:	"",
 
 	/*** GCP / NETWORKING ***/
 
-	"Virtual Private Cloud"
-	"Dedicated Interconnect"
-	"Cloud Load Balancing"
-	"Cloud DNS"
-	"Cloud CDN"
-	"Cloud Network"
-	"Cloud External IP Addresses"
-	"Cloud Routes"
-	"Cloud Firewall Rules"
-	"Cloud VPN"
-	"Cloud Router"
-	"Cloud Armor"
-	"Standard Network Tier"
-	"Premium Network Tier"
-	"Partner Interconnect"
+	"Virtual Private Cloud"					:	"",
+	"Dedicated Interconnect"				:	"",
+	"Cloud Load Balancing"					:	"",
+	"Cloud DNS"								:	"",
+	"Cloud CDN"								:	"",
+	"Cloud Network"							:	"",
+	"Cloud External IP Addresses"			:	"",
+	"Cloud Routes"							:	"",
+	"Cloud Firewall Rules"					:	"",
+	"Cloud VPN"								:	"",
+	"Cloud Router"							:	"",
+	"Cloud Armor"							:	"",
+	"Standard Network Tier"					:	"",
+	"Premium Network Tier"					:	"",
+	"Partner Interconnect"					:	"",
 	
 	/*** GCP / DEVELOPER TOOLS ***/
 
-	"Cloud SDK"
-	"Cloud Build"
-	"Gradle App Engine Plugin"
-	"Cloud Tools for Visual Studio"
-	"Cloud Source Repositories"
-	"Maven App Engine Plugin"
-	"Cloud Tools for Eclipse"
-	"Cloud Tools for IntelliJ"
-	"Cloud Test Lab"
-	"Cloud Tools for PowerShell"
-	"IDE Plugins"
-	"Container Registry"
+	"Cloud SDK"								:	"",
+	"Cloud Build"							:	"",
+	"Gradle App Engine Plugin"				:	"",
+	"Cloud Tools for Visual Studio"			:	"",
+	"Cloud Source Repositories"				:	"",
+	"Maven App Engine Plugin"				:	"",
+	"Cloud Tools for Eclipse"				:	"",
+	"Cloud Tools for IntelliJ"				:	"",
+	"Cloud Test Lab"						:	"",
+	"Cloud Tools for PowerShell"			:	"",
+	"IDE Plugins"							:	"",
+	"Container Registry"					:	"",
 	
 	/*** GCP / EXPANDED PRODUCT CARDS ***/
 
@@ -207,20 +207,20 @@ var ShapeLookup = map[string]string{
 	
 	/*** GCP / PRODUCT CARDS ***/
 
-	"Kubernetes"
-	"TensorFlow"
-	"Forseti Security"
-	"Istio"
-	"Firebase"
-	"Fastly"
-	"AdMob"
-	"Google Play Game Services"
-	"Campaign Manager"
-	"Google Analytics"
-	"Google Ads"
-	"Avere Physical Appliance"
-	"Google Analytics 360"
-	"Google Ad Manager"
+	"Kubernetes"							:	"",
+	"TensorFlow"							:	"",
+	"Forseti Security"						:	"",
+	"Istio"									:	"",
+	"Firebase"								:	"",
+	"Fastly"								:	"",
+	"AdMob"									:	"",
+	"Google Play Game Services"				:	"",
+	"Campaign Manager"						:	"",
+	"Google Analytics"						:	"",
+	"Google Ads"							:	"",
+	"Avere Physical Appliance"				:	"",
+	"Google Analytics 360"					:	"",
+	"Google Ad Manager"						:	"",
 	
 	/*** GCP / GENERAL ICONS ***/
 
@@ -236,36 +236,36 @@ var classLookup = map[string]int{
 
 	/*** GCP / Service Cards ***/
 
-	"Gateway":                               1,
-	"Memcache":                              1,
-	"Logs API":                              1,
-	"Cluster":                               1,
-	"NAT":                                   1,
-	"Squid Proxy":                           1,
-	"Bucket":                                1,
-	"Service Discovery":                     1,
-	"Task Queues":                           1,
-	"Image Services":                        1,
-	"Dedicated Game Server":                 1,
-	"Frontend Platform Services":            1,
-	"Google Edge POP":                       1,
-	"External Payment Form":                 1,
-	"Internal Payment Authorization":        1,
-	"VPN Gateway":                           1,
-	"Application System(s)":                 1,
-	"Virtual File System":                   1,
-	"CDN Interconnect":                      1,
-	"Scheduled Tasks":                       1,
-	"HTTPS Load Balancer":                   1,
-	"Persistent Disk Snapshot":              1,
-	"Persistent Disk":                       1,
-	"Network Load Balancer":                 1,
-	"Google Network w/ Edge Cache":          1,
-	"Push Notification Service":             1,
-	"Blank One Line (w/ bubble)":            1,
-	"Blank One Line (w/o bubble)":           1,
-	"Blank Two and Three Line (w/ Bubble)":  1,
-	"Blank Two and Three Line (w/o bubble)": 1,
+	"Gateway"								:	1,
+	"Memcache"								:	1,
+	"Logs API"								:	1,
+	"Cluster"								:	1,
+	"NAT"									:	1,
+	"Squid Proxy"							:	1,
+	"Bucket"								:	1,
+	"Service Discovery"						:	1,
+	"Task Queues"							:	1,
+	"Image Services"						:	1,
+	"Dedicated Game Server"					:	1,
+	"Frontend Platform Services"			:	1,
+	"Google Edge POP"						:	1,
+	"External Payment Form"					:	1,
+	"Internal Payment Authorization"		:	1,
+	"VPN Gateway"							:	1,
+	"Application System(s)"					:	1,
+	"Virtual File System"					:	1,
+	"CDN Interconnect"						:	1,
+	"Scheduled Tasks"						:	1,
+	"HTTPS Load Balancer"					:	1,
+	"Persistent Disk Snapshot"				:	1,
+	"Persistent Disk"						:	1,
+	"Network Load Balancer"					:	1,
+	"Google Network w/ Edge Cache"			:	1,
+	"Push Notification Service"				:	1,
+	"Blank One Line (w/ bubble)"			:	1,
+	"Blank One Line (w/o bubble)"			:	1,
+	"Blank Two and Three Line (w/ Bubble)"	:	1,
+	"Blank Two and Three Line (w/o bubble)"	:	1,
 }
 
 func Lookup(name string) int {

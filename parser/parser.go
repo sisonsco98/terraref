@@ -18,17 +18,17 @@ var Providers[] string
 
 var T Terraform
 type Terraform struct {
-	Resources []struct {
+	Resources[] struct {
 		Type      string `json:"type"`
 		Name      string `json:"name"`
 		Provider  string `json:"provider"`
-		Instances []struct {
+		Instances[] struct {
 			Attributes   struct {
 				ID          string `json:"id"`
 				Name        string `json:"name"`
 				Project     string `json:"project"`
 			} `json:"attributes"`
-			Dependencies []string `json:"dependencies"`
+			Dependencies[] string `json:"dependencies"`
 		} `json:"instances"`
 	} `json:"resources"`
 }

@@ -1,4 +1,4 @@
-package mapper
+=package mapper
 
 import (
 	"fmt"
@@ -47,11 +47,28 @@ func Mapper() {
 //	for i := 0; i < len(parser.T.Resources); i++ {
 
 		// (1) store resource type (ex: google_api_gateway_gateway)
-		resourceType := parser.T.Resources[i].Type
+//		resourceType := parser.T.Resources[i].Type
 
 		// (2) use resource type to lookup the draw.io name (ex: Gateway)
-		objectName := "Gateway"
+//		objectName := "Gateway"
 //		objectName := "drawio name" use resourceType as lookup value
+
+//		objectName := "AdMob"
+//		objectName := "Avere Physical Appliance"
+//		objectName := "Campaign Manager"
+//		objectName := "Fastly"
+//		objectName := "Firebase"
+//		objectName := "Forseti Security"
+//		objectName := "Google Ad Manager"
+//		objectName := "Google Ads"
+//		objectName := "Google Analytics 360"
+//		objectName := "Google Analytics"
+//		objectName := "Google Play Game Services"
+//		objectName := "Istio"
+//		objectName := "Kubernetes"
+//		objectName := "TensorFlow"
+
+
 
 		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.gateway)
 		objectShape := libraries.ShapeLookup[objectName]
@@ -356,7 +373,7 @@ func Mapper() {
 			mxGeometry := mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("x", "360")		// DETERMINE METHOD FOR SETTING THIS
 			mxGeometry.CreateAttr("y", "120")		// DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("width", "125")	// DETERMINE A SET SIZE
+			mxGeometry.CreateAttr("width", "150")	// DETERMINE A SET SIZE
 			mxGeometry.CreateAttr("height", "75")	// DETERMINE A SET SIZE
 			mxGeometry.CreateAttr("as", "geometry")
 
@@ -408,8 +425,8 @@ func Mapper() {
 			mxGeometry := mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("x", "360")		// DETERMINE METHOD FOR SETTING THIS
 			mxGeometry.CreateAttr("y", "120")		// DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("width", "125")	// DETERMINE A SET SIZE
-			mxGeometry.CreateAttr("height", "75")	// DETERMINE A SET SIZE
+			mxGeometry.CreateAttr("width", "150")	// DETERMINE A SET SIZE
+			mxGeometry.CreateAttr("height", "75")
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxCell = root.CreateElement("mxCell")
@@ -420,14 +437,14 @@ func Mapper() {
 			mxCell.CreateAttr("parent", "2")		// fmt.Sprint(i + 2)
 	
 			mxGeometry = mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("width", "45")
-			mxGeometry.CreateAttr("height", "43.65")
+			mxGeometry.CreateAttr("width", "45")	// SOME LOOK OFF (esp. Avere Physical Appliance, Fastly, Google Play Game Services)
+			mxGeometry.CreateAttr("height", "45")	// SOME LOOK OFF (esp. Avere Physical Appliance, Fastly, Google Play Game Services)
 			mxGeometry.CreateAttr("relative", "1")
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxPoint := mxGeometry.CreateElement("mxPoint")
-			mxPoint.CreateAttr("x", "5")
-			mxPoint.CreateAttr("y", "7.675000000000001")
+			mxPoint.CreateAttr("x", "5")			// SOME LOOK OFF (esp. Avere Physical Appliance, Fastly, Google Play Game Services)
+			mxPoint.CreateAttr("y", "7")			// SOME LOOK OFF (esp. Avere Physical Appliance, Fastly, Google Play Game Services)
 			mxPoint.CreateAttr("as", "offset")
 
 		/****************************************************************************************************/

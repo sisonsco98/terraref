@@ -1,13 +1,13 @@
 package mapper
 
 import (
-	"KSCD/libraries" // parser.go
-	"KSCD/parser"    // parser.go
 	"fmt"
-	"log" // logging errors
-	"os"  // create and open file
+	"log"				// logging errors
+	"os"				// create and open file
+	"KSCD/parser"		// parser.go
+	"KSCD/libraries"	// parser.go
 
-	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
+	"github.com/beevik/etree"	// creating xml file (go get github.com/beevik/etree)
 )
 
 var globalID int = 0
@@ -54,24 +54,6 @@ func Mapper() {
 		resourceType := parser.T.Resources[i].Type
 
 		// (2) use resource type to lookup the draw.io name (ex: Gateway)
-		//		objectName := "drawio name" use resourceType as lookup value
-
-		//		objectName := "Gateway"
-		//		objectName := "AdMob"
-		//		objectName := "Avere Physical Appliance"
-		//		objectName := "Campaign Manager"
-		//		objectName := "Fastly"
-		//		objectName := "Firebase"
-		//		objectName := "Forseti Security"
-		//		objectName := "Google Ad Manager"
-		//		objectName := "Google Ads"
-		//		objectName := "Google Analytics 360"
-		//		objectName := "Google Analytics"
-		//		objectName := "Google Play Game Services"
-		//		objectName := "Istio"
-		//		objectName := "Kubernetes"
-		//		objectName := "TensorFlow"
-
 		objectName := libraries.NameLookup[resourceType]
 
 		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.gateway)

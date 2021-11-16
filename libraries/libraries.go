@@ -46,7 +46,7 @@ var ShapeLookup = map [string] string {
 
 	"Application"						:	"shape=mxgraph.gcp2.application",									// "Application"
 	"Beacon"							:	"shape=mxgraph.gcp2.beacon",										// "Beacon"
-	"Circuit Board"						:	"shape=mxgraph.gcp2.circuit_board",									// "Circuit-Board"
+	"Circuit-Board"						:	"shape=mxgraph.gcp2.circuit_board",									// "Circuit-Board"
 	"Database"							:	"shape=mxgraph.gcp2.database",										// "Database"
 	"Desktop"							:	"shape=mxgraph.gcp2.desktop",										// "Desktop"
 	"Desktop and Mobile"				:	"shape=mxgraph.gcp2.desktop_and_mobile",							// "Desktop and Mobile"

@@ -645,6 +645,14 @@ var classLookup = map [string] int {
 		// skip for now
 }
 
+var NameLookup = map [string] string {
+
+	// TODO format so this looks nice
+
+	"google_compute_instance"					:	"Compute Engine"
+
+}
+
 func Lookup(name string) int {
 	value, success := classLookup[name]
 

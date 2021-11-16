@@ -44,10 +44,10 @@ func Mapper() {
 
 	/* ITERATE THROUGH RESOURCES */
 
-//	for i := 0; i < len(parser.T.Resources); i++ {
+	for i := 0; i < len(parser.T.Resources); i++ {
 
 		// (1) store resource type (ex: google_api_gateway_gateway)
-//		resourceType := parser.T.Resources[i].Type
+		resourceType := parser.T.Resources[i].Type
 
 		// (2) use resource type to lookup the draw.io name (ex: Gateway)
 //		objectName := "drawio name" use resourceType as lookup value
@@ -68,7 +68,10 @@ func Mapper() {
 //		objectName := "Kubernetes"
 //		objectName := "TensorFlow"
 
+		objectName := libraries.NameLookup[resourceType]
+
 		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.gateway)
+		objectName := parser.T.Resources[i].Type
 		objectShape := libraries.ShapeLookup[objectName]
 
 		t := libraries.Lookup(objectName)

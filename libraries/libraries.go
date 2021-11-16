@@ -669,6 +669,18 @@ var NameMap = map[string]string{
 	"google_compute_instance": "Compute Engine",
 
 	"google_compute_firewall": "Firewall",
+
+	"google_compute_firewall_policy": "Cloud Firewall Rules",
+
+	"google_storage_bucket": "Bucket",
+
+	"google_sql_database": "Cloud SQL",
+
+	"google_container_cluster": "Kubernetes",
+
+	"google_app_engine_application": "App Engine",
+
+	"google_api_gateway_api": "Gateway",
 }
 
 /*** Functions to look through file ***/

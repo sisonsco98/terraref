@@ -1,8 +1,6 @@
 package validator
 
-import (
-	"fmt"
-)
+//	"fmt"
 
 func Validator() {
 

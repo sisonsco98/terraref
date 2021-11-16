@@ -1,13 +1,13 @@
 package mapper
 
 import (
-	"KSCD/libraries" // parser.go
-	"KSCD/parser"    // parser.go
 	"fmt"
-	"log" // logging errors
-	"os"  // create and open file
+	"log"				// logging errors
+	"os"				// create and open file
+	"KSCD/parser"		// parser.go
+	"KSCD/libraries"	// parser.go
 
-	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
+	"github.com/beevik/etree"	// creating xml file (go get github.com/beevik/etree)
 )
 
 var globalID int = 0

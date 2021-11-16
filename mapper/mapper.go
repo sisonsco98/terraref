@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"log"				// logging errors
 	"os"				// create and open file
-//	"KSCD/parser"		// parser.go
+	"KSCD/parser"		// parser.go
 	"KSCD/libraries"	// parser.go
 
 	"github.com/beevik/etree"	// creating xml file (go get github.com/beevik/etree)
 )
+
+var globalID = 0
 
 func Mapper() {
 
@@ -36,11 +38,13 @@ func Mapper() {
 	root := mxGraphModel.CreateElement("root")
 
 	mxCell := root.CreateElement("mxCell")
-	mxCell.CreateAttr("id", "0")
+	mxCell.CreateAttr("id", globalID)
+	globalID = globalID++
 
 	mxCell = root.CreateElement("mxCell")
-	mxCell.CreateAttr("id", "1")
-	mxCell.CreateAttr("parent", "0")
+	mxCell.CreateAttr("id", globalID)
+	mxCell.CreateAttr("parent", globalID - 1)
+	globalID = globalID++
 
 	/* ITERATE THROUGH RESOURCES */
 
@@ -71,7 +75,6 @@ func Mapper() {
 		objectName := libraries.NameLookup[resourceType]
 
 		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.gateway)
-		objectName := parser.T.Resources[i].Type
 		objectShape := libraries.ShapeLookup[objectName]
 
 		t := libraries.Lookup(objectName)
@@ -83,11 +86,12 @@ func Mapper() {
 		case 1:
 
 			mxCell = root.CreateElement("mxCell")
-			mxCell.CreateAttr("id", "2")			// fmt.Sprint(i + 2)
+			mxCell.CreateAttr("id", globalID)
+			mxCell.CreateAttr("parent", globalID - 1)
+			globalID = globalID++
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			mxCell.CreateAttr("vertex", "1")
-			mxCell.CreateAttr("parent", "1")
 	
 			mxGeometry := mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("x", "360")		// DETERMINE METHOD FOR SETTING THIS
@@ -97,11 +101,12 @@ func Mapper() {
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxCell = root.CreateElement("mxCell")
-			mxCell.CreateAttr("id", "3")			// fmt.Sprint(i + 3)
+			mxCell.CreateAttr("id", globalID)
+			mxCell.CreateAttr("parent", globalID - 1)
+			globalID = globalID++
 			mxCell.CreateAttr("value", objectName)
 			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
-			mxCell.CreateAttr("parent", "2")		// fmt.Sprint(i + 2)
 	
 			mxGeometry = mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("y", "0.5")
@@ -122,7 +127,9 @@ func Mapper() {
 		case 2:
 			
 			mxCell = root.CreateElement("mxCell")
-			mxCell.CreateAttr("id", "2")			// fmt.Sprint(i + 2)
+			mxCell.CreateAttr("id", globalID)
+			mxCell.CreateAttr("parent", globalID - 1)
+			globalID = globalID++
 			mxCell.CreateAttr("value", objectName)
 			mxCell.CreateAttr("style", "strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;")
 			mxCell.CreateAttr("vertex", "1")
@@ -136,11 +143,12 @@ func Mapper() {
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxCell = root.CreateElement("mxCell")
-			mxCell.CreateAttr("id", "3")			// fmt.Sprint(i + 3)
+			mxCell.CreateAttr("id", globalID)
+			mxCell.CreateAttr("parent", globalID - 1)
+			globalID = globalID++
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
-			mxCell.CreateAttr("parent", "2")		// fmt.Sprint(i + 2)
 	
 			mxGeometry = mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("x", "0.5")
@@ -172,11 +180,12 @@ func Mapper() {
 		case 3:
 
 			mxCell = root.CreateElement("mxCell")
-			mxCell.CreateAttr("id", "2")			// fmt.Sprint(i + 2)
+			mxCell.CreateAttr("id", globalID)
+			mxCell.CreateAttr("parent", globalID - 1)
+			globalID = globalID++
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			mxCell.CreateAttr("vertex", "1")
-			mxCell.CreateAttr("parent", "1")
 	
 			mxGeometry := mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("x", "360")		// DETERMINE METHOD FOR SETTING THIS
@@ -186,11 +195,12 @@ func Mapper() {
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxCell = root.CreateElement("mxCell")
-			mxCell.CreateAttr("id", "3")			// fmt.Sprint(i + 3)
+			mxCell.CreateAttr("id", globalID)
+			mxCell.CreateAttr("parent", globalID - 1)
+			globalID = globalID++
 			mxCell.CreateAttr("value", objectName)
 			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
-			mxCell.CreateAttr("parent", "2")		// fmt.Sprint(i + 2)
 	
 			mxGeometry = mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("y", "0.5")
@@ -211,11 +221,12 @@ func Mapper() {
 		case 4:
 
 			mxCell = root.CreateElement("mxCell")
-			mxCell.CreateAttr("id", "2")			// fmt.Sprint(i + 2)
+			mxCell.CreateAttr("id", globalID)
+			mxCell.CreateAttr("parent", globalID - 1)
+			globalID = globalID++
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			mxCell.CreateAttr("vertex", "1")
-			mxCell.CreateAttr("parent", "1")
 	
 			mxGeometry := mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("x", "360")		// DETERMINE METHOD FOR SETTING THIS
@@ -225,11 +236,12 @@ func Mapper() {
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxCell = root.CreateElement("mxCell")
-			mxCell.CreateAttr("id", "3")			// fmt.Sprint(i + 3)
+			mxCell.CreateAttr("id", globalID)
+			mxCell.CreateAttr("parent", globalID - 1)
+			globalID = globalID++
 			mxCell.CreateAttr("value", objectName)
 			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
-			mxCell.CreateAttr("parent", "2")		// fmt.Sprint(i + 2)
 	
 			mxGeometry = mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("width", "45")	// INCONSISTENT, SOME MAY LOOK OFF (esp. Avere Physical Appliance, Fastly, Google Play Game Services)
@@ -249,11 +261,12 @@ func Mapper() {
 		case 5:
 
 			mxCell = root.CreateElement("mxCell")
-			mxCell.CreateAttr("id", "2")			// fmt.Sprint(i + 2)
+			mxCell.CreateAttr("id", globalID)
+			mxCell.CreateAttr("parent", globalID - 1)
+			globalID = globalID++
 			mxCell.CreateAttr("value", objectName)
 			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
-			mxCell.CreateAttr("parent", "1")
 	
 			mxGeometry := mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("x", "360")		// DETERMINE METHOD FOR SETTING THIS
@@ -265,11 +278,12 @@ func Mapper() {
 		case 6:		// Cloud Scheduler
 			
 			mxCell = root.CreateElement("mxCell")
-			mxCell.CreateAttr("id", "2")			// fmt.Sprint(i + 2)
+			mxCell.CreateAttr("id", globalID)
+			mxCell.CreateAttr("parent", globalID - 1)
+			globalID = globalID++
 			mxCell.CreateAttr("value", objectName)
 			mxCell.CreateAttr("style", fmt.Sprint("html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
-			mxCell.CreateAttr("parent", "1")
 	
 			mxGeometry := mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("x", "360")		// DETERMINE METHOD FOR SETTING THIS
@@ -281,30 +295,49 @@ func Mapper() {
 		/****************************************************************************************************/
 		
 		/*** GCP / PATHS ***/
-	
-			// skip for now
+
+		case 7:
+			
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", globalID)
+			mxCell.CreateAttr("parent", globalID - 1)
+			globalID = globalID++
+			mxCell.CreateAttr("value", objectName)
+			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", "360")		// DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("y", "120")		// DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("width", "220")
+			mxGeometry.CreateAttr("height", "190")
+			mxGeometry.CreateAttr("as", "geometry")
 
 		/****************************************************************************************************/
 	
 		/*** GCP / ZONES ***/
-	
+
+	//	case 8:
 			// skip for now
 
 		/****************************************************************************************************/
 	
 		/*** GCP / EXPANDED PRODUCT CARDS ***/
-	
+
+	//	case 9:
 			// skip for now
 
 		/****************************************************************************************************/
 	
 		/*** GCP / GENERAL ICONS ***/
 
+	//	case 10:
 			// skip for now
 
 		/****************************************************************************************************/
 
-		// error case
+		// Error case
+
 		default:
 			log.Println("Error: No match.", errCreate)
 			os.Exit(1)

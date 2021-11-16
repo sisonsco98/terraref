@@ -308,21 +308,31 @@ var ShapeLookup = map [string] string {
 
 	"Cloud Scheduler"					:	"shape=mxgraph.gcp2.cloud_scheduler",								// "Cloud Scheduler"
 		
+	/****************************************************************************************************/
+
 	/*** GCP / SERVICE CARDS (Blank One Line | Blank Two & Three Line) ***/
 
 		// skip for now
 
+	/****************************************************************************************************/
+
 	/*** GCP / PATHS ***/
 
-		// skip for now
+	"Firewall"							:	"fillColor=#FBE9E7;",												// "Firewall"
+
+	/****************************************************************************************************/
 
 	/*** GCP / ZONES ***/
 
 		// skip for now
 
+	/****************************************************************************************************/
+
 	/*** GCP / EXPANDED PRODUCT CARDS ***/
 
 		// skip for now
+
+	/****************************************************************************************************/
 
 	/*** GCP / GENERAL ICONS ***/
 
@@ -628,17 +638,25 @@ var classLookup = map [string] int {
 
 	"Cloud Scheduler"					:	6,
 
+	/****************************************************************************************************/
+
 	/*** GCP / PATHS ***/
 
 		// skip for now
 
+	/****************************************************************************************************/
+		
 	/*** GCP / ZONES ***/
 
-		// skip for now
+	"Firewall"							:	7,
+
+	/****************************************************************************************************/
 
 	/*** GCP / EXPANDED PRODUCT CARDS ***/
 
 		// skip for now
+
+	/****************************************************************************************************/
 
 	/*** GCP / GENERAL ICONS ***/
 
@@ -650,6 +668,8 @@ var NameLookup = map [string] string {
 	// TODO format so this looks nice
 
 	"google_compute_instance"					:	"Compute Engine"
+
+	"google_compute_firewall"					:	"Firewall"
 
 }
 

@@ -14,8 +14,13 @@
                 <mxPoint x="5" y="-19.5" as="offset"/>
             </mxGeometry>
         </mxCell>
-        <mxCell id="5" parent="4" value="random_id" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;fillColor=#FBE9E7;" vertex="1">
-            <mxGeometry x="360" y="120" width="220" height="190" as="geometry"/>
+        <mxCell id="5" parent="4" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1">
+            <mxGeometry x="360" y="120" width="150" height="56" as="geometry"/>
+        </mxCell>
+        <mxCell id="6" parent="5" value="random_id" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;shape=mxgraph.gcp2.blank" vertex="1">
+            <mxGeometry y="0.5" width="32" height="32" relative="1" as="geometry">
+                <mxPoint x="5" y="-16" as="offset"/>
+            </mxGeometry>
         </mxCell>
     </root>
 </mxGraphModel>

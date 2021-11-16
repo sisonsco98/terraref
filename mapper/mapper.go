@@ -52,14 +52,19 @@ func Mapper() {
 
 		// (1) store resource type (ex: google_api_gateway_gateway)
 		resourceType := parser.T.Resources[i].Type
+		fmt.Println(resourceType)
 
 		// (2) use resource type to lookup the draw.io name (ex: Gateway)
-		objectName := libraries.NameLookup[resourceType]
+		objectName := libraries.LookupName(resourceType)
+		fmt.Println(objectName)
 
 		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.gateway)
-		objectShape := libraries.ShapeLookup[objectName]
+		objectShape := libraries.LookupShape(objectName)
+		fmt.Println(objectShape)
 
-		t := libraries.Lookup(objectName)
+		// (4) use object name to lookup the correct case of creating the draw.io shape
+		t := libraries.LookupCase(objectName)
+		fmt.Println(t)
 
 		switch t {
 
@@ -316,12 +321,6 @@ func Mapper() {
 
 		//	case 10:
 		// skip for now
-
-		/****************************************************************************************************/
-
-		// General case
-
-		case 99:
 
 		/****************************************************************************************************/
 

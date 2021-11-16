@@ -31,42 +31,42 @@ var ShapeLookup = map[string]string{
 	"Network Load Balancer":          "shape=mxgraph.gcp2.network_load_balancer",          // "Network&#xa;Load&#xa;Balancer"
 	"Persistent Disk Snapshot":       "shape=mxgraph.gcp2.persistent_disk_snapshot",       // "Persistent&#xa;Disk Snapshot"
 	// "Persistent Disk":                "shape=mxgraph.gcp2.persistent_disk_snapshot",       // "Persistent&#xa;Disk"
-	"Push Notification Service":      "shape=mxgraph.gcp2.push_notification_service",      // "Push&#xa;Notification&#xa;Service"
-	"Scheduled Tasks":                "shape=mxgraph.gcp2.scheduled_tasks",                // "Scheduled&#xa;Tasks"
-	"Service Discovery":              "shape=mxgraph.gcp2.service_discovery",              // "Service Discovery"
-	"Squid Proxy":                    "shape=mxgraph.gcp2.squid_proxy",                    // "Squid Proxy"
-	"Task Queues":                    "shape=mxgraph.gcp2.task_queues",                    // "Task&#xa;Queues"
-	"VPN Gateway":                    "shape=mxgraph.gcp2.gateway",                        // "VPN Gateway"
-	"Virtual File System":            "shape=mxgraph.gcp2.virtual_file_system",            // "Virtual&#xa;File System"
+	"Push Notification Service": "shape=mxgraph.gcp2.push_notification_service", // "Push&#xa;Notification&#xa;Service"
+	"Scheduled Tasks":           "shape=mxgraph.gcp2.scheduled_tasks",           // "Scheduled&#xa;Tasks"
+	"Service Discovery":         "shape=mxgraph.gcp2.service_discovery",         // "Service Discovery"
+	"Squid Proxy":               "shape=mxgraph.gcp2.squid_proxy",               // "Squid Proxy"
+	"Task Queues":               "shape=mxgraph.gcp2.task_queues",               // "Task&#xa;Queues"
+	"VPN Gateway":               "shape=mxgraph.gcp2.gateway",                   // "VPN Gateway"
+	"Virtual File System":       "shape=mxgraph.gcp2.virtual_file_system",       // "Virtual&#xa;File System"
 
 	/****************************************************************************************************/
 
 	/*** GCP / USER AND DEVICE CARDS ***/
 
-	"Application":        "shape=mxgraph.gcp2.application",         // "Application"
-	"Beacon":             "shape=mxgraph.gcp2.beacon",              // "Beacon"
-	"Circuit-Board":      "shape=mxgraph.gcp2.circuit_board",       // "Circuit-Board"
-	"Database":           "shape=mxgraph.gcp2.database",            // "Database"
-	"Desktop":            "shape=mxgraph.gcp2.desktop",             // "Desktop"
-	"Desktop and Mobile": "shape=mxgraph.gcp2.desktop_and_mobile",  // "Desktop and Mobile"
-	"Game":               "shape=mxgraph.gcp2.game",                // "Game"
+	"Application":        "shape=mxgraph.gcp2.application",        // "Application"
+	"Beacon":             "shape=mxgraph.gcp2.beacon",             // "Beacon"
+	"Circuit-Board":      "shape=mxgraph.gcp2.circuit_board",      // "Circuit-Board"
+	"Database":           "shape=mxgraph.gcp2.database",           // "Database"
+	"Desktop":            "shape=mxgraph.gcp2.desktop",            // "Desktop"
+	"Desktop and Mobile": "shape=mxgraph.gcp2.desktop_and_mobile", // "Desktop and Mobile"
+	"Game":               "shape=mxgraph.gcp2.game",               // "Game"
 	// "Gateway":            "shape=mxgraph.gcp2.gateway_icon",        // "Gateway"
-	"Laptop":             "shape=mxgraph.gcp2.laptop",              // "Laptop"
-	"Lightbulb":          "shape=mxgraph.gcp2.lightbulb",           // "Lightbulb"
-	"List":               "shape=mxgraph.gcp2.list",                // "List"
-	"Live":               "shape=mxgraph.gcp2.live",                // "Live"
-	"Local-Compute":      "shape=mxgraph.gcp2.compute_engine_icon", // "Local-Compute"
-	"Mobile Devices":     "shape=mxgraph.gcp2.mobile_devices",      // "Mobile Devices"
-	"Payment":            "shape=mxgraph.gcp2.payment",             // "Payment"
-	"Phone":              "shape=mxgraph.gcp2.phone",               // "Phone"
-	"Record":             "shape=mxgraph.gcp2.record",              // "Record"
-	"Report":             "shape=mxgraph.gcp2.report",              // "Report"
-	"Retail":             "shape=mxgraph.gcp2.retail",              // "Retail"
-	"Speaker":            "shape=mxgraph.gcp2.speaker",             // "Speaker"
-	"Storage":            "shape=mxgraph.gcp2.storage",             // "Storage"
-	"Stream":             "shape=mxgraph.gcp2.stream",              // "Stream"
-	"Users":              "shape=mxgraph.gcp2.users",               // "Users"
-	"Webcam":             "shape=mxgraph.gcp2.webcam",              // "Webcam"
+	"Laptop":         "shape=mxgraph.gcp2.laptop",              // "Laptop"
+	"Lightbulb":      "shape=mxgraph.gcp2.lightbulb",           // "Lightbulb"
+	"List":           "shape=mxgraph.gcp2.list",                // "List"
+	"Live":           "shape=mxgraph.gcp2.live",                // "Live"
+	"Local-Compute":  "shape=mxgraph.gcp2.compute_engine_icon", // "Local-Compute"
+	"Mobile Devices": "shape=mxgraph.gcp2.mobile_devices",      // "Mobile Devices"
+	"Payment":        "shape=mxgraph.gcp2.payment",             // "Payment"
+	"Phone":          "shape=mxgraph.gcp2.phone",               // "Phone"
+	"Record":         "shape=mxgraph.gcp2.record",              // "Record"
+	"Report":         "shape=mxgraph.gcp2.report",              // "Report"
+	"Retail":         "shape=mxgraph.gcp2.retail",              // "Retail"
+	"Speaker":        "shape=mxgraph.gcp2.speaker",             // "Speaker"
+	"Storage":        "shape=mxgraph.gcp2.storage",             // "Storage"
+	"Stream":         "shape=mxgraph.gcp2.stream",              // "Stream"
+	"Users":          "shape=mxgraph.gcp2.users",               // "Users"
+	"Webcam":         "shape=mxgraph.gcp2.webcam",              // "Webcam"
 
 	/****************************************************************************************************/
 
@@ -361,13 +361,13 @@ var classLookup = map[string]int{
 	"Network Load Balancer":          1,
 	"Persistent Disk Snapshot":       1,
 	// "Persistent Disk":                1,
-	"Push Notification Service":      1,
-	"Scheduled Tasks":                1,
-	"Service Discovery":              1,
-	"Squid Proxy":                    1,
-	"Task Queues":                    1,
-	"VPN Gateway":                    1,
-	"Virtual File System":            1,
+	"Push Notification Service": 1,
+	"Scheduled Tasks":           1,
+	"Service Discovery":         1,
+	"Squid Proxy":               1,
+	"Task Queues":               1,
+	"VPN Gateway":               1,
+	"Virtual File System":       1,
 
 	/****************************************************************************************************/
 
@@ -381,22 +381,22 @@ var classLookup = map[string]int{
 	"Desktop and Mobile": 2,
 	"Game":               2,
 	// "Gateway":            2,
-	"Laptop":             2,
-	"Lightbulb":          2,
-	"List":               2,
-	"Live":               2,
-	"Local-Compute":      2,
-	"Mobile Devices":     2,
-	"Payment":            2,
-	"Phone":              2,
-	"Record":             2,
-	"Report":             2,
-	"Retail":             2,
-	"Speaker":            2,
-	"Storage":            2,
-	"Stream":             2,
-	"Users":              2,
-	"Webcam":             2,
+	"Laptop":         2,
+	"Lightbulb":      2,
+	"List":           2,
+	"Live":           2,
+	"Local-Compute":  2,
+	"Mobile Devices": 2,
+	"Payment":        2,
+	"Phone":          2,
+	"Record":         2,
+	"Report":         2,
+	"Retail":         2,
+	"Speaker":        2,
+	"Storage":        2,
+	"Stream":         2,
+	"Users":          2,
+	"Webcam":         2,
 
 	/****************************************************************************************************/
 
@@ -669,6 +669,8 @@ var NameLookup = map[string]string{
 	"google_compute_instance": "Compute Engine",
 
 	"google_compute_firewall": "Firewall",
+
+	"random_id": "Firewall",
 }
 
 func Lookup(name string) int {

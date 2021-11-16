@@ -296,8 +296,16 @@ func Mapper() {
 		
 		/*** GCP / PATHS ***/
 
-		case 7:
+		//case 7:
 			
+			// skip for now
+
+		/****************************************************************************************************/
+	
+		/*** GCP / ZONES ***/
+
+		case 8:
+
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", globalID)
 			mxCell.CreateAttr("parent", globalID - 1)
@@ -312,13 +320,6 @@ func Mapper() {
 			mxGeometry.CreateAttr("width", "220")
 			mxGeometry.CreateAttr("height", "190")
 			mxGeometry.CreateAttr("as", "geometry")
-
-		/****************************************************************************************************/
-	
-		/*** GCP / ZONES ***/
-
-	//	case 8:
-			// skip for now
 
 		/****************************************************************************************************/
 	

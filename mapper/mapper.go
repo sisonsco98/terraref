@@ -20,7 +20,7 @@ type terraNavigator struct {
 
 var globalID int = 0
 var elementID int = 0
-
+var xml = etree.NewDocument()
 var Pizza []terraNavigator
 
 func Mapper() {
@@ -41,7 +41,6 @@ func Mapper() {
 
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
-	xml := etree.NewDocument()
 	xml.CreateProcInst("xml", `version="1.0" encoding="UTF-8"`)
 
 	mxGraphModel := xml.CreateElement("mxGraphModel")

@@ -62,6 +62,7 @@ func Validator() {
 						fmt.Println("We need to draw an arrow from element ", mapper.Pizza[r].Name, " to element ", mapper.Pizza[ctr].Name)
 						fmt.Println(mapper.Pizza[r].Name, " is located at (", mapper.Pizza[r].XPos, ",", mapper.Pizza[r].YPos, ")")
 						fmt.Println(mapper.Pizza[ctr].Name, " is located at (", mapper.Pizza[ctr].XPos, ",", mapper.Pizza[ctr].YPos , ")")
+
 					}
 
 

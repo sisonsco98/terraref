@@ -1,13 +1,13 @@
 package mapper
 
 import (
+	"KSCD/libraries" // parser.go
+	"KSCD/parser"    // parser.go
 	"fmt"
-	"log"				// logging errors
-	"os"				// create and open files
-	"KSCD/parser"		// parser.go
-	"KSCD/libraries"	// parser.go
+	"log" // logging errors
+	"os"  // create and open files
 
-	"github.com/beevik/etree"	// creating xml file (go get github.com/beevik/etree)
+	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
 )
 
 var globalID int = 0
@@ -24,6 +24,9 @@ func Mapper() {
 	}
 	// keep open
 	defer outFile.Close()
+
+	// Add a new map
+	nameDependencyMap := make(map[string]int)
 
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
@@ -61,6 +64,11 @@ func Mapper() {
 
 		// (4) use object name to lookup the correct case of creating the draw.io shape
 		t := libraries.LookupCase(objectName)
+
+		fmt.Println(parser.T.Resources[i].Name)
+
+		// (5) Grab the object's name in case it's on a dependency.
+		// nameDependencyMap[parser.T.Resources[i].Name] = globalID + 1
 
 		switch t {
 
@@ -360,6 +368,10 @@ func Mapper() {
 
 	xml.Indent(4)
 	xml.WriteToFile("terraform.drawio")
+
+	for key, element := range nameDependencyMap {
+		fmt.Println(key, " ", element)
+	}
 
 	// close file
 	outFile.Close()

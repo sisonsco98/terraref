@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log" // logging errors
 	"os"  // create and open files
+	"strings"
 
 	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
 )
@@ -425,6 +426,57 @@ func Mapper() {
 	}
 
 	/*** PRINT TO THE terraform.drawio FILE ***/
+
+	for r := 0; r < len(parser.T.Resources); r++ {
+		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
+			for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
+				// prints resource type followed by it's dependencies
+				//fmt.Println("Resource Type:", parser.T.Resources[r].Type, "Dependency:", parser.T.Resources[r].Instances[i].Dependencies[d])
+
+				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
+				dependencyName := strings.Split(resourceName, ".")
+
+				fmt.Println("Parent Resource Name : ", Pizza[r].Name)
+				fmt.Println("Dependency Name : ", dependencyName[1])
+
+				ctr := 0
+				for range Pizza {
+					if (Pizza[ctr].Name == dependencyName[1]){
+						fmt.Println("We've matched the elements.")
+						fmt.Println("We need to draw an arrow from element ", Pizza[r].Name, " to element ", Pizza[ctr].Name)
+						fmt.Println(Pizza[r].Name, " is located at (", Pizza[r].XPos, ",", Pizza[r].YPos, ")")
+						fmt.Println(Pizza[ctr].Name, " is located at (", Pizza[ctr].XPos, ",", Pizza[ctr].YPos , ")")
+						mxCell = root.CreateElement("mxCell")
+						mxCell.CreateAttr("id", fmt.Sprint(globalID))
+						mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+						globalID = globalID + 1
+						mxCell.CreateAttr("value", "")
+						mxCell.CreateAttr("style", "edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
+						mxCell.CreateAttr("edge", "1")
+
+						mxGeometry := mxCell.CreateElement("mxGeometry")
+						mxGeometry.CreateAttr("relative", "1")
+						mxGeometry.CreateAttr("as", "geometry")
+
+						mxPoint := mxGeometry.CreateElement("mxPoint")
+						mxPoint.CreateAttr("x", fmt.Sprint(Pizza[r].XPos))
+						mxPoint.CreateAttr("y", fmt.Sprint(Pizza[r].YPos))
+						mxPoint.CreateAttr("as", "sourcePoint")
+
+						mxPoint = mxGeometry.CreateElement("mxPoint")
+						mxPoint.CreateAttr("x", fmt.Sprint(Pizza[ctr].XPos))
+						mxPoint.CreateAttr("y", fmt.Sprint(Pizza[ctr].XPos))
+						mxPoint.CreateAttr("as", "targetPoint")
+					}
+
+
+					ctr++
+				}
+
+				// NOTE: prints dependencies as type.name, might need just type ??
+			}
+		}
+	}
 
 	xml.Indent(4)
 	xml.WriteToFile("terraform.drawio")

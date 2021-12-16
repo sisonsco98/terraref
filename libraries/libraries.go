@@ -5,7 +5,16 @@ import (
 	"os"
 )
 
-var CaseMap = map[string]int{
+var CaseMap = map [string] int {
+
+	/*** GCP / PATHS ***/
+
+	"Primary Path":				0,
+	"Optional Primary Path":	0,
+	"Secondary Path":			0,
+	"Optional Secondary Path":	0,
+	"Success Status":			0,
+	"Failure Status":			0,
 
 	/*** GCP / SERVICE CARDS ***/
 
@@ -306,12 +315,6 @@ var CaseMap = map[string]int{
 
 	/****************************************************************************************************/
 
-	/*** GCP / PATHS ***/
-
-	// skip for now
-
-	/****************************************************************************************************/
-
 	/*** GCP / ZONES ***/
 
 	"Firewall": 8,
@@ -329,10 +332,19 @@ var CaseMap = map[string]int{
 	"General": 1,
 }
 
-var ShapeMap = map[string]string{
+var ShapeMap = map [string] string {
 
 	//// DUPLICATES IN GROUPS REMOVED ///// ******************************************************************************************************************************************
 	//// STILL NEED TO CHECK FOR DUPLICATES ALTOGETHER ///// ****************************************************************************************************************************************
+
+	/*** GCP / PATHS ***/
+
+	"Primary Path":				"dashed=0;strokeColor=#4284F3;",
+	"Optional Primary Path":	"dashed=1;dashPattern=1 3;strokeColor=#4284F3;",
+	"Secondary Path":			"dashed=0;strokeColor=#9E9E9E;",
+	"Optional Secondary Path":	"dashed=1;dashPattern=1 3;strokeColor=#9E9E9E;",
+	"Success Status":			"strokeColor=#34A853;dashed=0;",
+	"Failure Status":			"strokeColor=#EA4335;dashed=0;",
 
 	/*** GCP / SERVICE CARDS ***/
 
@@ -639,15 +651,9 @@ var ShapeMap = map[string]string{
 
 	/****************************************************************************************************/
 
-	/*** GCP / PATHS ***/
-
-	"Firewall": "fillColor=#FBE9E7;", // "Firewall"
-
-	/****************************************************************************************************/
-
 	/*** GCP / ZONES ***/
 
-	// skip for now
+	"Firewall": "fillColor=#FBE9E7;", // "Firewall"
 
 	/****************************************************************************************************/
 
@@ -662,7 +668,15 @@ var ShapeMap = map[string]string{
 	"General": "shape=mxgraph.gcp2.blank", // "Blank Line"
 }
 
-var NameMap = map[string]string{
+var NameMap = map [string] string {
+
+	/*** GCP / PATHS ***/
+	"primary_path": "Primary Path",
+	"optional_primary_path": "Optional Primary Path",
+	"secondary_path": "Secondary Path",
+	"optional_secondary_path": "Optional Secondary Path",
+	"success_status": "Success Status",
+	"failure": "Failure Status",
 
 	// TODO format so this looks nice
 

@@ -11,6 +11,7 @@ import (
 )
 
 var globalID int = 0
+var elementID int = 0
 
 func Mapper() {
 
@@ -65,10 +66,11 @@ func Mapper() {
 		// (4) use object name to lookup the correct case of creating the draw.io shape
 		t := libraries.LookupCase(objectName)
 
-		fmt.Println(parser.T.Resources[i].Name)
-
+		if parser.T.Resources[i].Name != "default" {
+			nameDependencyMap[parser.T.Resources[i].Name] = elementID
+		}
+		elementID++
 		// (5) Grab the object's name in case it's on a dependency.
-		// nameDependencyMap[parser.T.Resources[i].Name] = globalID + 1
 
 		switch t {
 
@@ -370,7 +372,8 @@ func Mapper() {
 	xml.WriteToFile("terraform.drawio")
 
 	for key, element := range nameDependencyMap {
-		fmt.Println(key, " ", element)
+		fmt.Println(key, fmt.Sprint(element))
+
 	}
 
 	// close file

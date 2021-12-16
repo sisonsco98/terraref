@@ -4,7 +4,7 @@ import (
 //	"fmt"
 	"KSCD/parser"
 	"KSCD/mapper"
-//	"KSCD/validator"
+	"KSCD/validator"
 )
 
 func main() {
@@ -14,5 +14,8 @@ func main() {
 
 	// run mapper.go
 	mapper.Mapper()
+
+	// run validator.go
+	validator.Validator()
 
 }

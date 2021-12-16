@@ -51,6 +51,4 @@ func Validator() {
 			}
 		}
 	}
-
-//	mapper.Xml.WriteToFile("terraform.drawio")
 }

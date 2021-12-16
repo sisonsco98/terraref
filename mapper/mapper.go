@@ -10,8 +10,18 @@ import (
 	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
 )
 
+var terraNav terraNavigator
+type terraNavigator struct {
+	hiddenID int
+	Name string
+	XPos int
+	YPos int
+}
+
 var globalID int = 0
 var elementID int = 0
+
+var Pizza []terraNavigator
 
 func Mapper() {
 
@@ -69,7 +79,7 @@ func Mapper() {
 		if parser.T.Resources[i].Name != "default" {
 			nameDependencyMap[parser.T.Resources[i].Name] = elementID
 		}
-		elementID++
+
 		// (5) Grab the object's name in case it's on a dependency.
 
 		switch t {
@@ -141,6 +151,14 @@ func Mapper() {
 			mxPoint.CreateAttr("y", "-16")
 			mxPoint.CreateAttr("as", "offset")
 
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.hiddenID = elementID
+			tmp.XPos = 360
+			tmp.YPos = 120
+			Pizza = append(Pizza, *tmp)
+
+
 		/****************************************************************************************************/
 
 		/*** GCP / USER AND DEVICE CARDS ***/
@@ -183,6 +201,12 @@ func Mapper() {
 			mxPoint.CreateAttr("y", "15")  // INCONSISTENT, SOME MAY LOOK OFF
 			mxPoint.CreateAttr("as", "offset")
 
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.hiddenID = elementID
+			tmp.XPos = 360
+			tmp.YPos = 120
+			Pizza = append(Pizza, *tmp)
 		/****************************************************************************************************/
 
 		/*** GCP / COMPUTE ***/
@@ -235,6 +259,13 @@ func Mapper() {
 			mxPoint.CreateAttr("y", "-19.5")
 			mxPoint.CreateAttr("as", "offset")
 
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.hiddenID = elementID
+			tmp.XPos = 360
+			tmp.YPos = 120
+			Pizza = append(Pizza, *tmp)
+
 		/****************************************************************************************************/
 
 		/*** GCP / PRODUCT CARDS ***/
@@ -275,6 +306,13 @@ func Mapper() {
 			mxPoint.CreateAttr("y", "7") // INCONSISTENT, SOME MAY LOOK OFF (esp. Avere Physical Appliance, Fastly, Google Play Game Services)
 			mxPoint.CreateAttr("as", "offset")
 
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.hiddenID = elementID
+			tmp.XPos = 360
+			tmp.YPos = 120
+			Pizza = append(Pizza, *tmp)
+
 		/****************************************************************************************************/
 
 		/*** GCP ICONS ***/
@@ -296,6 +334,13 @@ func Mapper() {
 			mxGeometry.CreateAttr("height", "58.5")
 			mxGeometry.CreateAttr("as", "geometry")
 
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.hiddenID = elementID
+			tmp.XPos = 360
+			tmp.YPos = 120
+			Pizza = append(Pizza, *tmp)
+
 		case 6: // Cloud Scheduler
 
 			mxCell = root.CreateElement("mxCell")
@@ -312,6 +357,13 @@ func Mapper() {
 			mxGeometry.CreateAttr("width", "30")
 			mxGeometry.CreateAttr("height", "34.5")
 			mxGeometry.CreateAttr("as", "geometry")
+
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.hiddenID = elementID
+			tmp.XPos = 360
+			tmp.YPos = 120
+			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
 
@@ -341,6 +393,12 @@ func Mapper() {
 			mxGeometry.CreateAttr("height", "190")
 			mxGeometry.CreateAttr("as", "geometry")
 
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.hiddenID = elementID
+			tmp.XPos = 360
+			tmp.YPos = 120
+			Pizza = append(Pizza, *tmp)
 		/****************************************************************************************************/
 
 		/*** GCP / EXPANDED PRODUCT CARDS ***/
@@ -364,6 +422,7 @@ func Mapper() {
 			os.Exit(1)
 		}
 
+		elementID++
 	}
 
 	/*** PRINT TO THE terraform.drawio FILE ***/
@@ -375,6 +434,16 @@ func Mapper() {
 		fmt.Println(key, fmt.Sprint(element))
 
 	}
+
+	ctr := 0
+	for range Pizza {
+		fmt.Println(Pizza[ctr].Name)
+		fmt.Println(Pizza[ctr].hiddenID)
+		fmt.Println(Pizza[ctr].XPos)
+		fmt.Println(Pizza[ctr].YPos)
+		ctr++
+	}
+
 
 	// close file
 	outFile.Close()

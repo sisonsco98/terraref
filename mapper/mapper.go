@@ -1,13 +1,13 @@
 package mapper
 
 import (
-	"KSCD/libraries" // parser.go
-	"KSCD/parser"    // parser.go
 	"fmt"
-	"log" // logging errors
-	"os"  // create and open file
+	"log"				// logging errors
+	"os"				// create and open files
+	"KSCD/parser"		// parser.go
+	"KSCD/libraries"	// parser.go
 
-	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
+	"github.com/beevik/etree"	// creating xml file (go get github.com/beevik/etree)
 )
 
 var globalID int = 0
@@ -64,6 +64,34 @@ func Mapper() {
 
 		switch t {
 
+		/*** GCP / PATHS ***/
+
+		case 0:
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			globalID = globalID + 1
+			mxCell.CreateAttr("value", "")
+			mxCell.CreateAttr("style", "edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
+			mxCell.CreateAttr("edge", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("relative", "1")
+			mxGeometry.CreateAttr("as", "geometry")
+
+			mxPoint := mxGeometry.CreateElement("mxPoint")
+			mxPoint.CreateAttr("x", "80")
+			mxPoint.CreateAttr("y", "160")
+			mxPoint.CreateAttr("as", "sourcePoint")
+
+			mxPoint = mxGeometry.CreateElement("mxPoint")
+			mxPoint.CreateAttr("x", "180")
+			mxPoint.CreateAttr("y", "160")
+			mxPoint.CreateAttr("as", "targetPoint")
+
+		/****************************************************************************************************/
+
 		/*** GCP / SERVICE CARDS ***/
 
 		case 1:
@@ -114,7 +142,7 @@ func Mapper() {
 			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
-			mxCell.CreateAttr("style", "strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;")
+			mxCell.CreateAttr("style", fmt.Sprintln("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 			mxCell.CreateAttr("parent", "1")
 
@@ -280,7 +308,6 @@ func Mapper() {
 		/*** GCP / PATHS ***/
 
 		//case 7:
-
 		// skip for now
 
 		/****************************************************************************************************/

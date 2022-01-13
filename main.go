@@ -1,9 +1,8 @@
 package main
 
 import (
-//	"fmt"
-	"KSCD/parser"
 	"KSCD/mapper"
+	"KSCD/parser"
 	"KSCD/validator"
 )
 

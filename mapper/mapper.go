@@ -11,6 +11,9 @@ import (
 	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
 )
 
+// The intention here - the primary wall at the moment is DEPENDENCIES.
+// This is WHERE things are on the map, that's why we have an X and Y position.
+// Arrows need an x/y origin + x/y target, so I figured we could just access this.
 var terraNav terraNavigator
 type terraNavigator struct {
 	hiddenID int
@@ -22,6 +25,9 @@ type terraNavigator struct {
 var globalID int = 0
 var elementID int = 0
 var xml = etree.NewDocument()
+
+
+// This is a slice (array?) of elements - we generate four boxes per element, but only really one element.
 var Pizza []terraNavigator
 
 func Mapper() {

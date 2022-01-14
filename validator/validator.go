@@ -2,9 +2,8 @@ package validator
 
 import (
 	"bufio" // scanning files
-	"fmt"
-	"log" // logging errors
-	"os"  // create and open files
+	"log"   // logging errors
+	"os"    // create and open files
 	//	"KSCD/mapper"		// mapper.go
 )
 
@@ -31,12 +30,14 @@ func Validator() {
 		os.Exit(1)
 	}
 
-	// iterate through lines of file
-	for scanner.Scan() {
-		fmt.Println(scanner.Text())
-	}
 
-	fmt.Println()
+	// 1/13 - Removed this, is it really necessary? Cleans up output.
+
+	// iterate through lines of file
+	// for scanner.Scan() {
+	// 	fmt.Println(scanner.Text())
+	//}
+
 
 	/* ITERATE THROUGH RESOURCES -> INSTANCES -> DEPENDENCIES */
 

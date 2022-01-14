@@ -43,7 +43,7 @@ func Mapper() {
 	// keep open
 	defer outFile.Close()
 
-	// Add a new map
+	// Add a new map - Where's
 	nameDependencyMap := make(map[string]int)
 
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
@@ -157,6 +157,8 @@ func Mapper() {
 			mxPoint.CreateAttr("y", "-16")
 			mxPoint.CreateAttr("as", "offset")
 
+
+			// So we're creating a new
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = elementID
@@ -433,25 +435,37 @@ func Mapper() {
 
 	/*** PRINT TO THE terraform.drawio FILE ***/
 
-	for r := 0; r < len(parser.T.Resources); r++ {
-		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
-			for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
-				// prints resource type followed by it's dependencies
-				//fmt.Println("Resource Type:", parser.T.Resources[r].Type, "Dependency:", parser.T.Resources[r].Instances[i].Dependencies[d])
+	// Checking the resources now.
 
+	// This loops over all the resources parsed from the file initially.
+	for r := 0; r < len(parser.T.Resources); r++ {
+
+		// Dependencies are nested inside the instances block, so we go deeper in this loop.
+		// 1/13 - Can remove this? Probably? Don't break what doesn't work atm.
+		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
+
+			// If they exist, dependencies are in the instances block. We're looping over the Dependencies.
+			for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
+
+				// Grab the resource we're LOOKING for
 				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
-				dependencyName := strings.Split(resourceName, ".")
+				dependencyName := strings.Split(resourceName, ".") //turns it into a slice?
 
 				fmt.Println("Parent Resource Name : ", Pizza[r].Name)
 				fmt.Println("Dependency Name : ", dependencyName[1])
 
 				ctr := 0
 				for range Pizza {
-					if (Pizza[ctr].Name == dependencyName[1]){
+					if (Pizza[ctr].Name == dependencyName[1]){ //dependencyName[1] since we want the second name.
+
 						fmt.Println("We've matched the elements.")
+
 						fmt.Println("We need to draw an arrow from element ", Pizza[r].Name, " to element ", Pizza[ctr].Name)
+
 						fmt.Println(Pizza[r].Name, " is located at (", Pizza[r].XPos, ",", Pizza[r].YPos, ")")
+
 						fmt.Println(Pizza[ctr].Name, " is located at (", Pizza[ctr].XPos, ",", Pizza[ctr].YPos , ")")
+
 						mxCell = root.CreateElement("mxCell")
 						mxCell.CreateAttr("id", fmt.Sprint(globalID))
 						mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
@@ -487,19 +501,22 @@ func Mapper() {
 	xml.Indent(4)
 	xml.WriteToFile("terraform.drawio")
 
+	// 1/13 Reworded debugging loop over the nameDependencyMap
 	for key, element := range nameDependencyMap {
-		fmt.Println(key, fmt.Sprint(element))
-
+		fmt.Println(key + " is the element with index " + fmt.Sprint(element))
 	}
 
-	ctr := 0
-	for range Pizza {
-		fmt.Println(Pizza[ctr].Name)
-		fmt.Println(Pizza[ctr].hiddenID)
-		fmt.Println(Pizza[ctr].XPos)
-		fmt.Println(Pizza[ctr].YPos)
-		ctr++
-	}
+
+	// Removed 1/13/21 - This is just for debugging. We list the elements and where to find them.
+
+	//ctr := 0
+	//for range Pizza {
+	//	fmt.Println(Pizza[ctr].Name)
+	//	fmt.Println(Pizza[ctr].hiddenID)
+	//	fmt.Println(Pizza[ctr].XPos)
+	//	fmt.Println(Pizza[ctr].YPos)
+	//	ctr++
+	//}
 
 
 	// close file

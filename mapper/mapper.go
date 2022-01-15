@@ -27,6 +27,12 @@ var elementID int = 0
 var xml = etree.NewDocument()
 
 
+
+//Making this global just because I can for now
+var globalXBound = 850
+var globalYBound = 1100
+
+
 // This is a slice (array?) of elements - we generate four boxes per element, but only really one element.
 var Pizza []terraNavigator
 
@@ -52,8 +58,8 @@ func Mapper() {
 
 	mxGraphModel := xml.CreateElement("mxGraphModel")
 	mxGraphModel.CreateAttr("gridSize", "10")
-	mxGraphModel.CreateAttr("pageWidth", "850")
-	mxGraphModel.CreateAttr("pageHeight", "1100")
+	mxGraphModel.CreateAttr("pageWidth", fmt.Sprint(globalXBound))
+	mxGraphModel.CreateAttr("pageHeight",fmt.Sprint(globalYBound))
 
 	root := mxGraphModel.CreateElement("root")
 

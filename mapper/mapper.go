@@ -125,7 +125,7 @@ func Mapper() {
 			
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
@@ -176,7 +176,7 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
 			mxCell.CreateAttr("style", fmt.Sprintln("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;"+objectShape))
@@ -235,7 +235,7 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
@@ -283,7 +283,7 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
@@ -298,7 +298,7 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
 			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
@@ -330,7 +330,7 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
 			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
@@ -354,7 +354,7 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
 			mxCell.CreateAttr("style", fmt.Sprint("html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
@@ -389,7 +389,7 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
 			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))

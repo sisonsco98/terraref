@@ -7,6 +7,7 @@ import (
 	"log" // logging errors
 	"os"  // create and open files
 	"strings"
+	//"testing/quick"
 
 	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
 )
@@ -32,6 +33,8 @@ var xml = etree.NewDocument()
 var globalXBound = 850
 var globalYBound = 1100
 
+var currentX = 0
+var currentY = 0
 
 // This is a slice (array?) of elements - we generate four boxes per element, but only really one element.
 var Pizza []terraNavigator
@@ -74,11 +77,6 @@ func Mapper() {
 
 	/* ITERATE THROUGH RESOURCES */
 
-
-	// We're keeping track of the current X and Y here.
-	//currentX := 0
-	//currentY := 0
-
 	for i := 0; i < len(parser.T.Resources); i++ {
 
 		// (1) store resource type (ex: google_api_gateway_gateway)
@@ -99,8 +97,10 @@ func Mapper() {
 
 		// (5) Grab the object's name in case it's on a dependency.
 
-		var shapeX, shapeY = libraries.Dimensions(t)
+		var shapeWidth, shapeHeight = libraries.Dimensions(t)
+		var xLocation, yLocation = coordinateFinder(t)
 
+		currentX += 40
 		switch t {
 
 		/*** GCP / PATHS ***/
@@ -145,10 +145,10 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", "360") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", "120") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("width", fmt.Sprint(shapeX))
-			mxGeometry.CreateAttr("height", fmt.Sprint(shapeY))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxCell = root.CreateElement("mxCell")
@@ -197,10 +197,10 @@ func Mapper() {
 			mxCell.CreateAttr("parent", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", "360") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", "120") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("width", fmt.Sprint(shapeX))
-			mxGeometry.CreateAttr("height", fmt.Sprint(shapeY))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxCell = root.CreateElement("mxCell")
@@ -255,10 +255,10 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", "360") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", "120") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("width", fmt.Sprint(shapeX))
-			mxGeometry.CreateAttr("height", fmt.Sprint(shapeY))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxCell = root.CreateElement("mxCell")
@@ -303,10 +303,10 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", "360") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", "120") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("width", fmt.Sprint(shapeX))
-			mxGeometry.CreateAttr("height", fmt.Sprint(shapeY))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxCell = root.CreateElement("mxCell")
@@ -350,10 +350,10 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", "360") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", "120") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("width", fmt.Sprint(shapeX))
-			mxGeometry.CreateAttr("height", fmt.Sprint(shapeY))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
 
 			var tmp = new(terraNavigator)
@@ -374,10 +374,10 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", "360") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", "120") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("width", fmt.Sprint(shapeX))
-			mxGeometry.CreateAttr("height", fmt.Sprint(shapeY))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
 
 			var tmp = new(terraNavigator)
@@ -409,10 +409,10 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", "360") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", "120") // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("width", fmt.Sprint(shapeX))
-			mxGeometry.CreateAttr("height", fmt.Sprint(shapeY))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
 
 			var tmp = new(terraNavigator)
@@ -535,4 +535,27 @@ func Mapper() {
 
 	// close file
 	outFile.Close()
+}
+
+func coordinateFinder(class int) (int, int){
+	var shapeWidth, shapeHeight = libraries.Dimensions(class)
+
+	if ((currentX + shapeWidth) > globalXBound){
+		currentX = 0
+		currentY += shapeHeight
+
+
+		temp := currentX
+		temp2 := currentY
+
+		return temp, temp2
+
+	}else {
+		temp := currentX
+		temp2 := currentY
+
+		currentX += shapeWidth
+		return temp, temp2
+	}
+
 }

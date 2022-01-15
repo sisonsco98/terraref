@@ -122,6 +122,7 @@ func Mapper() {
 
 		case 1:
 
+			
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))

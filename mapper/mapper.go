@@ -97,6 +97,10 @@ func Mapper() {
 
 		// (5) Grab the object's name in case it's on a dependency.
 
+
+
+		// There's two distinct things we're grabbing here - (x, y) for the size of the object in question.
+		// The other thing we're grabbing is a place to place it.
 		var shapeWidth, shapeHeight = libraries.Dimensions(t)
 		var xLocation, yLocation = coordinateFinder(t)
 
@@ -176,8 +180,8 @@ func Mapper() {
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = elementID
-			tmp.XPos = 360
-			tmp.YPos = 120
+			tmp.XPos = xLocation
+			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
 
 
@@ -226,8 +230,8 @@ func Mapper() {
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = elementID
-			tmp.XPos = 360
-			tmp.YPos = 120
+			tmp.XPos = xLocation
+			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
 		/****************************************************************************************************/
 
@@ -284,8 +288,8 @@ func Mapper() {
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = elementID
-			tmp.XPos = 360
-			tmp.YPos = 120
+			tmp.XPos = xLocation
+			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -331,8 +335,8 @@ func Mapper() {
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = elementID
-			tmp.XPos = 360
-			tmp.YPos = 120
+			tmp.XPos = xLocation
+			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -359,8 +363,8 @@ func Mapper() {
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = elementID
-			tmp.XPos = 360
-			tmp.YPos = 120
+			tmp.XPos = xLocation
+			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
 
 		case 6: // Cloud Scheduler
@@ -383,8 +387,8 @@ func Mapper() {
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = elementID
-			tmp.XPos = 360
-			tmp.YPos = 120
+			tmp.XPos = xLocation
+			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -418,8 +422,8 @@ func Mapper() {
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = elementID
-			tmp.XPos = 360
-			tmp.YPos = 120
+			tmp.XPos = xLocation
+			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
 		/****************************************************************************************************/
 
@@ -482,7 +486,7 @@ func Mapper() {
 
 						mxCell = root.CreateElement("mxCell")
 						mxCell.CreateAttr("id", fmt.Sprint(globalID))
-						mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+						mxCell.CreateAttr("parent", fmt.Sprint(1))
 						globalID = globalID + 1
 						mxCell.CreateAttr("value", "")
 						mxCell.CreateAttr("style", "edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
@@ -499,7 +503,7 @@ func Mapper() {
 
 						mxPoint = mxGeometry.CreateElement("mxPoint")
 						mxPoint.CreateAttr("x", fmt.Sprint(Pizza[ctr].XPos))
-						mxPoint.CreateAttr("y", fmt.Sprint(Pizza[ctr].XPos))
+						mxPoint.CreateAttr("y", fmt.Sprint(Pizza[ctr].YPos))
 						mxPoint.CreateAttr("as", "targetPoint")
 					}
 

@@ -2,6 +2,7 @@ package libraries
 
 import (
 	"fmt"
+	"log"
 	"os"
 )
 
@@ -738,4 +739,29 @@ func LookupCase(name string) int {
 	os.Exit(1)
 
 	return -1
+}
+
+//Returns width, height given an objects class
+func Dimensions(class int)(int, int){
+	switch (class){
+	//Class 1 : Service Cards
+	case 1:
+		return 150, 56
+	case 2:
+		return 70, 100
+	case 3:
+		return 175, 60
+	case 4:
+		return 150, 60
+	case 5:
+		return 66, 59
+	case 6:
+		return 30, 35
+	case 8:
+		return 220, 190
+	default:
+		log.Println("We weren't able to find the dimensions of the object desired.")
+		os.Exit(0)
+	}
+	return 999, 999
 }

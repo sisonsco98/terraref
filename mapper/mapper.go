@@ -315,7 +315,7 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
 			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
@@ -544,22 +544,12 @@ func Mapper() {
 func coordinateFinder(class int) (int, int){
 	var shapeWidth, shapeHeight = libraries.Dimensions(class)
 
-	if ((currentX + shapeWidth) > globalXBound){
+	if ((currentX + shapeWidth) > globalXBound) {
 		currentX = 0
-		currentY += shapeHeight
-
-
-		temp := currentX
-		temp2 := currentY
-
-		return temp, temp2
-
-	}else {
-		temp := currentX
-		temp2 := currentY
-
+		currentY += 2 * shapeHeight
+		return currentX, currentY
+	} else {
 		currentX += shapeWidth
-		return temp, temp2
+		return currentX, currentY
 	}
-
 }

@@ -33,8 +33,8 @@ var xml = etree.NewDocument()
 var globalXBound = 850
 var globalYBound = 1100
 
-var currentX = 0
-var currentY = 0
+var currentX = 50
+var currentY = 50
 
 // This is a slice (array?) of elements - we generate four boxes per element, but only really one element.
 var Pizza []terraNavigator
@@ -104,7 +104,7 @@ func Mapper() {
 		var shapeWidth, shapeHeight = libraries.Dimensions(t)
 		var xLocation, yLocation = coordinateFinder(t)
 
-		currentX += 40
+//		currentX += 40	// offset?
 		switch t {
 
 		/*** GCP / PATHS ***/
@@ -198,7 +198,7 @@ func Mapper() {
 			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
 			mxCell.CreateAttr("style", fmt.Sprintln("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
-			mxCell.CreateAttr("parent", "1")
+//			mxCell.CreateAttr("parent", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
@@ -543,13 +543,15 @@ func Mapper() {
 
 func coordinateFinder(class int) (int, int){
 	var shapeWidth, shapeHeight = libraries.Dimensions(class)
+	offsetX := shapeWidth + 50
+	offsetY := shapeHeight + 50
 
-	if ((currentX + shapeWidth) > globalXBound) {
-		currentX = 0
-		currentY += 2 * shapeHeight
+	if ((currentX + offsetX) > globalXBound) {
+		currentX = 50
+		currentY += offsetY
 		return currentX, currentY
 	} else {
-		currentX += shapeWidth
-		return currentX, currentY
+		currentX += offsetX
+		return currentX - offsetX, currentY
 	}
 }

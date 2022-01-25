@@ -318,7 +318,7 @@ var CaseMap = map[string]int{
 
 	/*** GCP / ZONES ***/
 
-	"Firewall": 8,
+	"Firewall": 7,
 
 	/****************************************************************************************************/
 
@@ -757,8 +757,12 @@ func Dimensions(class int)(int, int){
 		return 250, 60 // 66, 59
 	case 6:
 		return 250, 60 // 30, 35
-	case 8:
+	case 7:
 		return 250, 60 // 220, 190
+//	case 8:
+//		return 250, 60
+//	case 9:
+//		return 250, 60
 	default:
 		log.Println("We weren't able to find the dimensions of the object desired.")
 		os.Exit(0)

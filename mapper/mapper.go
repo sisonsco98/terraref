@@ -1,15 +1,15 @@
 package mapper
 
 import (
-	"KSCD/libraries" // parser.go
-	"KSCD/parser"    // parser.go
 	"fmt"
-	"log" // logging errors
-	"os"  // create and open files
+	"log"				// logging errors
+	"os"				// create and open files
 	"strings"
-	//"testing/quick"
 
-	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
+	"KSCD/libraries"	// libraries.go
+	"KSCD/parser"		// parser.go
+
+	"github.com/beevik/etree"	// creating xml file (go get github.com/beevik/etree)
 )
 
 // The intention here - the primary wall at the moment is DEPENDENCIES.
@@ -26,8 +26,6 @@ type terraNavigator struct {
 var globalID int = 0
 var elementID int = 0
 var xml = etree.NewDocument()
-
-
 
 //Making this global just because I can for now
 var globalXBound = 850
@@ -104,7 +102,6 @@ func Mapper() {
 		var shapeWidth, shapeHeight = libraries.Dimensions(t)
 		var xLocation, yLocation = coordinateFinder(t)
 
-//		currentX += 40	// offset?
 		switch t {
 
 		/*** GCP / PATHS ***/
@@ -139,7 +136,6 @@ func Mapper() {
 
 		case 1:
 
-			
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
@@ -175,7 +171,6 @@ func Mapper() {
 			mxPoint.CreateAttr("y", "-16")
 			mxPoint.CreateAttr("as", "offset")
 
-
 			// So we're creating a new
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
@@ -183,7 +178,6 @@ func Mapper() {
 			tmp.XPos = xLocation
 			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
-
 
 		/****************************************************************************************************/
 
@@ -198,7 +192,6 @@ func Mapper() {
 			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
 			mxCell.CreateAttr("style", fmt.Sprintln("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
-//			mxCell.CreateAttr("parent", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
@@ -233,6 +226,7 @@ func Mapper() {
 			tmp.XPos = xLocation
 			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
+
 		/****************************************************************************************************/
 
 		/*** GCP / COMPUTE ***/
@@ -393,16 +387,9 @@ func Mapper() {
 
 		/****************************************************************************************************/
 
-		/*** GCP / PATHS ***/
-
-		//case 7:
-		// skip for now
-
-		/****************************************************************************************************/
-
 		/*** GCP / ZONES ***/
 
-		case 8:
+		case 7:
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
@@ -429,14 +416,14 @@ func Mapper() {
 
 		/*** GCP / EXPANDED PRODUCT CARDS ***/
 
-		//	case 9:
+		//	case 8:
 		// skip for now
 
 		/****************************************************************************************************/
 
 		/*** GCP / GENERAL ICONS ***/
 
-		//	case 10:
+		//	case 9:
 		// skip for now
 
 		/****************************************************************************************************/

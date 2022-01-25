@@ -1,12 +1,12 @@
 package parser
 
 import (
-	"encoding/json" // json.Unmarshal
 	"fmt"
-	"io/ioutil" // read files
-	"log"       // logging errors
-	"os"        // create and open files
-	"regexp"    // matching regex
+	"io/ioutil"			// read files
+	"log"				// logging errors
+	"os"				// create and open files
+	"encoding/json"		// json.Unmarshal
+	"regexp"			// matching regex
 )
 
 /*** GLOBAL SLICES FOR OUTPUTS AND PROVIDERS FROM THE terraform.tfstate FILE ***/

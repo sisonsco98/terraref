@@ -1,10 +1,9 @@
 package validator
 
 import (
-	"bufio" // scanning files
-	"log"   // logging errors
-	"os"    // create and open files
-	//	"KSCD/mapper"		// mapper.go
+	"bufio"		// scanning files
+	"log"		// logging errors
+	"os"		// create and open files
 )
 
 func Validator() {

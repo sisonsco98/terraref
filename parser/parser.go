@@ -1,32 +1,34 @@
 package parser
 
 import (
+	"encoding/json" // json.Unmarshal
 	"fmt"
-	"log"			// logging errors
-	"os"			// create and open file
-	"io/ioutil"		// read in entire file
-	"regexp"		// matching regex
-	"encoding/json"	// json.Unmarshal
+	"io/ioutil" // read files
+	"log"       // logging errors
+	"os"        // create and open files
+	"regexp"    // matching regex
 )
 
-/*** GLOBAL VARIABLES ***/
+/*** GLOBAL SLICES FOR OUTPUTS AND PROVIDERS FROM THE terraform.tfstate FILE ***/
 
-var Outputs[] string
-var Providers[] string
+var Outputs []string
+var Providers []string
+var Elements []string
 
 /*** STRUCTS USED TO UNMARSHAL THE terraform.tfstate FILE ***/
 
 var T Terraform
+
 type Terraform struct {
 	Resources []struct {
 		Type      string `json:"type"`
 		Name      string `json:"name"`
 		Provider  string `json:"provider"`
 		Instances []struct {
-			Attributes   struct {
-				ID          string `json:"id"`
-				Name        string `json:"name"`
-				Project     string `json:"project"`
+			Attributes struct {
+				ID      string `json:"id"`
+				Name    string `json:"name"`
+				Project string `json:"project"`
 			} `json:"attributes"`
 			Dependencies []string `json:"dependencies"`
 		} `json:"instances"`
@@ -47,7 +49,7 @@ func Parser() {
 	/*** UNMARSHAL THE terraform.tfstate FILE ***/
 
 	// unmarshal "outputs" block and "resources" block
-	var outputBlock map [string] interface{}
+	var outputBlock map[string]interface{}
 	json.Unmarshal(inFile, &outputBlock)
 	json.Unmarshal(inFile, &T)
 

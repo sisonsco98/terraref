@@ -1,16 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mxGraphModel>
+<mxGraphModel gridSize="10" pageWidth="850" pageHeight="1100">
     <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
-        <mxCell id="2" value="google_compute_firewall" style="shape=mxgraph.gcp2.hexIcon;prIcon=gpu" vertex="1" parent="1">
-            <mxGeometry x="260" y="260" width="66" height="58.5" as="geometry"/>
+        <mxCell id="2" parent="1" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1">
+            <mxGeometry x="175" y="0" width="175" height="60" as="geometry"/>
         </mxCell>
-        <mxCell id="3" value="google_compute_instance" style="shape=mxgraph.gcp2.hexIcon;prIcon=gpu" vertex="1" parent="1">
-            <mxGeometry x="260" y="260" width="66" height="58.5" as="geometry"/>
+        <mxCell id="3" parent="2" value="google_compute_instance" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;shape=mxgraph.gcp2.hexIcon;prIcon=compute_engine" vertex="1">
+            <mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
+                <mxPoint x="5" y="-19.5" as="offset"/>
+            </mxGeometry>
         </mxCell>
-        <mxCell id="4" value="random_id" style="shape=mxgraph.gcp2.hexIcon;prIcon=gpu" vertex="1" parent="1">
-            <mxGeometry x="260" y="260" width="66" height="58.5" as="geometry"/>
+        <mxCell id="4" parent="1" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1">
+            <mxGeometry x="365" y="0" width="150" height="56" as="geometry"/>
+        </mxCell>
+        <mxCell id="5" parent="4" value="random_id" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;shape=mxgraph.gcp2.blank" vertex="1">
+            <mxGeometry y="0.5" width="32" height="32" relative="1" as="geometry">
+                <mxPoint x="5" y="-16" as="offset"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="6" parent="1" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1">
+            <mxGeometry x="580" y="0" width="175" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="7" parent="6" value="google_compute_firewall_policy" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;shape=mxgraph.gcp2.hexIcon;prIcon=cloud_firewall_rules" vertex="1">
+            <mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
+                <mxPoint x="5" y="-19.5" as="offset"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="8" parent="1" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1">
+            <mxGeometry x="770" y="0" width="150" height="56" as="geometry"/>
+        </mxCell>
+        <mxCell id="9" parent="8" value="google_storage_bucket" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;shape=mxgraph.gcp2.bucket" vertex="1">
+            <mxGeometry y="0.5" width="32" height="32" relative="1" as="geometry">
+                <mxPoint x="5" y="-16" as="offset"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="10" parent="1" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1">
+            <mxGeometry x="0" y="120" width="175" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="11" parent="10" value="google_sql_database" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;shape=mxgraph.gcp2.hexIcon;prIcon=cloud_sql" vertex="1">
+            <mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
+                <mxPoint x="5" y="-19.5" as="offset"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="12" parent="1" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1">
+            <mxGeometry x="190" y="120" width="150" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="13" parent="12" value="google_container_cluster" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;shape=mxgraph.gcp2.kubernetes_logo" vertex="1">
+            <mxGeometry width="45" height="45" relative="1" as="geometry">
+                <mxPoint x="5" y="7" as="offset"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="14" parent="1" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1">
+            <mxGeometry x="405" y="120" width="175" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="15" parent="14" value="google_app_engine_application" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;shape=mxgraph.gcp2.hexIcon;prIcon=app_engine" vertex="1">
+            <mxGeometry y="0.5" width="44" height="39" relative="1" as="geometry">
+                <mxPoint x="5" y="-19.5" as="offset"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="16" parent="1" value="" style="strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;" vertex="1">
+            <mxGeometry x="595" y="120" width="150" height="56" as="geometry"/>
+        </mxCell>
+        <mxCell id="17" parent="16" value="google_api_gateway_api" style="sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;shape=mxgraph.gcp2.gateway" vertex="1">
+            <mxGeometry y="0.5" width="32" height="32" relative="1" as="geometry">
+                <mxPoint x="5" y="-16" as="offset"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="18" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;" edge="1">
+            <mxGeometry relative="1" as="geometry">
+                <mxPoint x="175" y="0" as="sourcePoint"/>
+                <mxPoint x="365" y="0" as="targetPoint"/>
+            </mxGeometry>
         </mxCell>
     </root>
 </mxGraphModel>

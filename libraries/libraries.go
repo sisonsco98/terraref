@@ -746,19 +746,19 @@ func Dimensions(class int)(int, int){
 	switch (class){
 	//Class 1 : Service Cards
 	case 1:
-		return 150, 56
+		return 250, 60 // 150, 56
 	case 2:
-		return 70, 100
+		return 250, 60 // 70, 100
 	case 3:
-		return 175, 60
+		return 250, 60 // 175, 60
 	case 4:
-		return 150, 60
+		return 250, 60 // 150, 60
 	case 5:
-		return 66, 59
+		return 250, 60 // 66, 59
 	case 6:
-		return 30, 35
+		return 250, 60 // 30, 35
 	case 8:
-		return 220, 190
+		return 250, 60 // 220, 190
 	default:
 		log.Println("We weren't able to find the dimensions of the object desired.")
 		os.Exit(0)

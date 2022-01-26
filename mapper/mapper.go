@@ -516,12 +516,18 @@ func Mapper() {
 
 /*** RETURNS COORDINATES FOR PLACING OBJECTS ***/
 
-func coordinateFinder(class int) (int, int){
+func coordinateFinder(class int)(int, int) {
+
+	// get shapeWidth and shapeHeight from libraries by class
 	var shapeWidth, shapeHeight = libraries.Dimensions(class)
+
+	// offset objects by 50
 	offsetX := shapeWidth + 50
 	offsetY := shapeHeight + 50
 
-	if ((currentX + offsetX) > globalXBound) {
+	// set objects (x,y) position using previously defined offset
+	// first fill out row (left -> right), then move to new row
+	if ((currentX + offsetX) > globalXBound * 10000) {				// testing: "* 10000" so stays on one row
 		currentX = 50
 		currentY += offsetY
 		return currentX, currentY

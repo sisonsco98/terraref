@@ -2,8 +2,8 @@ package mapper
 
 import (
 	"fmt"
-	"log"				// logging errors
-	"os"				// create and open files
+	"log"		// logging errors
+	"os"		// create and open files
 	"strings"
 
 	"KSCD/libraries"	// libraries.go
@@ -23,18 +23,21 @@ type terraNavigator struct {
 	YPos int
 }
 
-var globalID int = 0
-var elementID int = 0
 var xml = etree.NewDocument()
 
-//Making this global just because I can for now
+// xml element IDs
+var globalID int = 0
+var elementID int = 0
+
+// dimensions of diagram
 var globalXBound = 850
 var globalYBound = 1100
 
+// starting (x,y) position
 var currentX = 50
 var currentY = 50
 
-// This is a slice (array?) of elements - we generate four boxes per element, but only really one element.
+// slice (array?) of elements
 var Pizza []terraNavigator
 
 func Mapper() {
@@ -50,7 +53,7 @@ func Mapper() {
 	// keep open
 	defer outFile.Close()
 
-	// Add a new map - Where's
+	// dependency map
 	nameDependencyMap := make(map[string]int)
 
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
@@ -95,12 +98,13 @@ func Mapper() {
 
 		// (5) Grab the object's name in case it's on a dependency.
 
+		// ???
 
-
-		// There's two distinct things we're grabbing here - (x, y) for the size of the object in question.
-		// The other thing we're grabbing is a place to place it.
+		// set object's width, height and (x,y) location
 		var shapeWidth, shapeHeight = libraries.Dimensions(t)
 		var xLocation, yLocation = coordinateFinder(t)
+
+		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 
 		switch t {
 
@@ -145,8 +149,8 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
 			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -171,7 +175,6 @@ func Mapper() {
 			mxPoint.CreateAttr("y", "-16")
 			mxPoint.CreateAttr("as", "offset")
 
-			// So we're creating a new
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = elementID
@@ -194,8 +197,8 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
 			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -210,14 +213,14 @@ func Mapper() {
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("x", "0.5")
-			mxGeometry.CreateAttr("width", "50")  // INCONSISTENT, SOME MAY LOOK OFF
-			mxGeometry.CreateAttr("height", "50") // INCONSISTENT, SOME MAY LOOK OFF
+			mxGeometry.CreateAttr("width", "50")
+			mxGeometry.CreateAttr("height", "50")
 			mxGeometry.CreateAttr("relative", "1")
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxPoint := mxGeometry.CreateElement("mxPoint")
-			mxPoint.CreateAttr("x", "-25") // INCONSISTENT, SOME MAY LOOK OFF
-			mxPoint.CreateAttr("y", "15")  // INCONSISTENT, SOME MAY LOOK OFF
+			mxPoint.CreateAttr("x", "-25")
+			mxPoint.CreateAttr("y", "15")
 			mxPoint.CreateAttr("as", "offset")
 
 			var tmp = new(terraNavigator)
@@ -253,8 +256,8 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
 			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -301,8 +304,8 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
 			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -316,14 +319,14 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("width", "45")  // INCONSISTENT, SOME MAY LOOK OFF (esp. Avere Physical Appliance, Fastly, Google Play Game Services)
-			mxGeometry.CreateAttr("height", "45") // INCONSISTENT, SOME MAY LOOK OFF (esp. Avere Physical Appliance, Fastly, Google Play Game Services)
+			mxGeometry.CreateAttr("width", "45")
+			mxGeometry.CreateAttr("height", "45")
 			mxGeometry.CreateAttr("relative", "1")
 			mxGeometry.CreateAttr("as", "geometry")
 
 			mxPoint := mxGeometry.CreateElement("mxPoint")
 			mxPoint.CreateAttr("x", "5")
-			mxPoint.CreateAttr("y", "7") // INCONSISTENT, SOME MAY LOOK OFF (esp. Avere Physical Appliance, Fastly, Google Play Game Services)
+			mxPoint.CreateAttr("y", "7")
 			mxPoint.CreateAttr("as", "offset")
 
 			var tmp = new(terraNavigator)
@@ -348,8 +351,8 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
 			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -372,8 +375,8 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
 			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -400,8 +403,8 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) // DETERMINE METHOD FOR SETTING THIS
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) // DETERMINE METHOD FOR SETTING THIS
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
 			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -412,18 +415,17 @@ func Mapper() {
 			tmp.XPos = xLocation
 			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
+
 		/****************************************************************************************************/
 
 		/*** GCP / EXPANDED PRODUCT CARDS ***/
 
-		//	case 8:
 		// skip for now
 
 		/****************************************************************************************************/
 
 		/*** GCP / GENERAL ICONS ***/
 
-		//	case 9:
 		// skip for now
 
 		/****************************************************************************************************/
@@ -438,38 +440,36 @@ func Mapper() {
 		elementID++
 	}
 
-	/*** PRINT TO THE terraform.drawio FILE ***/
-
-	// Checking the resources now.
-
-	// This loops over all the resources parsed from the file initially.
+	// iterate through all resources
 	for r := 0; r < len(parser.T.Resources); r++ {
 
-		// Dependencies are nested inside the instances block, so we go deeper in this loop.
-		// 1/13 - Can remove this? Probably? Don't break what doesn't work atm.
+		// iterate through all instances of resource
 		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
 
-			// If they exist, dependencies are in the instances block. We're looping over the Dependencies.
+			// iterate through all dependencies of each instance
 			for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
 
-				// Grab the resource we're LOOKING for
+				// save dependency
 				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
-				dependencyName := strings.Split(resourceName, ".") //turns it into a slice?
-
-				fmt.Println("Parent Resource Name : ", Pizza[r].Name)
-				fmt.Println("Dependency Name : ", dependencyName[1])
+				dependencyName := strings.Split(resourceName, ".")
+				
+//				// testing
+//				fmt.Println("Parent Resource Name : ", Pizza[r].Name)
+//				fmt.Println("Dependency Name : ", dependencyName[1])
 
 				ctr := 0
 				for range Pizza {
-					if (Pizza[ctr].Name == dependencyName[1]){ //dependencyName[1] since we want the second name.
 
-						fmt.Println("We've matched the elements.")
+					// dependencyName[1] since we want the second name
+					if (Pizza[ctr].Name == dependencyName[1]) {
 
-						fmt.Println("We need to draw an arrow from element ", Pizza[r].Name, " to element ", Pizza[ctr].Name)
+//						// testing
+//						fmt.Println("We've matched the elements.")
+//						fmt.Println("We need to draw an arrow from element ", Pizza[r].Name, " to element ", Pizza[ctr].Name)
+//						fmt.Println(Pizza[r].Name, " is located at (", Pizza[r].XPos, ",", Pizza[r].YPos, ")")
+//						fmt.Println(Pizza[ctr].Name, " is located at (", Pizza[ctr].XPos, ",", Pizza[ctr].YPos , ")")
 
-						fmt.Println(Pizza[r].Name, " is located at (", Pizza[r].XPos, ",", Pizza[r].YPos, ")")
-
-						fmt.Println(Pizza[ctr].Name, " is located at (", Pizza[ctr].XPos, ",", Pizza[ctr].YPos , ")")
+						/*** CREATE XML ELEMENT FOR ARROW TO CONNECT DEPENDENCIES ***/
 
 						mxCell = root.CreateElement("mxCell")
 						mxCell.CreateAttr("id", fmt.Sprint(globalID))
@@ -494,39 +494,27 @@ func Mapper() {
 						mxPoint.CreateAttr("as", "targetPoint")
 					}
 
-
 					ctr++
 				}
-
-				// NOTE: prints dependencies as type.name, might need just type ??
 			}
 		}
 	}
 
+	/*** PRINT TO THE terraform.drawio FILE ***/
+
 	xml.Indent(4)
 	xml.WriteToFile("terraform.drawio")
 
-	// 1/13 Reworded debugging loop over the nameDependencyMap
-	for key, element := range nameDependencyMap {
-		fmt.Println(key + " is the element with index " + fmt.Sprint(element))
-	}
-
-
-	// Removed 1/13/21 - This is just for debugging. We list the elements and where to find them.
-
-	//ctr := 0
-	//for range Pizza {
-	//	fmt.Println(Pizza[ctr].Name)
-	//	fmt.Println(Pizza[ctr].hiddenID)
-	//	fmt.Println(Pizza[ctr].XPos)
-	//	fmt.Println(Pizza[ctr].YPos)
-	//	ctr++
-	//}
-
+//	// testing
+//	for key, element := range nameDependencyMap {
+//		fmt.Println(key + " is the element with index " + fmt.Sprint(element))
+//	}
 
 	// close file
 	outFile.Close()
 }
+
+/*** RETURNS COORDINATES FOR PLACING OBJECTS ***/
 
 func coordinateFinder(class int) (int, int){
 	var shapeWidth, shapeHeight = libraries.Dimensions(class)

@@ -29,16 +29,11 @@ func Validator() {
 		os.Exit(1)
 	}
 
-
-	// 1/13 - Removed this, is it really necessary? Cleans up output.
-
 	// iterate through lines of file
-	// for scanner.Scan() {
-	// 	fmt.Println(scanner.Text())
-	//}
-
+//	for scanner.Scan() {
+//		fmt.Println(scanner.Text())
+//	}
 
 	/* ITERATE THROUGH RESOURCES -> INSTANCES -> DEPENDENCIES */
-
 
 }

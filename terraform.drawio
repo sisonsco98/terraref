@@ -75,40 +75,8 @@
                 <mxPoint x="175" y="200" as="sourcePoint"/>
                 <mxPoint x="675" y="200" as="targetPoint"/>
                 <Array as="points">
-                    <mxPoint x="175" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="175" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="175" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="175" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="175" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="175" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="175" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="175" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="175" y="15"/>
-                    <mxPoint x="675" y="15"/>
+                    <mxPoint x="175" y="260"/>
+                    <mxPoint x="175" y="260"/>
                 </Array>
             </mxGeometry>
         </mxCell>
@@ -117,40 +85,8 @@
                 <mxPoint x="675" y="440" as="sourcePoint"/>
                 <mxPoint x="675" y="200" as="targetPoint"/>
                 <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
+                    <mxPoint x="925" y="440"/>
+                    <mxPoint x="925" y="440"/>
                 </Array>
             </mxGeometry>
         </mxCell>
@@ -159,40 +95,8 @@
                 <mxPoint x="675" y="560" as="sourcePoint"/>
                 <mxPoint x="675" y="200" as="targetPoint"/>
                 <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
-                </Array>
-                <Array as="points">
-                    <mxPoint x="675" y="15"/>
-                    <mxPoint x="675" y="15"/>
+                    <mxPoint x="925" y="560"/>
+                    <mxPoint x="925" y="560"/>
                 </Array>
             </mxGeometry>
         </mxCell>

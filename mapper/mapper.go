@@ -32,6 +32,7 @@ type relationNavigator struct {
 	YPosSource int
 	XPosTarget int
 	YPosTarget int
+	HasMoved   bool
 }
 
 var xml = etree.NewDocument()
@@ -491,19 +492,19 @@ func Mapper() {
 					if Pizza[ctr].Name == dependencyName[1] {
 
 						// testing outputs
-						fmt.Println("We've matched the elements.")
-						fmt.Println("We need to draw an arrow from element ", Pizza[r].Name, " to element ", Pizza[ctr].Name)
-						fmt.Println(Pizza[r].Name, " is located at (", Pizza[r].XPosCenter, ",", Pizza[r].YPosCenter, ")")
-						fmt.Println(Pizza[ctr].Name, " is located at (", Pizza[ctr].XPosCenter, ",", Pizza[ctr].YPosCenter, ")")
-						fmt.Println(Pizza[r].Name, "'s ID is ", Pizza[r].HiddenId)
-						fmt.Println(Pizza[ctr].Name, "'s ID is ", Pizza[ctr].HiddenId)
+						// fmt.Println("We've matched the elements.")
+						// fmt.Println("We need to draw an arrow from element ", Pizza[r].Name, " to element ", Pizza[ctr].Name)
+						// fmt.Println(Pizza[r].Name, " is located at (", Pizza[r].XPosCenter, ",", Pizza[r].YPosCenter, ")")
+						// fmt.Println(Pizza[ctr].Name, " is located at (", Pizza[ctr].XPosCenter, ",", Pizza[ctr].YPosCenter, ")")
+						// fmt.Println(Pizza[r].Name, "'s ID is ", Pizza[r].HiddenId)
+						// fmt.Println(Pizza[ctr].Name, "'s ID is ", Pizza[ctr].HiddenId)
 
 						/*** CREATE XML ELEMENT FOR ARROW TO CONNECT DEPENDENCIES ***/
 
 						mxCell = root.CreateElement("mxCell")
 						mxCell.CreateAttr("id", fmt.Sprint(globalID))
 						mxCell.CreateAttr("parent", fmt.Sprint(1))
-						fmt.Println(mxCell.GetPath())
+						// fmt.Println(mxCell.GetPath())
 						globalID = globalID + 1
 						mxCell.CreateAttr("value", "")
 						mxCell.CreateAttr("style", "edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
@@ -534,6 +535,7 @@ func Mapper() {
 						tmp.YPosSource = Pizza[r].YPosCenter
 						tmp.XPosTarget = Pizza[ctr].XPosCenter
 						tmp.YPosTarget = Pizza[ctr].YPosCenter
+						tmp.HasMoved = false
 						ArrowRelationships = append(ArrowRelationships, *tmp)
 					}
 

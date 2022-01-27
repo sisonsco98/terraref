@@ -2,25 +2,26 @@ package mapper
 
 import (
 	"fmt"
-	"log"		// logging errors
-	"os"		// create and open files
+	"log" // logging errors
+	"os"  // create and open files
 	"strings"
 
-	"KSCD/libraries"	// libraries.go
-	"KSCD/parser"		// parser.go
+	"KSCD/libraries" // libraries.go
+	"KSCD/parser"    // parser.go
 
-	"github.com/beevik/etree"	// creating xml file (go get github.com/beevik/etree)
+	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
 )
 
 // The intention here - the primary wall at the moment is DEPENDENCIES.
 // This is WHERE things are on the map, that's why we have an X and Y position.
 // Arrows need an x/y origin + x/y target, so I figured we could just access this.
 var terraNav terraNavigator
+
 type terraNavigator struct {
 	hiddenID int
-	Name string
-	XPos int
-	YPos int
+	Name     string
+	XPos     int
+	YPos     int
 }
 
 var xml = etree.NewDocument()
@@ -63,7 +64,7 @@ func Mapper() {
 	mxGraphModel := xml.CreateElement("mxGraphModel")
 	mxGraphModel.CreateAttr("gridSize", "10")
 	mxGraphModel.CreateAttr("pageWidth", fmt.Sprint(globalXBound))
-	mxGraphModel.CreateAttr("pageHeight",fmt.Sprint(globalYBound))
+	mxGraphModel.CreateAttr("pageHeight", fmt.Sprint(globalYBound))
 
 	root := mxGraphModel.CreateElement("root")
 
@@ -177,7 +178,7 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = elementID
+			tmp.hiddenID = globalID - 2
 			tmp.XPos = xLocation
 			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
@@ -225,7 +226,7 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = elementID
+			tmp.hiddenID = globalID - 2
 			tmp.XPos = xLocation
 			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
@@ -284,7 +285,7 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = elementID
+			tmp.hiddenID = globalID - 2
 			tmp.XPos = xLocation
 			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
@@ -331,7 +332,7 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = elementID
+			tmp.hiddenID = globalID - 2
 			tmp.XPos = xLocation
 			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
@@ -383,7 +384,7 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = elementID
+			tmp.hiddenID = globalID - 2
 			tmp.XPos = xLocation
 			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
@@ -411,7 +412,7 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = elementID
+			tmp.hiddenID = globalID - 2
 			tmp.XPos = xLocation
 			tmp.YPos = yLocation
 			Pizza = append(Pizza, *tmp)
@@ -452,22 +453,24 @@ func Mapper() {
 				// save dependency
 				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
 				dependencyName := strings.Split(resourceName, ".")
-				
-//				// testing
-//				fmt.Println("Parent Resource Name : ", Pizza[r].Name)
-//				fmt.Println("Dependency Name : ", dependencyName[1])
+
+				// testing outputs
+				// fmt.Println("Parent Resource Name : ", Pizza[r].Name)
+				// fmt.Println("Dependency Name : ", dependencyName[1])
 
 				ctr := 0
 				for range Pizza {
 
 					// dependencyName[1] since we want the second name
-					if (Pizza[ctr].Name == dependencyName[1]) {
+					if Pizza[ctr].Name == dependencyName[1] {
 
-//						// testing
-//						fmt.Println("We've matched the elements.")
-//						fmt.Println("We need to draw an arrow from element ", Pizza[r].Name, " to element ", Pizza[ctr].Name)
-//						fmt.Println(Pizza[r].Name, " is located at (", Pizza[r].XPos, ",", Pizza[r].YPos, ")")
-//						fmt.Println(Pizza[ctr].Name, " is located at (", Pizza[ctr].XPos, ",", Pizza[ctr].YPos , ")")
+						// testing outputs
+						fmt.Println("We've matched the elements.")
+						fmt.Println("We need to draw an arrow from element ", Pizza[r].Name, " to element ", Pizza[ctr].Name)
+						fmt.Println(Pizza[r].Name, " is located at (", Pizza[r].XPos, ",", Pizza[r].YPos, ")")
+						fmt.Println(Pizza[ctr].Name, " is located at (", Pizza[ctr].XPos, ",", Pizza[ctr].YPos, ")")
+						fmt.Println(Pizza[r].Name, "'s ID is ", Pizza[r].hiddenID)
+						fmt.Println(Pizza[ctr].Name, "'s ID is ", Pizza[ctr].hiddenID)
 
 						/*** CREATE XML ELEMENT FOR ARROW TO CONNECT DEPENDENCIES ***/
 
@@ -478,6 +481,8 @@ func Mapper() {
 						mxCell.CreateAttr("value", "")
 						mxCell.CreateAttr("style", "edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
 						mxCell.CreateAttr("edge", "1")
+						mxCell.CreateAttr("target", fmt.Sprintf("%d", Pizza[ctr].hiddenID))
+						mxCell.CreateAttr("source", fmt.Sprintf("%d", Pizza[r].hiddenID))
 
 						mxGeometry := mxCell.CreateElement("mxGeometry")
 						mxGeometry.CreateAttr("relative", "1")
@@ -505,10 +510,10 @@ func Mapper() {
 	xml.Indent(4)
 	xml.WriteToFile("terraform.drawio")
 
-//	// testing
-//	for key, element := range nameDependencyMap {
-//		fmt.Println(key + " is the element with index " + fmt.Sprint(element))
-//	}
+	//	// testing
+	//	for key, element := range nameDependencyMap {
+	//		fmt.Println(key + " is the element with index " + fmt.Sprint(element))
+	//	}
 
 	// close file
 	outFile.Close()
@@ -516,7 +521,7 @@ func Mapper() {
 
 /*** RETURNS COORDINATES FOR PLACING OBJECTS ***/
 
-func coordinateFinder(class int)(int, int) {
+func coordinateFinder(class int) (int, int) {
 
 	// get shapeWidth and shapeHeight from libraries by class
 	var shapeWidth, shapeHeight = libraries.Dimensions(class)
@@ -527,7 +532,7 @@ func coordinateFinder(class int)(int, int) {
 
 	// set objects (x,y) position using previously defined offset
 	// first fill out row (left -> right), then move to new row
-	if ((currentX + offsetX) > globalXBound * 10000) {				// testing: "* 10000" so stays on one row
+	if (currentX + offsetX) > globalXBound*10000 { // testing: "* 10000" so stays on one row
 		currentX = 50
 		currentY += offsetY
 		return currentX, currentY

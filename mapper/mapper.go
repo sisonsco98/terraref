@@ -565,8 +565,8 @@ func coordinateFinder(class int)(int, int) {
 	var shapeWidth, shapeHeight = libraries.Dimensions(class)
 
 	// offset objects by 50
-	offsetX := shapeWidth + 50
-	offsetY := shapeHeight + 50
+	offsetX := shapeWidth * 2
+	offsetY := shapeHeight * 2
 
 	// set objects (x,y) position using previously defined offset
 	// first fill out row (left -> right), then move to new row

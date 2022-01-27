@@ -6,7 +6,7 @@ import (
 	"os"  // create and open files
 	"strings"
 
-	"KSCD/libraries/utility" //utility.go
+	"KSCD/libraries/providers/GCP/utility" //utility.go
 	"KSCD/parser"            // parser.go
 
 	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)

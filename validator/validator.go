@@ -61,7 +61,7 @@ func Validator() {
 			// Check if arrows overlap boxes at all
 
 			// Should not be equal to either options
-			if arrow.SourceID != pizza.HiddenId && arrow.TargetID != arrow.SourceID {
+			if arrow.SourceID != pizza.HiddenId && arrow.TargetID != pizza.HiddenId {
 
 				if Ymatch == true {
 					// Horizontal lines
@@ -116,7 +116,7 @@ func Validator() {
 				if arrow.YPosSource == arrow.YPosTarget {
 					for stillOverlaps == true {
 						newY = arrow.YPosSource + pizza.Height
-						newX = arrow.XPosSource
+
 						stillOverlaps = false
 						arrow.HasMoved = true
 
@@ -124,30 +124,45 @@ func Validator() {
 
 					// Check if still overlaps
 
+					// Writing of necessary XML code to create bends
+					path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", arrow.ArrowID+1)
+					arrowGeom := xml.FindElement(path)
+
+					array := arrowGeom.CreateElement("Array")
+					array.CreateAttr("as", "points")
+
+					mxPoint := array.CreateElement("mxPoint")
+					mxPoint.CreateAttr("x", fmt.Sprint(arrow.XPosSource))
+					mxPoint.CreateAttr("y", fmt.Sprint(newY))
+
+					mxPoint = array.CreateElement("mxPoint")
+					mxPoint.CreateAttr("x", fmt.Sprint(arrow.XPosTarget))
+					mxPoint.CreateAttr("y", fmt.Sprint(newY))
+
 				} else {
 					for stillOverlaps == true {
 						newX = arrow.XPosSource + pizza.Width
-						newY = arrow.YPosSource
 						stillOverlaps = false
 						arrow.HasMoved = true
 
 					}
+					// Check if still overlaps
+
+					// Writing of necessary XML code to create bends
+					path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", arrow.ArrowID+1)
+					arrowGeom := xml.FindElement(path)
+
+					array := arrowGeom.CreateElement("Array")
+					array.CreateAttr("as", "points")
+
+					mxPoint := array.CreateElement("mxPoint")
+					mxPoint.CreateAttr("x", fmt.Sprint(newX))
+					mxPoint.CreateAttr("y", fmt.Sprint(arrow.YPosSource))
+
+					mxPoint = array.CreateElement("mxPoint")
+					mxPoint.CreateAttr("x", fmt.Sprint(newX))
+					mxPoint.CreateAttr("y", fmt.Sprint(arrow.YPosTarget))
 				}
-
-				// Writing of necessary XML code to create bends
-				path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", arrow.ArrowID+1)
-				arrowGeom := xml.FindElement(path)
-
-				array := arrowGeom.CreateElement("Array")
-				array.CreateAttr("as", "points")
-
-				mxPoint := array.CreateElement("mxPoint")
-				mxPoint.CreateAttr("x", fmt.Sprint(newX))
-				mxPoint.CreateAttr("y", fmt.Sprint(newY))
-
-				mxPoint = array.CreateElement("mxPoint")
-				mxPoint.CreateAttr("x", fmt.Sprint(newX))
-				mxPoint.CreateAttr("y", fmt.Sprint(newY))
 			}
 		}
 	}

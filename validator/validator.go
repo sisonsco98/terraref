@@ -55,48 +55,35 @@ func Validator() {
 		}
 
 		// Loops through Pizza to get the slices
-		for _, pizza := range mapper.Pizza {
-			// fmt.Println(pizza)
+		for _, slice := range mapper.Pizza {
 
 			// Check if arrows overlap boxes at all
-
-			// Should not be equal to either options
-			if arrow.SourceID != pizza.HiddenId && arrow.TargetID != pizza.HiddenId {
+			if arrow.SourceID != slice.HiddenId && arrow.TargetID != slice.HiddenId {
 
 				if Ymatch == true {
 					// Horizontal lines
-
 					if arrow.YPosSource > arrow.YPosTarget {
-						// fmt.Printf("Hits1 %d %d %d  \n", arrow.YPosTarget, pizza.YPosCenter, arrow.YPosSource)
 						// Source below target
-						if arrow.YPosTarget <= pizza.YPosCenter && pizza.YPosCenter <= arrow.YPosSource {
-							// fmt.Print("Hits2")
+						if arrow.YPosTarget <= slice.YPosCenter && slice.YPosCenter <= arrow.YPosSource {
 							ArrowsOverlap = true
 						}
 					} else {
-						// fmt.Printf("Hits11 %d %d %d  \n", arrow.YPosTarget, pizza.YPosCenter, arrow.YPosSource)
 						// Target above source
-						if arrow.YPosTarget >= pizza.YPosCenter && pizza.YPosCenter >= arrow.YPosSource {
-							// fmt.Printf("Hits22 %d %d %d  \n", arrow.YPosTarget, pizza.YPosCenter, arrow.YPosSource)
+						if arrow.YPosTarget >= slice.YPosCenter && slice.YPosCenter >= arrow.YPosSource {
 							ArrowsOverlap = true
 						}
 					}
 
 				} else {
 					// Vertical lines
-
 					if arrow.XPosSource > arrow.XPosTarget {
-						// fmt.Printf("Hits3 %d %d %d \n", arrow.XPosTarget, pizza.XPosCenter, arrow.XPosSource)
 						// Source below target
-						if arrow.XPosTarget <= pizza.XPosCenter && pizza.XPosCenter <= arrow.XPosSource {
-							// fmt.Println("Hits4")
+						if arrow.XPosTarget <= slice.XPosCenter && slice.XPosCenter <= arrow.XPosSource {
 							ArrowsOverlap = true
 						}
 					} else {
-						// fmt.Printf("Hits33 %d %d %d  \n", arrow.XPosTarget, pizza.XPosCenter, arrow.XPosSource)
 						// Target above source
-						if arrow.XPosTarget >= pizza.XPosCenter && pizza.XPosCenter >= arrow.XPosSource {
-							// fmt.Println("Hits4")
+						if arrow.XPosTarget >= slice.XPosCenter && slice.XPosCenter >= arrow.XPosSource {
 							ArrowsOverlap = true
 						}
 					}
@@ -106,7 +93,6 @@ func Validator() {
 
 			// If the arrow does overlap AND it has not run through this function yet, create it's bending array
 			if ArrowsOverlap == true && arrow.HasMoved == false {
-				// fmt.Println("Hits")
 				var newX int
 				var newY int
 				var stillOverlaps bool = true
@@ -115,11 +101,9 @@ func Validator() {
 				// Checking first if we need to move along x or y axis
 				if arrow.YPosSource == arrow.YPosTarget {
 					for stillOverlaps == true {
-						newY = arrow.YPosSource + pizza.Height
-
+						newY = arrow.YPosSource + slice.Height
 						stillOverlaps = false
 						arrow.HasMoved = true
-
 					}
 
 					// Check if still overlaps
@@ -141,13 +125,11 @@ func Validator() {
 
 				} else {
 					for stillOverlaps == true {
-						newX = arrow.XPosSource + pizza.Width
+						newX = arrow.XPosSource + slice.Width
 						stillOverlaps = false
 						arrow.HasMoved = true
-
 					}
 					// Check if still overlaps
-
 					// Writing of necessary XML code to create bends
 					path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", arrow.ArrowID+1)
 					arrowGeom := xml.FindElement(path)

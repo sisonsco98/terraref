@@ -106,6 +106,9 @@ func Mapper() {
 		// (4) use object name to lookup the correct case of creating the draw.io shape
 		t := libraries.LookupCase(objectName)
 
+		// (5) use specific resource name for main text
+		resourceName := parser.T.Resources[i].Instances[0].Attributes.Name
+
 		if parser.T.Resources[i].Name != "default" {
 			nameDependencyMap[parser.T.Resources[i].Name] = elementID
 		}
@@ -131,7 +134,7 @@ func Mapper() {
 			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", "")
-			mxCell.CreateAttr("style", "edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
+			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
 			mxCell.CreateAttr("edge", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -159,7 +162,7 @@ func Mapper() {
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", "")
-			mxCell.CreateAttr("style", "strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
+			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -173,8 +176,14 @@ func Mapper() {
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 			globalID = globalID + 1
-			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
-			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;"+objectShape))
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -208,7 +217,13 @@ func Mapper() {
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
-			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
 			mxCell.CreateAttr("style", fmt.Sprintln("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
@@ -224,7 +239,7 @@ func Mapper() {
 			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", "")
-			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -270,7 +285,7 @@ func Mapper() {
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", "")
-			mxCell.CreateAttr("style", "strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
+			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -284,8 +299,14 @@ func Mapper() {
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 			globalID = globalID + 1
-			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
-			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -320,7 +341,7 @@ func Mapper() {
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
 			mxCell.CreateAttr("value", "")
-			mxCell.CreateAttr("style", "strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
+			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -334,8 +355,14 @@ func Mapper() {
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 			globalID = globalID + 1
-			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
-			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -368,8 +395,14 @@ func Mapper() {
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
-			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
-			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -394,8 +427,14 @@ func Mapper() {
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
-			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
-			mxCell.CreateAttr("style", fmt.Sprint("html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -424,8 +463,14 @@ func Mapper() {
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID = globalID + 1
-			mxCell.CreateAttr("value", parser.T.Resources[i].Type)
-			mxCell.CreateAttr("style", fmt.Sprint("sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -507,7 +552,7 @@ func Mapper() {
 						// fmt.Println(mxCell.GetPath())
 						globalID = globalID + 1
 						mxCell.CreateAttr("value", "")
-						mxCell.CreateAttr("style", "edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
+						mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
 						mxCell.CreateAttr("edge", "1")
 						mxCell.CreateAttr("target", fmt.Sprintf("%d", Pizza[ctr].HiddenId))
 						mxCell.CreateAttr("source", fmt.Sprintf("%d", Pizza[r].HiddenId))

@@ -16,7 +16,7 @@ import (
 var terraNav terraNavigator
 
 type terraNavigator struct {
-	hiddenID   int
+	HiddenId   int
 	Name       string
 	XPosCenter int
 	YPosCenter int
@@ -190,7 +190,7 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = globalID - 2
+			tmp.HiddenId = globalID - 2
 			tmp.XPosCenter = xLocation + (shapeWidth / 2)
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
@@ -240,7 +240,7 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = globalID - 2
+			tmp.HiddenId = globalID - 2
 			tmp.XPosCenter = xLocation + (shapeWidth / 2)
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
@@ -301,7 +301,7 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = globalID - 2
+			tmp.HiddenId = globalID - 2
 			tmp.XPosCenter = xLocation + (shapeWidth / 2)
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
@@ -350,7 +350,7 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = globalID - 2
+			tmp.HiddenId = globalID - 2
 			tmp.XPosCenter = xLocation + (shapeWidth / 2)
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
@@ -380,7 +380,7 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = globalID - 2
+			tmp.HiddenId = globalID - 2
 			tmp.XPosCenter = xLocation + (shapeWidth / 2)
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
@@ -406,7 +406,7 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = globalID - 2
+			tmp.HiddenId = globalID - 2
 			tmp.XPosCenter = xLocation + (shapeWidth / 2)
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
@@ -436,7 +436,7 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = globalID - 2
+			tmp.HiddenId = globalID - 2
 			tmp.XPosCenter = xLocation + (shapeWidth / 2)
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
@@ -495,8 +495,8 @@ func Mapper() {
 						fmt.Println("We need to draw an arrow from element ", Pizza[r].Name, " to element ", Pizza[ctr].Name)
 						fmt.Println(Pizza[r].Name, " is located at (", Pizza[r].XPosCenter, ",", Pizza[r].YPosCenter, ")")
 						fmt.Println(Pizza[ctr].Name, " is located at (", Pizza[ctr].XPosCenter, ",", Pizza[ctr].YPosCenter, ")")
-						fmt.Println(Pizza[r].Name, "'s ID is ", Pizza[r].hiddenID)
-						fmt.Println(Pizza[ctr].Name, "'s ID is ", Pizza[ctr].hiddenID)
+						fmt.Println(Pizza[r].Name, "'s ID is ", Pizza[r].HiddenId)
+						fmt.Println(Pizza[ctr].Name, "'s ID is ", Pizza[ctr].HiddenId)
 
 						/*** CREATE XML ELEMENT FOR ARROW TO CONNECT DEPENDENCIES ***/
 
@@ -508,8 +508,8 @@ func Mapper() {
 						mxCell.CreateAttr("value", "")
 						mxCell.CreateAttr("style", "edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
 						mxCell.CreateAttr("edge", "1")
-						mxCell.CreateAttr("target", fmt.Sprintf("%d", Pizza[ctr].hiddenID))
-						mxCell.CreateAttr("source", fmt.Sprintf("%d", Pizza[r].hiddenID))
+						mxCell.CreateAttr("target", fmt.Sprintf("%d", Pizza[ctr].HiddenId))
+						mxCell.CreateAttr("source", fmt.Sprintf("%d", Pizza[r].HiddenId))
 
 						mxGeometry := mxCell.CreateElement("mxGeometry")
 						mxGeometry.CreateAttr("relative", "1")
@@ -528,8 +528,8 @@ func Mapper() {
 						// Creating ArrowNavigator for Validator
 						var tmp = new(relationNavigator)
 						tmp.ArrowID = globalID - 1
-						tmp.SourceID = Pizza[r].hiddenID
-						tmp.TargetID = Pizza[ctr].hiddenID
+						tmp.SourceID = Pizza[r].HiddenId
+						tmp.TargetID = Pizza[ctr].HiddenId
 						tmp.XPosSource = Pizza[r].XPosCenter
 						tmp.YPosSource = Pizza[r].YPosCenter
 						tmp.XPosTarget = Pizza[ctr].XPosCenter
@@ -559,7 +559,7 @@ func Mapper() {
 
 /*** RETURNS COORDINATES FOR PLACING OBJECTS ***/
 
-func coordinateFinder(class int)(int, int) {
+func coordinateFinder(class int) (int, int) {
 
 	// get shapeWidth and shapeHeight from libraries by class
 	var shapeWidth, shapeHeight = libraries.Dimensions(class)

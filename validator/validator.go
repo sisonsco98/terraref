@@ -42,14 +42,17 @@ func Validator() {
 	}
 
 	// Checking for arrows overlapping boxes
-	var ArrowsOverlap bool = false
-	var ArrowResized bool = true
-
-	fmt.Println(ArrowsOverlap)
-	fmt.Println(ArrowResized)
-
 	// Goes through all the arrows existing
 	for _, arrow := range mapper.ArrowRelationships {
+
+		var ArrowsOverlap bool = false
+		var Ymatch bool
+
+		if arrow.YPosSource == arrow.YPosTarget {
+			Ymatch = true
+		} else {
+			Ymatch = false
+		}
 
 		// Loops through Pizza to get the slices
 		for _, pizza := range mapper.Pizza {
@@ -57,33 +60,47 @@ func Validator() {
 
 			// Check if arrows overlap boxes at all
 
+			// Should not be equal to either options
+			if arrow.SourceID != pizza.HiddenId && arrow.TargetID != arrow.SourceID {
+				if Ymatch == true {
+
+				}
+			}
+
 			// Check if arrow has already been resized
 
 			// If the arrow does overlap AND it has not run through this function yet, create it's bending array (NOTE: Functions below are being performed above due to need to go through pizza function)
-			if ArrowsOverlap == true && ArrowResized == false {
+			if ArrowsOverlap == true {
 
 				var newX int
 				var newY int
+				var stillOverlaps bool = true
 
 				// Finding an X or Y Coordinate that is unoccupied
 				// Checking first if we need to move along x or y axis
 				if arrow.YPosSource == arrow.YPosTarget {
-					newX = arrow.XPosSource + pizza.Width
-					newY = arrow.YPosSource
+					for stillOverlaps == true {
+						newX = arrow.XPosSource + pizza.Width
+						newY = arrow.YPosSource
 
-					// Check if still overlaps
-					for _, slice := range mapper.Pizza {
-						fmt.Println(slice)
+						for _, slice := range mapper.Pizza {
+							fmt.Println(slice)
+
+						}
 
 					}
 
-				} else {
-					newY = arrow.YPosSource + pizza.Height
-					newX = arrow.XPosSource
-
 					// Check if still overlaps
-					for _, slice := range mapper.Pizza {
-						fmt.Println(slice)
+
+				} else {
+					for stillOverlaps == true {
+						newY = arrow.YPosSource + pizza.Height
+						newX = arrow.XPosSource
+
+						for _, slice := range mapper.Pizza {
+							fmt.Println(slice)
+
+						}
 
 					}
 				}

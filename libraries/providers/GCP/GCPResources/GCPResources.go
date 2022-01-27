@@ -1,4 +1,4 @@
-package GCP
+package GCPResources
 
 var CaseMap = map[string]int{
 

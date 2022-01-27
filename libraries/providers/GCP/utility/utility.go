@@ -1,16 +1,16 @@
 package utility
 
 import (
-	"KSCD/libraries/providers/GCP"
+	"KSCD/libraries/providers/GCP/GCPResources" //Additional resources
 	"fmt"
 	"log"
 	"os"
 )
 
 func LookupName(objectName string) string {
-	objectShape, success := GCP.NameMap[objectName]
+	objectShape, success := GCPResources.NameMap[objectName]
 
-	if objectShape, success := GCP.NameMap[objectName]; success {
+	if objectShape, success := GCPResources.NameMap[objectName]; success {
 		return objectShape
 	}
 
@@ -21,9 +21,9 @@ func LookupName(objectName string) string {
 }
 
 func LookupShape(resourceType string) string {
-	objectName, success := GCP.ShapeMap[resourceType]
+	objectName, success := GCPResources.ShapeMap[resourceType]
 
-	if objectName, success := GCP.ShapeMap[resourceType]; success {
+	if objectName, success := GCPResources.ShapeMap[resourceType]; success {
 		return objectName
 	}
 
@@ -34,9 +34,9 @@ func LookupShape(resourceType string) string {
 }
 
 func LookupCase(name string) int {
-	value, success := GCP.CaseMap[name]
+	value, success := GCPResources.CaseMap[name]
 
-	if value, success := GCP.CaseMap[name]; success {
+	if value, success := GCPResources.CaseMap[name]; success {
 		return value
 	}
 

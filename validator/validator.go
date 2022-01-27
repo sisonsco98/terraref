@@ -67,17 +67,17 @@ func Validator() {
 					// Horizontal lines
 
 					if arrow.YPosSource > arrow.YPosTarget {
-						fmt.Printf("Hits1 %d %d %d  \n", arrow.YPosTarget, pizza.YPosCenter, arrow.YPosSource)
+						// fmt.Printf("Hits1 %d %d %d  \n", arrow.YPosTarget, pizza.YPosCenter, arrow.YPosSource)
 						// Source below target
 						if arrow.YPosTarget <= pizza.YPosCenter && pizza.YPosCenter <= arrow.YPosSource {
-							fmt.Print("Hits2")
+							// fmt.Print("Hits2")
 							ArrowsOverlap = true
 						}
 					} else {
-						fmt.Printf("Hits11 %d %d %d  \n", arrow.YPosTarget, pizza.YPosCenter, arrow.YPosSource)
+						// fmt.Printf("Hits11 %d %d %d  \n", arrow.YPosTarget, pizza.YPosCenter, arrow.YPosSource)
 						// Target above source
 						if arrow.YPosTarget >= pizza.YPosCenter && pizza.YPosCenter >= arrow.YPosSource {
-							fmt.Printf("Hits22 %d %d %d  \n", arrow.YPosTarget, pizza.YPosCenter, arrow.YPosSource)
+							// fmt.Printf("Hits22 %d %d %d  \n", arrow.YPosTarget, pizza.YPosCenter, arrow.YPosSource)
 							ArrowsOverlap = true
 						}
 					}
@@ -86,17 +86,17 @@ func Validator() {
 					// Vertical lines
 
 					if arrow.XPosSource > arrow.XPosTarget {
-						fmt.Printf("Hits3 %d %d %d \n", arrow.XPosTarget, pizza.XPosCenter, arrow.XPosSource)
+						// fmt.Printf("Hits3 %d %d %d \n", arrow.XPosTarget, pizza.XPosCenter, arrow.XPosSource)
 						// Source below target
 						if arrow.XPosTarget <= pizza.XPosCenter && pizza.XPosCenter <= arrow.XPosSource {
-							fmt.Println("Hits4")
+							// fmt.Println("Hits4")
 							ArrowsOverlap = true
 						}
 					} else {
-						fmt.Printf("Hits33 %d %d %d  \n", arrow.XPosTarget, pizza.XPosCenter, arrow.XPosSource)
+						// fmt.Printf("Hits33 %d %d %d  \n", arrow.XPosTarget, pizza.XPosCenter, arrow.XPosSource)
 						// Target above source
 						if arrow.XPosTarget >= pizza.XPosCenter && pizza.XPosCenter >= arrow.XPosSource {
-							fmt.Println("Hits4")
+							// fmt.Println("Hits4")
 							ArrowsOverlap = true
 						}
 					}
@@ -106,7 +106,7 @@ func Validator() {
 
 			// If the arrow does overlap AND it has not run through this function yet, create it's bending array
 			if ArrowsOverlap == true && arrow.HasMoved == false {
-				fmt.Println("Hits")
+				// fmt.Println("Hits")
 				var newX int
 				var newY int
 				var stillOverlaps bool = true

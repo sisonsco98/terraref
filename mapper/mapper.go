@@ -18,10 +18,22 @@ import (
 var terraNav terraNavigator
 
 type terraNavigator struct {
-	hiddenID int
-	Name     string
-	XPos     int
-	YPos     int
+	hiddenID   int
+	Name       string
+	XPosCenter int
+	YPosCenter int
+	Width      int
+	Height     int
+}
+
+type relationNavigator struct {
+	ArrowID    int
+	SourceID   int
+	TargetID   int
+	XPosSource int
+	YPosSource int
+	XPosTarget int
+	YPosTarget int
 }
 
 var xml = etree.NewDocument()
@@ -40,6 +52,8 @@ var currentY = 50
 
 // slice (array?) of elements
 var Pizza []terraNavigator
+
+var ArrowRelationships []relationNavigator
 
 func Mapper() {
 
@@ -179,8 +193,10 @@ func Mapper() {
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = globalID - 2
-			tmp.XPos = xLocation
-			tmp.YPos = yLocation
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -227,8 +243,10 @@ func Mapper() {
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = globalID - 2
-			tmp.XPos = xLocation
-			tmp.YPos = yLocation
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -286,8 +304,10 @@ func Mapper() {
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = globalID - 2
-			tmp.XPos = xLocation
-			tmp.YPos = yLocation
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -333,8 +353,10 @@ func Mapper() {
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = globalID - 2
-			tmp.XPos = xLocation
-			tmp.YPos = yLocation
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -360,9 +382,11 @@ func Mapper() {
 
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
-			tmp.hiddenID = elementID
-			tmp.XPos = xLocation
-			tmp.YPos = yLocation
+			tmp.hiddenID = globalID - 2
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
 			Pizza = append(Pizza, *tmp)
 
 		case 6: // Cloud Scheduler
@@ -385,8 +409,10 @@ func Mapper() {
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = globalID - 2
-			tmp.XPos = xLocation
-			tmp.YPos = yLocation
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -413,8 +439,10 @@ func Mapper() {
 			var tmp = new(terraNavigator)
 			tmp.Name = parser.T.Resources[i].Name
 			tmp.hiddenID = globalID - 2
-			tmp.XPos = xLocation
-			tmp.YPos = yLocation
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -467,8 +495,8 @@ func Mapper() {
 						// testing outputs
 						fmt.Println("We've matched the elements.")
 						fmt.Println("We need to draw an arrow from element ", Pizza[r].Name, " to element ", Pizza[ctr].Name)
-						fmt.Println(Pizza[r].Name, " is located at (", Pizza[r].XPos, ",", Pizza[r].YPos, ")")
-						fmt.Println(Pizza[ctr].Name, " is located at (", Pizza[ctr].XPos, ",", Pizza[ctr].YPos, ")")
+						fmt.Println(Pizza[r].Name, " is located at (", Pizza[r].XPosCenter, ",", Pizza[r].YPosCenter, ")")
+						fmt.Println(Pizza[ctr].Name, " is located at (", Pizza[ctr].XPosCenter, ",", Pizza[ctr].YPosCenter, ")")
 						fmt.Println(Pizza[r].Name, "'s ID is ", Pizza[r].hiddenID)
 						fmt.Println(Pizza[ctr].Name, "'s ID is ", Pizza[ctr].hiddenID)
 
@@ -477,6 +505,7 @@ func Mapper() {
 						mxCell = root.CreateElement("mxCell")
 						mxCell.CreateAttr("id", fmt.Sprint(globalID))
 						mxCell.CreateAttr("parent", fmt.Sprint(1))
+						fmt.Println(mxCell.GetPath())
 						globalID = globalID + 1
 						mxCell.CreateAttr("value", "")
 						mxCell.CreateAttr("style", "edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
@@ -489,14 +518,25 @@ func Mapper() {
 						mxGeometry.CreateAttr("as", "geometry")
 
 						mxPoint := mxGeometry.CreateElement("mxPoint")
-						mxPoint.CreateAttr("x", fmt.Sprint(Pizza[r].XPos))
-						mxPoint.CreateAttr("y", fmt.Sprint(Pizza[r].YPos))
+						mxPoint.CreateAttr("x", fmt.Sprint(Pizza[r].XPosCenter))
+						mxPoint.CreateAttr("y", fmt.Sprint(Pizza[r].YPosCenter))
 						mxPoint.CreateAttr("as", "sourcePoint")
 
 						mxPoint = mxGeometry.CreateElement("mxPoint")
-						mxPoint.CreateAttr("x", fmt.Sprint(Pizza[ctr].XPos))
-						mxPoint.CreateAttr("y", fmt.Sprint(Pizza[ctr].YPos))
+						mxPoint.CreateAttr("x", fmt.Sprint(Pizza[ctr].XPosCenter))
+						mxPoint.CreateAttr("y", fmt.Sprint(Pizza[ctr].YPosCenter))
 						mxPoint.CreateAttr("as", "targetPoint")
+
+						// Creating ArrowNavigator for Validator
+						var tmp = new(relationNavigator)
+						tmp.ArrowID = globalID - 1
+						tmp.SourceID = Pizza[r].hiddenID
+						tmp.TargetID = Pizza[ctr].hiddenID
+						tmp.XPosSource = Pizza[r].XPosCenter
+						tmp.YPosSource = Pizza[r].YPosCenter
+						tmp.XPosTarget = Pizza[ctr].XPosCenter
+						tmp.YPosTarget = Pizza[ctr].YPosCenter
+						ArrowRelationships = append(ArrowRelationships, *tmp)
 					}
 
 					ctr++

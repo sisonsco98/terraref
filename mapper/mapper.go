@@ -12,9 +12,7 @@ import (
 	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
 )
 
-// The intention here - the primary wall at the moment is DEPENDENCIES.
-// This is WHERE things are on the map, that's why we have an X and Y position.
-// Arrows need an x/y origin + x/y target, so I figured we could just access this.
+// to access (x,y) position of elements on map
 var terraNav terraNavigator
 
 type terraNavigator struct {
@@ -510,7 +508,7 @@ func Mapper() {
 	xml.Indent(4)
 	xml.WriteToFile("terraform.drawio")
 
-	//	// testing
+	//	testing outputs
 	//	for key, element := range nameDependencyMap {
 	//		fmt.Println(key + " is the element with index " + fmt.Sprint(element))
 	//	}
@@ -521,7 +519,7 @@ func Mapper() {
 
 /*** RETURNS COORDINATES FOR PLACING OBJECTS ***/
 
-func coordinateFinder(class int) (int, int) {
+func coordinateFinder(class int)(int, int) {
 
 	// get shapeWidth and shapeHeight from libraries by class
 	var shapeWidth, shapeHeight = libraries.Dimensions(class)
@@ -532,12 +530,12 @@ func coordinateFinder(class int) (int, int) {
 
 	// set objects (x,y) position using previously defined offset
 	// first fill out row (left -> right), then move to new row
-	if (currentX + offsetX) > globalXBound*10000 { // testing: "* 10000" so stays on one row
+	if (currentX + offsetX + shapeWidth) > globalXBound {
 		currentX = 50
 		currentY += offsetY
 		return currentX, currentY
 	} else {
 		currentX += offsetX
-		return currentX - offsetX, currentY
+		return currentX, currentY
 	}
 }

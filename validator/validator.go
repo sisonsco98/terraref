@@ -100,13 +100,53 @@ func Validator() {
 				// Finding an X or Y Coordinate that is unoccupied
 				// Checking first if we need to move along x or y axis
 				if arrow.YPosSource == arrow.YPosTarget {
+
 					for stillOverlaps == true {
 						newY = arrow.YPosSource + slice.Height
 						stillOverlaps = false
 						arrow.HasMoved = true
 					}
 
-					// Check if still overlaps
+						// Check if still overlaps
+	
+						if arrow.SourceID != slice.HiddenId && arrow.TargetID != slice.HiddenId {
+	
+							if Ymatch == true {
+								// Horizontal lines
+								if arrow.YPosSource > arrow.YPosTarget {
+									// Source below target
+									if arrow.YPosTarget <= slice.YPosCenter && slice.YPosCenter <= arrow.YPosSource {
+										stillOverlaps = true
+									}
+								} else {
+									// Target above source
+									if arrow.YPosTarget >= slice.YPosCenter && slice.YPosCenter >= arrow.YPosSource {
+										stillOverlaps = true
+									}
+								}
+			
+							} else {
+								// Vertical lines
+								if arrow.XPosSource > arrow.XPosTarget {
+									// Source below target
+									if arrow.XPosTarget <= slice.XPosCenter && slice.XPosCenter <= arrow.XPosSource {
+										stillOverlaps = true
+									}
+								} else {
+									// Target above source
+									if arrow.XPosTarget >= slice.XPosCenter && slice.XPosCenter >= arrow.XPosSource {
+										stillOverlaps = true
+									}
+								}
+			
+							}
+						}
+
+						for stillOverlaps == true {
+							newY = arrow.YPosSource - slice.Height
+							stillOverlaps = false
+							arrow.HasMoved = true
+						}
 
 					// Writing of necessary XML code to create bends
 					path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", arrow.ArrowID+1)
@@ -124,12 +164,54 @@ func Validator() {
 					mxPoint.CreateAttr("y", fmt.Sprint(newY))
 
 				} else {
+
 					for stillOverlaps == true {
 						newX = arrow.XPosSource + slice.Width
 						stillOverlaps = false
 						arrow.HasMoved = true
 					}
-					// Check if still overlaps
+
+						// Check if still overlaps
+	
+						if arrow.SourceID != slice.HiddenId && arrow.TargetID != slice.HiddenId {
+	
+							if Ymatch == true {
+								// Horizontal lines
+								if arrow.YPosSource > arrow.YPosTarget {
+									// Source below target
+									if arrow.YPosTarget <= slice.YPosCenter && slice.YPosCenter <= arrow.YPosSource {
+										stillOverlaps = true
+									}
+								} else {
+									// Target above source
+									if arrow.YPosTarget >= slice.YPosCenter && slice.YPosCenter >= arrow.YPosSource {
+										stillOverlaps = true
+									}
+								}
+			
+							} else {
+								// Vertical lines
+								if arrow.XPosSource > arrow.XPosTarget {
+									// Source below target
+									if arrow.XPosTarget <= slice.XPosCenter && slice.XPosCenter <= arrow.XPosSource {
+										stillOverlaps = true
+									}
+								} else {
+									// Target above source
+									if arrow.XPosTarget >= slice.XPosCenter && slice.XPosCenter >= arrow.XPosSource {
+										stillOverlaps = true
+									}
+								}
+			
+							}
+						}
+
+						for stillOverlaps == true {
+							newX = arrow.XPosSource - slice.Width
+							stillOverlaps = false
+							arrow.HasMoved = true
+						}
+
 					// Writing of necessary XML code to create bends
 					path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", arrow.ArrowID+1)
 					arrowGeom := xml.FindElement(path)

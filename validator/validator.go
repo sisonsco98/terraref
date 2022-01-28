@@ -1,10 +1,10 @@
 package validator
 
 import (
-	"bufio" // scanning files
 	"fmt"
-	"log" // logging errors
-	"os"  // create and open files
+	"log"	// logging errors
+	"os"	// create and open files
+	"bufio"	// scanning files
 
 	"KSCD/mapper" // Mapper File
 

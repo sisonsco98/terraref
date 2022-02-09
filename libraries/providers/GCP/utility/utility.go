@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"syscall"
 )
 
 func LookupName(objectName string) string {
@@ -32,6 +33,20 @@ func LookupShape(resourceType string) string {
 
 	return "shape=mxgraph.gcp2.blank"
 }
+
+func LookupZone(name string) string{
+	zone, success := GCPResources.ZoneMap[name]
+	if zone, success := GCPResources.ZoneMap[name]; success {
+		return zone
+	}
+
+	fmt.Println(name)
+	fmt.Println(zone, success)
+
+	syscall.Exit(1)
+	return ""
+}
+
 
 func LookupCase(name string) int {
 	value, success := GCPResources.CaseMap[name]

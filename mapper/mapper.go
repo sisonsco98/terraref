@@ -6,8 +6,8 @@ import (
 	"os"  // create and open files
 	"strings"
 
-	"KSCD/libraries" // libraries.go
-	"KSCD/parser"    // parser.go
+	"KSCD/libraries/providers/GCP/utility" //utility.go
+	"KSCD/parser"            // parser.go
 
 	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
 )
@@ -92,19 +92,22 @@ func Mapper() {
 
 	/* ITERATE THROUGH RESOURCES */
 
+	test := utility.LookupZone("User 1 (Default)")
+	fmt.Println(test)
+
 	for i := 0; i < len(parser.T.Resources); i++ {
 
 		// (1) store resource type (ex: google_api_gateway_gateway)
 		resourceType := parser.T.Resources[i].Type
 
 		// (2) use resource type to lookup the draw.io name (ex: Gateway)
-		objectName := libraries.LookupName(resourceType)
+		objectName := utility.LookupName(resourceType)
 
 		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.gateway)
-		objectShape := libraries.LookupShape(objectName)
+		objectShape := utility.LookupShape(objectName)
 
 		// (4) use object name to lookup the correct case of creating the draw.io shape
-		t := libraries.LookupCase(objectName)
+		t := utility.LookupCase(objectName)
 
 		// (5) use specific resource name for main text
 		resourceName := parser.T.Resources[i].Instances[0].Attributes.Name
@@ -118,7 +121,7 @@ func Mapper() {
 		// ???
 
 		// set object's width, height and (x,y) location
-		var shapeWidth, shapeHeight = libraries.Dimensions(t)
+		var shapeWidth, shapeHeight = utility.Dimensions(t)
 		var xLocation, yLocation = coordinateFinder(t)
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
@@ -609,7 +612,7 @@ func Mapper() {
 func coordinateFinder(class int) (int, int) {
 
 	// get shapeWidth and shapeHeight from libraries by class
-	var shapeWidth, shapeHeight = libraries.Dimensions(class)
+	var shapeWidth, shapeHeight = utility.Dimensions(class)
 
 	// offset objects by 50
 	offsetX := shapeWidth * 2

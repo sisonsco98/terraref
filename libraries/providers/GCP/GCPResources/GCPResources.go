@@ -1,81 +1,75 @@
-package libraries
+package GCPResources
 
-import (
-	"fmt"
-	"log"		// logging errors
-	"os"		// create and open files
-)
-
-var CaseMap = map[string]int {
+var CaseMap = map[string]int{
 
 	/*** GCP / PATHS ***/
 
-	"Primary Path":							0,
-	"Optional Primary Path":				0,
-	"Secondary Path":						0,
-	"Optional Secondary Path":				0,
-	"Success Status":						0,
-	"Failure Status":						0,
+	"Primary Path":            0,
+	"Optional Primary Path":   0,
+	"Secondary Path":          0,
+	"Optional Secondary Path": 0,
+	"Success Status":          0,
+	"Failure Status":          0,
 
 	/****************************************************************************************************/
 
 	/*** GCP / SERVICE CARDS ***/
 
-	"Application System(s)":				1,
-	"Bucket":								1,
-	"CDN Interconnect":						1,
-	"Cluster":								1,
-	"Dedicated Game Server":				1,
-	"External Payment Form":				1,
-	"Frontend Platform Services":			1,
-	"Gateway":								1,
-	"Google Edge POP":						1,
-	"Google Network w/ Edge Cache":			1,
-	"HTTPS Load Balancer":					1,
-	"Image Services":						1,
-	"Internal Payment Authorization":		1,
-	"Logs API":								1,
-	"Memcache":								1,
-	"NAT":									1,
-	"Network Load Balancer":				1,
-	"Persistent Disk Snapshot":				1,
+	"Application System(s)":          1,
+	"Bucket":                         1,
+	"CDN Interconnect":               1,
+	"Cluster":                        1,
+	"Dedicated Game Server":          1,
+	"External Payment Form":          1,
+	"Frontend Platform Services":     1,
+	"Gateway":                        1,
+	"Google Edge POP":                1,
+	"Google Network w/ Edge Cache":   1,
+	"HTTPS Load Balancer":            1,
+	"Image Services":                 1,
+	"Internal Payment Authorization": 1,
+	"Logs API":                       1,
+	"Memcache":                       1,
+	"NAT":                            1,
+	"Network Load Balancer":          1,
+	"Persistent Disk Snapshot":       1,
 	// "Persistent Disk":						1,
-	"Push Notification Service":			1,
-	"Scheduled Tasks":						1,
-	"Service Discovery":					1,
-	"Squid Proxy":							1,
-	"Task Queues":							1,
-	"VPN Gateway":							1,
-	"Virtual File System":					1,
+	"Push Notification Service": 1,
+	"Scheduled Tasks":           1,
+	"Service Discovery":         1,
+	"Squid Proxy":               1,
+	"Task Queues":               1,
+	"VPN Gateway":               1,
+	"Virtual File System":       1,
 
 	/****************************************************************************************************/
 
 	/*** GCP / USER AND DEVICE CARDS ***/
 
-	"Application":							2,
-	"Beacon":								2,
-	"Circuit Board":						2,
-	"Database":								2,
-	"Desktop":								2,
-	"Desktop and Mobile":					2,
-	"Game":									2,
+	"Application":        2,
+	"Beacon":             2,
+	"Circuit Board":      2,
+	"Database":           2,
+	"Desktop":            2,
+	"Desktop and Mobile": 2,
+	"Game":               2,
 	// "Gateway":								2,
-	"Laptop":								2,
-	"Lightbulb":							2,
-	"List":									2,
-	"Live":									2,
-	"Local-Compute":						2,
-	"Mobile Devices":						2,
-	"Payment":								2,
-	"Phone":								2,
-	"Record":								2,
-	"Report":								2,
-	"Retail":								2,
-	"Speaker":								2,
-	"Storage":								2,
-	"Stream":								2,
-	"Users":								2,
-	"Webcam":								2,
+	"Laptop":         2,
+	"Lightbulb":      2,
+	"List":           2,
+	"Live":           2,
+	"Local-Compute":  2,
+	"Mobile Devices": 2,
+	"Payment":        2,
+	"Phone":          2,
+	"Record":         2,
+	"Report":         2,
+	"Retail":         2,
+	"Speaker":        2,
+	"Storage":        2,
+	"Stream":         2,
+	"Users":          2,
+	"Webcam":         2,
 
 	/****************************************************************************************************/
 
@@ -92,116 +86,116 @@ var CaseMap = map[string]int {
 	/*** GCP / SECURITY ***/
 	/*** GCP / STORAGE ***/
 
-	"API Analytics":						3,
-	"API Monetization":						3,
-	"Advanced Solutions Lab":				3,
-	"Apigee API Platform":					3,
-	"Apigee Sense":							3,
-	"App Engine":							3,
-	"BeyondCorp":							3,
-	"BigQuery":								3,
-	"Billing API":							3,
-	"Cloud APIs":							3,
-	"Cloud Armor":							3,
-	"Cloud Bigtable":						3,
-	"Cloud Build":							3,
-	"Cloud CDN":							3,
-	"Cloud Composer":						3,
-	"Cloud Console":						3,
-	"Cloud DNS":							3,
-	"Cloud Data Catalog":					3,
-	"Cloud Data Fusion":					3,
-	"Cloud Dataflow":						3,
-	"Cloud Datalab":						3,
-	"Cloud Dataprep":						3,
-	"Cloud Dataproc":						3,
-	"Cloud Datastore":						3,
-	"Cloud Endpoints":						3,
-	"Cloud External IP Addresses":			3,
-	"Cloud Firestore":						3,
-	"Cloud Firewall Rules":					3,
-	"Cloud Functions":						3,
-	"Cloud IAM":							3,
-	"Cloud IoT Core":						3,
-	"Cloud Load Balancing":					3,
-	"Cloud Machine Learning":				3,
-	"Cloud Memorystore":					3,
-	"Cloud Mobile App":						3,
-	"Cloud Network":						3,
-	"Cloud Pub/Sub":						3,
-	"Cloud Resource Manager":				3,
-	"Cloud Router":							3,
-	"Cloud Routes":							3,
-	"Cloud Run":							3,
-	"Cloud SDK":							3,
-	"Cloud SQL":							3,
-	"Cloud Security Command Center":		3,
-	"Cloud Security Scanner":				3,
-	"Cloud Shell":							3,
-	"Cloud Source Repositories":			3,
-	"Cloud Spanner":						3,
-	"Cloud Storage":						3,
-	"Cloud Test Lab":						3,
-	"Cloud Tools for Eclipse":				3,
-	"Cloud Tools for IntelliJ":				3,
-	"Cloud Tools for PowerShell":			3,
-	"Cloud Tools for Visual Studio":		3,
-	"Cloud VPN":							3,
-	"Cloud Video Intelligence API":			3,
-	"Compute Engine":						3,
-	"Container Registry":					3,
-	"Container-Optimized OS":				3,
-	"Data Loss Prevention API":				3,
-	"Debugger":								3,
-	"Dedicated Interconnect":				3,
-	"Deployment Manager":					3,
-	"Developer Portal":						3,
-	"Error Reporting":						3,
-	"GKE-on-Prem":							3,
-	"GPU":									3,
-	"Genomics":								3,
-	"Gradle App Engine Plugin":				3,
-	"IDE Plugins":							3,
-	"Identity-Aware Proxy":					3,
-	"Jobs API":								3,
-	"Key Management Service":				3,
-	"Kubernetes Engine":					3,
-	"Logging":								3,
-	"Maven App Engine Plugin":				3,
-	"Monitoring":							3,
-	"Natural Language API":					3,
-	"Partner Interconnect":					3,
-	"Persistent Disk":						3,
-	"Premium Network Tier":					3,
-	"Profiler":								3,
-	"Security Key Enforcement":				3,
-	"Speech API":							3,
-	"Stackdriver":							3,
-	"Standard Network Tier":				3,
-	"Trace":								3,
-	"Transfer Appliance":					3,
-	"Translation API":						3,
-	"Virtual Private Cloud":				3,
-	"Vision API":							3,
+	"API Analytics":                 3,
+	"API Monetization":              3,
+	"Advanced Solutions Lab":        3,
+	"Apigee API Platform":           3,
+	"Apigee Sense":                  3,
+	"App Engine":                    3,
+	"BeyondCorp":                    3,
+	"BigQuery":                      3,
+	"Billing API":                   3,
+	"Cloud APIs":                    3,
+	"Cloud Armor":                   3,
+	"Cloud Bigtable":                3,
+	"Cloud Build":                   3,
+	"Cloud CDN":                     3,
+	"Cloud Composer":                3,
+	"Cloud Console":                 3,
+	"Cloud DNS":                     3,
+	"Cloud Data Catalog":            3,
+	"Cloud Data Fusion":             3,
+	"Cloud Dataflow":                3,
+	"Cloud Datalab":                 3,
+	"Cloud Dataprep":                3,
+	"Cloud Dataproc":                3,
+	"Cloud Datastore":               3,
+	"Cloud Endpoints":               3,
+	"Cloud External IP Addresses":   3,
+	"Cloud Firestore":               3,
+	"Cloud Firewall Rules":          3,
+	"Cloud Functions":               3,
+	"Cloud IAM":                     3,
+	"Cloud IoT Core":                3,
+	"Cloud Load Balancing":          3,
+	"Cloud Machine Learning":        3,
+	"Cloud Memorystore":             3,
+	"Cloud Mobile App":              3,
+	"Cloud Network":                 3,
+	"Cloud Pub/Sub":                 3,
+	"Cloud Resource Manager":        3,
+	"Cloud Router":                  3,
+	"Cloud Routes":                  3,
+	"Cloud Run":                     3,
+	"Cloud SDK":                     3,
+	"Cloud SQL":                     3,
+	"Cloud Security Command Center": 3,
+	"Cloud Security Scanner":        3,
+	"Cloud Shell":                   3,
+	"Cloud Source Repositories":     3,
+	"Cloud Spanner":                 3,
+	"Cloud Storage":                 3,
+	"Cloud Test Lab":                3,
+	"Cloud Tools for Eclipse":       3,
+	"Cloud Tools for IntelliJ":      3,
+	"Cloud Tools for PowerShell":    3,
+	"Cloud Tools for Visual Studio": 3,
+	"Cloud VPN":                     3,
+	"Cloud Video Intelligence API":  3,
+	"Compute Engine":                3,
+	"Container Registry":            3,
+	"Container-Optimized OS":        3,
+	"Data Loss Prevention API":      3,
+	"Debugger":                      3,
+	"Dedicated Interconnect":        3,
+	"Deployment Manager":            3,
+	"Developer Portal":              3,
+	"Error Reporting":               3,
+	"GKE-on-Prem":                   3,
+	"GPU":                           3,
+	"Genomics":                      3,
+	"Gradle App Engine Plugin":      3,
+	"IDE Plugins":                   3,
+	"Identity-Aware Proxy":          3,
+	"Jobs API":                      3,
+	"Key Management Service":        3,
+	"Kubernetes Engine":             3,
+	"Logging":                       3,
+	"Maven App Engine Plugin":       3,
+	"Monitoring":                    3,
+	"Natural Language API":          3,
+	"Partner Interconnect":          3,
+	"Persistent Disk":               3,
+	"Premium Network Tier":          3,
+	"Profiler":                      3,
+	"Security Key Enforcement":      3,
+	"Speech API":                    3,
+	"Stackdriver":                   3,
+	"Standard Network Tier":         3,
+	"Trace":                         3,
+	"Transfer Appliance":            3,
+	"Translation API":               3,
+	"Virtual Private Cloud":         3,
+	"Vision API":                    3,
 
 	/****************************************************************************************************/
 
-	/*** GCP / PRODUCT CARDS ***/	
+	/*** GCP / PRODUCT CARDS ***/
 
-	"AdMob":								4,
-	"Avere Physical Appliance":				4,
-	"Campaign Manager":						4,
-	"Fastly":								4,
-	"Firebase":								4,
-	"Forseti Security":						4,
-	"Google Ad Manager":					4,
-	"Google Ads":							4,
-	"Google Analytics 360":					4,
-	"Google Analytics":						4,
-	"Google Play Game Services":			4,
-	"Istio":								4,
-	"Kubernetes":							4,
-	"TensorFlow":							4,
+	"AdMob":                     4,
+	"Avere Physical Appliance":  4,
+	"Campaign Manager":          4,
+	"Fastly":                    4,
+	"Firebase":                  4,
+	"Forseti Security":          4,
+	"Google Ad Manager":         4,
+	"Google Ads":                4,
+	"Google Analytics 360":      4,
+	"Google Analytics":          4,
+	"Google Play Game Services": 4,
+	"Istio":                     4,
+	"Kubernetes":                4,
+	"TensorFlow":                4,
 
 	/****************************************************************************************************/
 
@@ -320,7 +314,7 @@ var CaseMap = map[string]int {
 
 	/*** GCP / ZONES ***/
 
-	"Firewall":								7,
+	"Firewall": 7,
 
 	/****************************************************************************************************/
 
@@ -332,10 +326,10 @@ var CaseMap = map[string]int {
 
 	/*** GCP / GENERAL ICONS ***/
 
-	"General":								1,
+	"General": 1,
 }
 
-var ShapeMap = map[string]string {
+var ShapeMap = map[string]string{
 
 	/*** GCP / PATHS ***/
 
@@ -369,42 +363,42 @@ var ShapeMap = map[string]string {
 	"Network Load Balancer":          "shape=mxgraph.gcp2.network_load_balancer",          // "Network&#xa;Load&#xa;Balancer"
 	"Persistent Disk Snapshot":       "shape=mxgraph.gcp2.persistent_disk_snapshot",       // "Persistent&#xa;Disk Snapshot"
 	// "Persistent Disk":                "shape=mxgraph.gcp2.persistent_disk_snapshot",       // "Persistent&#xa;Disk"
-	"Push Notification Service":      "shape=mxgraph.gcp2.push_notification_service",      // "Push&#xa;Notification&#xa;Service"
-	"Scheduled Tasks":                "shape=mxgraph.gcp2.scheduled_tasks",                // "Scheduled&#xa;Tasks"
-	"Service Discovery":              "shape=mxgraph.gcp2.service_discovery",              // "Service Discovery"
-	"Squid Proxy":                    "shape=mxgraph.gcp2.squid_proxy",                    // "Squid Proxy"
-	"Task Queues":                    "shape=mxgraph.gcp2.task_queues",                    // "Task&#xa;Queues"
-	"VPN Gateway":                    "shape=mxgraph.gcp2.gateway",                        // "VPN Gateway"
-	"Virtual File System":            "shape=mxgraph.gcp2.virtual_file_system",            // "Virtual&#xa;File System"
+	"Push Notification Service": "shape=mxgraph.gcp2.push_notification_service", // "Push&#xa;Notification&#xa;Service"
+	"Scheduled Tasks":           "shape=mxgraph.gcp2.scheduled_tasks",           // "Scheduled&#xa;Tasks"
+	"Service Discovery":         "shape=mxgraph.gcp2.service_discovery",         // "Service Discovery"
+	"Squid Proxy":               "shape=mxgraph.gcp2.squid_proxy",               // "Squid Proxy"
+	"Task Queues":               "shape=mxgraph.gcp2.task_queues",               // "Task&#xa;Queues"
+	"VPN Gateway":               "shape=mxgraph.gcp2.gateway",                   // "VPN Gateway"
+	"Virtual File System":       "shape=mxgraph.gcp2.virtual_file_system",       // "Virtual&#xa;File System"
 
 	/****************************************************************************************************/
 
 	/*** GCP / USER AND DEVICE CARDS ***/
 
-	"Application":        "shape=mxgraph.gcp2.application",         // "Application"
-	"Beacon":             "shape=mxgraph.gcp2.beacon",              // "Beacon"
-	"Circuit-Board":      "shape=mxgraph.gcp2.circuit_board",       // "Circuit-Board"
-	"Database":           "shape=mxgraph.gcp2.database",            // "Database"
-	"Desktop":            "shape=mxgraph.gcp2.desktop",             // "Desktop"
-	"Desktop and Mobile": "shape=mxgraph.gcp2.desktop_and_mobile",  // "Desktop and Mobile"
-	"Game":               "shape=mxgraph.gcp2.game",                // "Game"
+	"Application":        "shape=mxgraph.gcp2.application",        // "Application"
+	"Beacon":             "shape=mxgraph.gcp2.beacon",             // "Beacon"
+	"Circuit-Board":      "shape=mxgraph.gcp2.circuit_board",      // "Circuit-Board"
+	"Database":           "shape=mxgraph.gcp2.database",           // "Database"
+	"Desktop":            "shape=mxgraph.gcp2.desktop",            // "Desktop"
+	"Desktop and Mobile": "shape=mxgraph.gcp2.desktop_and_mobile", // "Desktop and Mobile"
+	"Game":               "shape=mxgraph.gcp2.game",               // "Game"
 	// "Gateway":            "shape=mxgraph.gcp2.gateway_icon",        // "Gateway"
-	"Laptop":             "shape=mxgraph.gcp2.laptop",              // "Laptop"
-	"Lightbulb":          "shape=mxgraph.gcp2.lightbulb",           // "Lightbulb"
-	"List":               "shape=mxgraph.gcp2.list",                // "List"
-	"Live":               "shape=mxgraph.gcp2.live",                // "Live"
-	"Local-Compute":      "shape=mxgraph.gcp2.compute_engine_icon", // "Local-Compute"
-	"Mobile Devices":     "shape=mxgraph.gcp2.mobile_devices",      // "Mobile Devices"
-	"Payment":            "shape=mxgraph.gcp2.payment",             // "Payment"
-	"Phone":              "shape=mxgraph.gcp2.phone",               // "Phone"
-	"Record":             "shape=mxgraph.gcp2.record",              // "Record"
-	"Report":             "shape=mxgraph.gcp2.report",              // "Report"
-	"Retail":             "shape=mxgraph.gcp2.retail",              // "Retail"
-	"Speaker":            "shape=mxgraph.gcp2.speaker",             // "Speaker"
-	"Storage":            "shape=mxgraph.gcp2.storage",             // "Storage"
-	"Stream":             "shape=mxgraph.gcp2.stream",              // "Stream"
-	"Users":              "shape=mxgraph.gcp2.users",               // "Users"
-	"Webcam":             "shape=mxgraph.gcp2.webcam",              // "Webcam"
+	"Laptop":         "shape=mxgraph.gcp2.laptop",              // "Laptop"
+	"Lightbulb":      "shape=mxgraph.gcp2.lightbulb",           // "Lightbulb"
+	"List":           "shape=mxgraph.gcp2.list",                // "List"
+	"Live":           "shape=mxgraph.gcp2.live",                // "Live"
+	"Local-Compute":  "shape=mxgraph.gcp2.compute_engine_icon", // "Local-Compute"
+	"Mobile Devices": "shape=mxgraph.gcp2.mobile_devices",      // "Mobile Devices"
+	"Payment":        "shape=mxgraph.gcp2.payment",             // "Payment"
+	"Phone":          "shape=mxgraph.gcp2.phone",               // "Phone"
+	"Record":         "shape=mxgraph.gcp2.record",              // "Record"
+	"Report":         "shape=mxgraph.gcp2.report",              // "Report"
+	"Retail":         "shape=mxgraph.gcp2.retail",              // "Retail"
+	"Speaker":        "shape=mxgraph.gcp2.speaker",             // "Speaker"
+	"Storage":        "shape=mxgraph.gcp2.storage",             // "Storage"
+	"Stream":         "shape=mxgraph.gcp2.stream",              // "Stream"
+	"Users":          "shape=mxgraph.gcp2.users",               // "Users"
+	"Webcam":         "shape=mxgraph.gcp2.webcam",              // "Webcam"
 
 	/****************************************************************************************************/
 
@@ -664,95 +658,42 @@ var ShapeMap = map[string]string {
 	"General": "shape=mxgraph.gcp2.blank", // "Blank Line"
 }
 
-var NameMap = map[string]string {
+var NameMap = map[string]string{
 
 	/*** GCP / PATHS ***/
 
-	"primary_path":						"Primary Path",
-	"optional_primary_path":			"Optional Primary Path",
-	"secondary_path":					"Secondary Path",
-	"optional_secondary_path":			"Optional Secondary Path",
-	"success_status":					"Success Status",
-	"failure":							"Failure Status",
+	"primary_path":            "Primary Path",
+	"optional_primary_path":   "Optional Primary Path",
+	"secondary_path":          "Secondary Path",
+	"optional_secondary_path": "Optional Secondary Path",
+	"success_status":          "Success Status",
+	"failure":                 "Failure Status",
 
 	/****************************************************************************************************/
 
 	/*** ??? ***/
 
-	"google_app_engine_application":	"App Engine",
-	"google_storage_bucket":			"Bucket",
-	"google_compute_firewall_policy":	"Cloud Firewall Rules",
-	"google_sql_database":				"Cloud SQL",
-	"google_compute_instance":			"Compute Engine",
-	"google_compute_firewall":			"Firewall",
-	"google_api_gateway_api":			"Gateway",
-	"google_container_cluster":			"Kubernetes",
+	"google_app_engine_application":  "App Engine",
+	"google_storage_bucket":          "Bucket",
+	"google_compute_firewall_policy": "Cloud Firewall Rules",
+	"google_sql_database":            "Cloud SQL",
+	"google_compute_instance":        "Compute Engine",
+	"google_compute_firewall":        "Firewall",
+	"google_api_gateway_api":         "Gateway",
+	"google_container_cluster":       "Kubernetes",
 }
 
-/*** FUNCTIONS TO LOOK THROUGH FILE ***/
+var ZoneMap = map[string]string{
 
-func LookupName(objectName string) string {
-	objectShape, success := NameMap[objectName]
-
-	if objectShape, success := NameMap[objectName]; success {
-		return objectShape
-	}
-
-	// bug
-	objectShape = "General"
-	_ = success
-	return objectShape
-}
-
-func LookupShape(resourceType string) string {
-	objectName, success := ShapeMap[resourceType]
-
-	if objectName, success := ShapeMap[resourceType]; success {
-		return objectName
-	}
-
-	fmt.Println(resourceType)
-	fmt.Println(objectName, success)
-
-	return "shape=mxgraph.gcp2.blank"
-}
-
-func LookupCase(name string) int {
-	value, success := CaseMap[name]
-
-	if value, success := CaseMap[name]; success {
-		return value
-	}
-
-	fmt.Println(name)
-	fmt.Println(value, success)
-	fmt.Println("Something went wrong. Exiting.")
-	os.Exit(1)
-
-	return -1
-}
-
-/*** RETURNS THE WIDTH AND HEIGHT OF THE GIVEN OBJECT CLASS ***/
-
-func Dimensions(class int)(int, int) {
-	switch (class) {
-	case 1:
-		return 250, 60 // 150, 56
-	case 2:
-		return 250, 60 // 70, 100
-	case 3:
-		return 250, 60 // 175, 60
-	case 4:
-		return 250, 60 // 150, 60
-	case 5:
-		return 250, 60 // 66, 59
-	case 6:
-		return 250, 60 // 30, 35
-	case 7:
-		return 250, 60 // 220, 190
-	default:
-		log.Println("Unable to find the dimensions.")
-		os.Exit(0)
-	}
-	return 999, 999
+	//GCP Zones
+	"User 1 (Default)":                  "style=\"sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;\"",
+	"Infrastructure System":             "style=\"sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;fillColor=#F3E5F5;\"",
+	"Colo / dc / on-prem":               "style=\"sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;fillColor=#EFEBE9;\"",
+	"System 1":                          "style=\"sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;fillColor=#F1F8E9;\"",
+	"External SaaS Providers":           "style=\"sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;fillColor=#FFEBEE;\"",
+	"External Data Providers":           "style=\"sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;fillColor=#FFF8E1;\"",
+	"External Infrastructure 3rd Party": "style=\"sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;fillColor=#E0F2F1;\"",
+	"External Infrastructure 1st Party": "style=\"sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;fillColor=#E1F5FE;\"",
+	"Title Bar":                         "style=\"fillColor=#4DA1F5;strokeColor=none;shadow=1;gradientColor=none;fontSize=14;align=left;spacingLeft=50;fontColor=#ffffff;\"",
+	"Note":                              "style=\"strokeColor=none;shadow=0;gradientColor=none;fontSize=11;align=left;spacing=10;fontColor=#;9E9E9E;verticalAlign=top;spacingTop=100;\"",
 }

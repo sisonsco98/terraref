@@ -91,6 +91,9 @@ func Mapper() {
 
 	/* ITERATE THROUGH RESOURCES */
 
+	test := utility.LookupZone("User 1 (Default)")
+	fmt.Println(test)
+
 	for i := 0; i < len(parser.T.Resources); i++ {
 
 		// (1) store resource type (ex: google_api_gateway_gateway)

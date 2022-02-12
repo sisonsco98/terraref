@@ -492,6 +492,28 @@ func Mapper() {
 			tmp.Height = shapeHeight
 			Pizza = append(Pizza, *tmp)
 
+
+
+
+		//ID, Value, Style, Vertex, Parent
+		case 8:
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			mxCell.CreateAttr("value", resourceType) //?
+			mxCell.CreateAttr("vertex", fmt.Sprint(1))
+			mxCell.CreateAttr("style", fmt.Sprint(utility.LookupZone(parser.T.Resources[i].Name)))
+
+
+			//x, y, wid, hei, as
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", "160")
+			mxGeometry.CreateAttr("y", "120")
+			mxGeometry.CreateAttr("width", "160")
+			mxGeometry.CreateAttr("height", "120")
+			mxGeometry.CreateAttr("as", "geometry")
+
+			globalID = globalID + 1
 		/****************************************************************************************************/
 
 		/*** GCP / EXPANDED PRODUCT CARDS ***/
@@ -507,6 +529,9 @@ func Mapper() {
 		/****************************************************************************************************/
 
 		// Error case
+
+
+
 
 		default:
 			log.Println("Error: No match.", errCreate)

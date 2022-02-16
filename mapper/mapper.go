@@ -54,6 +54,11 @@ var Pizza []terraNavigator
 
 var ArrowRelationships []relationNavigator
 
+type location struct {
+	x int
+	y int
+}
+
 func Mapper() {
 
 	/*** CREATE THE terraform.drawio FILE ***/
@@ -69,6 +74,36 @@ func Mapper() {
 
 	// dependency map
 	nameDependencyMap := make(map[string]int)
+
+
+	//Establish a grid.
+	xItemLimit := ((globalXBound - 50) / 250) / 2 + (((globalXBound - 50) / 250) % 2)
+	yItemLimit := len(parser.T.Resources) / xItemLimit
+
+	//Let's pretend this is known.
+	var grid [2][10]location
+	
+
+	for i := 0; i < yItemLimit; i++ {
+		for j := 0; j < xItemLimit; j++ {
+			tempX, tempY := coordinateFinder()
+			grid[j][i] = location{tempX, tempY}
+		}
+	}
+
+	for i := 0; i < yItemLimit; i++ {
+		for j := 0; j < xItemLimit; j++ {
+			loc := grid[j][i]
+			fmt.Println(loc.x, loc.y)
+		}
+	}
+
+
+
+
+
+
+
 
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
@@ -122,7 +157,7 @@ func Mapper() {
 
 		// set object's width, height and (x,y) location
 		var shapeWidth, shapeHeight = utility.Dimensions(t)
-		var xLocation, yLocation = coordinateFinder(t)
+		var xLocation, yLocation = coordinateFinder()
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 
@@ -634,10 +669,10 @@ func Mapper() {
 
 /*** RETURNS COORDINATES FOR PLACING OBJECTS ***/
 
-func coordinateFinder(class int) (int, int) {
+func coordinateFinder() (int, int) {
 
 	// get shapeWidth and shapeHeight from libraries by class
-	var shapeWidth, shapeHeight = utility.Dimensions(class)
+	var shapeWidth, shapeHeight = 250, 60
 
 	// offset objects by 50
 	offsetX := shapeWidth * 2
@@ -646,6 +681,8 @@ func coordinateFinder(class int) (int, int) {
 	// set objects (x,y) position using previously defined offset
 	// first fill out row (left -> right), then move to new row
 	if (currentX + offsetX + shapeWidth) > globalXBound {
+		fmt.Sprint("The current X is ", currentX)
+
 		currentX = 50
 		currentY += offsetY
 		return currentX, currentY

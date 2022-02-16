@@ -58,8 +58,17 @@ type location struct {
 	x int
 	y int
 }
+
+// Grid is a variably sized array containing the x, y coordinates for the needed number of elements.
+// Please keep in mind this is a 1 dimensional array - so there's no natural distinction between rows.
 var grid []location
-var calculatedLocations []location
+
+// Grid should be constant - we shouldn't be modifying that. It's just a reference.
+// calculatedLocations is an int array where calculatedLocations[i] = x, where i is the resource index
+// and x is the grid[x] where we're placing the elements.
+
+// A proper call might look like tempX, tempY := grid[calculatedLocations[i]], where i is the index. 
+var calculatedLocations []int
 
 func Mapper() {
 

@@ -540,26 +540,7 @@ func Mapper() {
 
 		elementID++
 	}
-
-	//Testing block
-	mxCell = root.CreateElement("mxCell")
-	mxCell.CreateAttr("id", fmt.Sprint(6942))
-	mxCell.CreateAttr("parent", fmt.Sprint(1))
-	mxCell.CreateAttr("value", fmt.Sprint("Lakers Fan")) //?
-	mxCell.CreateAttr("vertex", fmt.Sprint(1))
-	mxCell.CreateAttr("style", fmt.Sprint(utility.LookupZone("User 1 (Default)")))
-
-
-	//x, y, wid, hei, as
-	mxGeometry := mxCell.CreateElement("mxGeometry")
-	mxGeometry.CreateAttr("x", "160")
-	mxGeometry.CreateAttr("y", "120")
-	mxGeometry.CreateAttr("width", "120")
-	mxGeometry.CreateAttr("height", "70")
-	mxGeometry.CreateAttr("as", "geometry")
-
-	//end testing block
-
+	
 	// iterate through all resources
 	for r := 0; r < len(parser.T.Resources); r++ {
 

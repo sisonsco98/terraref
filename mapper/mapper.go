@@ -58,6 +58,8 @@ type location struct {
 	x int
 	y int
 }
+var grid []location
+var calculatedLocations []location
 
 func Mapper() {
 
@@ -81,24 +83,65 @@ func Mapper() {
 	yItemLimit := len(parser.T.Resources) / xItemLimit
 
 	//Let's pretend this is known.
-	var grid [2][10]location
-	
-
 	for i := 0; i < yItemLimit; i++ {
 		for j := 0; j < xItemLimit; j++ {
 			tempX, tempY := coordinateFinder()
-			grid[j][i] = location{tempX, tempY}
+			tempObj := location{tempX, tempY}
+			grid = append(grid, tempObj)
 		}
 	}
 
-	for i := 0; i < yItemLimit; i++ {
-		for j := 0; j < xItemLimit; j++ {
-			loc := grid[j][i]
-			fmt.Println(loc.x, loc.y)
+	//Display the grid.
+	for i := 0; i < len(parser.T.Resources) - 1; i++ {
+		if (i%xItemLimit == 0) {
+			fmt.Println(grid[i].x, grid[i].y,)
+		} else {
+
+		fmt.Print(grid[i].x, grid[i].y)
+		fmt.Print("     ")
 		}
 	}
+	fmt.Println()
 
 
+	//Display it, but with more detail.
+	for i := 0; i < len(parser.T.Resources) - 1; i++ {
+		fmt.Println("Element ", i, " is located at ", grid[i].x, grid[i].y)
+	}
+	fmt.Println()
+
+	// calculatedLocations is where we're assigning stuff.
+	_ = calculatedLocations
+
+	// iterate through all resources
+
+	for r := 0; r < len(parser.T.Resources); r++ {
+		// iterate through all instances of resource
+		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
+			// iterate through all dependencies of each instance
+			for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
+				fmt.Println(Pizza[r].Name, "is looking for a dependency")
+				// save dependency
+				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
+				dependencyName := strings.Split(resourceName, ".")
+				// testing outputs
+				// fmt.Println("Parent Resource Name : ", Pizza[r].Name)
+				// fmt.Println("Dependency Name : ", dependencyName[1])
+				ctr := 0
+				for range Pizza {
+
+					// dependencyName[1] since we want the second name
+					if Pizza[ctr].Name == dependencyName[1] {
+
+						fmt.Println(Pizza[ctr], " uses ", Pizza[r], " as a dependency.")
+
+					}
+					ctr++
+
+				}
+			}
+		}
+	}
 
 
 
@@ -687,6 +730,7 @@ func coordinateFinder() (int, int) {
 		currentY += offsetY
 		return currentX, currentY
 	} else {
+
 		currentX += offsetX
 		return currentX, currentY
 	}

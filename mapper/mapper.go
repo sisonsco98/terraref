@@ -67,7 +67,7 @@ var grid []location
 // calculatedLocations is an int array where calculatedLocations[i] = x, where i is the resource index
 // and x is the grid[x] where we're placing the elements.
 
-// A proper call might look like tempX, tempY := grid[calculatedLocations[i]], where i is the index. 
+// A proper call might look like tempX, tempY := grid[calculatedLocations[i]], where i is the index.
 var calculatedLocations []int
 
 func Mapper() {
@@ -87,11 +87,11 @@ func Mapper() {
 	nameDependencyMap := make(map[string]int)
 
 
-	//Establish a grid.
+	//Calculate the boundaries in the x and y direction for the purposes of establishing the grid.
 	xItemLimit := ((globalXBound - 50) / 250) / 2 + (((globalXBound - 50) / 250) % 2)
 	yItemLimit := len(parser.T.Resources) / xItemLimit
 
-	//Let's pretend this is known.
+	//We're allocating coordinates on the grid based on the above parameters.
 	for i := 0; i < yItemLimit; i++ {
 		for j := 0; j < xItemLimit; j++ {
 			tempX, tempY := coordinateFinder()
@@ -100,7 +100,7 @@ func Mapper() {
 		}
 	}
 
-	//Display the grid.
+	//Display the grid - this should display coordinates in columns and rows based on their actual position.
 	for i := 0; i < len(parser.T.Resources) - 1; i++ {
 		if (i%xItemLimit == 0) {
 			fmt.Println(grid[i].x, grid[i].y,)
@@ -123,34 +123,7 @@ func Mapper() {
 	_ = calculatedLocations
 
 	// iterate through all resources
-
-	for r := 0; r < len(parser.T.Resources); r++ {
-		// iterate through all instances of resource
-		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
-			// iterate through all dependencies of each instance
-			for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
-				fmt.Println(Pizza[r].Name, "is looking for a dependency")
-				// save dependency
-				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
-				dependencyName := strings.Split(resourceName, ".")
-				// testing outputs
-				// fmt.Println("Parent Resource Name : ", Pizza[r].Name)
-				// fmt.Println("Dependency Name : ", dependencyName[1])
-				ctr := 0
-				for range Pizza {
-
-					// dependencyName[1] since we want the second name
-					if Pizza[ctr].Name == dependencyName[1] {
-
-						fmt.Println(Pizza[ctr], " uses ", Pizza[r], " as a dependency.")
-
-					}
-					ctr++
-
-				}
-			}
-		}
-	}
+ 	
 
 
 

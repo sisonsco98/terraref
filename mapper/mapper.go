@@ -70,6 +70,8 @@ var grid []location
 // A proper call might look like tempX, tempY := grid[calculatedLocations[i]], where i is the index.
 var calculatedLocations []int
 
+var nameList []string
+
 func Mapper() {
 
 	/*** CREATE THE terraform.drawio FILE ***/
@@ -85,7 +87,7 @@ func Mapper() {
 
 	// dependency map
 	nameDependencyMap := make(map[string]int)
-
+	var dependencyOccurences []int
 
 	//Calculate the boundaries in the x and y direction for the purposes of establishing the grid.
 	xItemLimit := ((globalXBound - 50) / 250) / 2 + (((globalXBound - 50) / 250) % 2)
@@ -97,6 +99,8 @@ func Mapper() {
 			tempX, tempY := coordinateFinder()
 			tempObj := location{tempX, tempY}
 			grid = append(grid, tempObj)
+			calculatedLocations = append(calculatedLocations, 999)
+			dependencyOccurences = append(dependencyOccurences, 0)
 		}
 	}
 
@@ -120,16 +124,46 @@ func Mapper() {
 	fmt.Println()
 
 	// calculatedLocations is where we're assigning stuff.
-	_ = calculatedLocations
-
-	// iterate through all resources
- 	
 
 
 
+	// iterate through all resources and grab unusual ones.
+	for i := 0; i < len(parser.T.Resources); i++ {
+		if parser.T.Resources[i].Name != "default" {
+			fmt.Println("Found an unusual resource called" , parser.T.Resources[i].Name, "at index ", i )
+			nameDependencyMap[parser.T.Resources[i].Name] = i
+		}
+	}
+
+	fmt.Println("~Calculating free spaces needed~")
+	// iterate through all resources and fetch COUNT.
+	for r := 0; r < len(parser.T.Resources); r++ {
+
+		// iterate through all instances of resource
+		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
+
+			// iterate through all dependencies of each instance
+			for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
+
+				// save dependency
+				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
+				dependencyName := strings.Split(resourceName, ".")
+
+				// testing outputs
+				// fmt.Println("Parent Resource Name : ", Pizza[r].Name)
+				// fmt.Println("Dependency Name : ", dependencyName[1])
 
 
+				dependencyIndex := nameDependencyMap[dependencyName[1]]
 
+				fmt.Println("Element", r, "needs element", dependencyIndex, "as a dependency.")
+
+				dependencyOccurences[dependencyIndex] += 1
+			}
+		}
+	}
+
+	
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
 	xml.CreateProcInst("xml", `version="1.0" encoding="UTF-8"`)

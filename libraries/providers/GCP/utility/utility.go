@@ -40,8 +40,9 @@ func LookupZone(name string) string{
 		return zone
 	}
 
-	fmt.Println(name)
-	fmt.Println(zone, success)
+	fmt.Println("Something might have failed in the LookupZone function.")
+	_ = zone
+	_ = success
 
 	syscall.Exit(1)
 	return ""

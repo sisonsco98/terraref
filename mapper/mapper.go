@@ -68,7 +68,7 @@ var grid []location
 // and x is the grid[x] where we're placing the elements.
 
 // A proper call might look like tempX, tempY := grid[calculatedLocations[i]], where i is the index.
-var calculatedLocations []int
+var calculatedLocations []int   // What spot on the grid is it assigned to?
 
 var nameList []string
 
@@ -123,10 +123,6 @@ func Mapper() {
 	}
 	fmt.Println()
 
-	// calculatedLocations is where we're assigning stuff.
-
-
-
 	// iterate through all resources and grab unusual ones.
 	for i := 0; i < len(parser.T.Resources); i++ {
 		if parser.T.Resources[i].Name != "default" {
@@ -163,7 +159,9 @@ func Mapper() {
 		}
 	}
 
-	
+
+
+
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
 	xml.CreateProcInst("xml", `version="1.0" encoding="UTF-8"`)

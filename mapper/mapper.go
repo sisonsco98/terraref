@@ -46,7 +46,7 @@ var globalXBound = 850
 var globalYBound = 1100
 
 // starting (x,y) position
-var currentX = 50
+var currentX = 50 - (250 * 2)
 var currentY = 50
 
 // slice (array?) of elements
@@ -106,12 +106,11 @@ func Mapper() {
 
 	//Display the grid - this should display coordinates in columns and rows based on their actual position.
 	for i := 0; i < len(parser.T.Resources) - 1; i++ {
-		if (i%xItemLimit == 0) {
-			fmt.Println(grid[i].x, grid[i].y,)
+		if (i%xItemLimit != 0) {
+			fmt.Println(grid[i].x, grid[i].y)
 		} else {
-
-		fmt.Print(grid[i].x, grid[i].y)
-		fmt.Print("     ")
+			fmt.Print(grid[i].x, grid[i].y,)
+			fmt.Print("\t\t")
 		}
 	}
 	fmt.Println()

@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"KSCD/libraries/providers/GCP/utility" //utility.go
-	"KSCD/parser"            // parser.go
+	"KSCD/parser"                          // parser.go
 
 	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
 )
@@ -68,7 +68,7 @@ var grid []location
 // and x is the grid[x] where we're placing the elements.
 
 // A proper call might look like tempX, tempY := grid[calculatedLocations[i]], where i is the index.
-var calculatedLocations []int   // What spot on the grid is it assigned to?
+var calculatedLocations []int // What spot on the grid is it assigned to?
 
 var nameList []string
 
@@ -90,7 +90,7 @@ func Mapper() {
 	var dependencyOccurences []int
 
 	//Calculate the boundaries in the x and y direction for the purposes of establishing the grid.
-	xItemLimit := ((globalXBound - 50) / 250) / 2 + (((globalXBound - 50) / 250) % 2)
+	xItemLimit := ((globalXBound-50)/250)/2 + (((globalXBound - 50) / 250) % 2)
 	yItemLimit := len(parser.T.Resources) / xItemLimit
 
 	//We're allocating coordinates on the grid based on the above parameters.
@@ -104,20 +104,19 @@ func Mapper() {
 		}
 	}
 
-	//Display the grid - this should display coordinates in columns and rows based on their actual position.
-	for i := 0; i < len(parser.T.Resources) - 1; i++ {
-		if (i%xItemLimit != 0) {
+	// Display the grid - this should display coordinates in columns and rows based on their actual position.
+	for i := 0; i < len(parser.T.Resources)-1; i++ {
+		if i%xItemLimit != 0 {
 			fmt.Println(grid[i].x, grid[i].y)
 		} else {
-			fmt.Print(grid[i].x, grid[i].y,)
+			fmt.Print(grid[i].x, grid[i].y)
 			fmt.Print("\t\t")
 		}
 	}
 	fmt.Println()
 
-
-	//Display it, but with more detail.
-	for i := 0; i < len(parser.T.Resources) - 1; i++ {
+	// Display it, but with more detail.
+	for i := 0; i < len(parser.T.Resources)-1; i++ {
 		fmt.Println("Element ", i, " is located at ", grid[i].x, grid[i].y)
 	}
 	fmt.Println()
@@ -125,13 +124,17 @@ func Mapper() {
 	// iterate through all resources and grab unusual ones.
 	for i := 0; i < len(parser.T.Resources); i++ {
 		if parser.T.Resources[i].Name != "default" {
-			fmt.Println("Found an unusual resource called" , parser.T.Resources[i].Name, "at index ", i )
+			fmt.Println("Found an unusual resource called", parser.T.Resources[i].Name, "at index ", i)
 			nameDependencyMap[parser.T.Resources[i].Name] = i
 		}
 	}
 
 	fmt.Println("~Calculating free spaces needed~")
-	// iterate through all resources and fetch COUNT.
+
+	var containedProjects []string
+	subnetNumber := 1
+
+	// Iterate through all resources and fetch COUNT. and
 	for r := 0; r < len(parser.T.Resources); r++ {
 
 		// iterate through all instances of resource
@@ -148,18 +151,32 @@ func Mapper() {
 				// fmt.Println("Parent Resource Name : ", Pizza[r].Name)
 				// fmt.Println("Dependency Name : ", dependencyName[1])
 
-
 				dependencyIndex := nameDependencyMap[dependencyName[1]]
 
 				fmt.Println("Element", r, "needs element", dependencyIndex, "as a dependency.")
 
 				dependencyOccurences[dependencyIndex] += 1
 			}
+
+			// Finding dinstinct projects in the file, then creating zones for them
+			projectName := parser.T.Resources[r].Instances[i].Attributes.Project
+
+			// If does not exist, add into list
+			if doesProjectExist(containedProjects, projectName) == false {
+				containedProjects = append(containedProjects, projectName)
+			}
+
+			// Checking to see if the project is part of a subnetwork
+			if strings.Contains(parser.T.Resources[r].Instances[i].Attributes.ID, "subnet") == true {
+				containedProjects = append(containedProjects, fmt.Sprint("subnet ", subnetNumber))
+				subnetNumber++
+				// TODO: This isnt necessarily correct, but cant fix until we add
+			}
+
 		}
 	}
 
-
-
+	fmt.Println("Contained Projects: ", containedProjects)
 
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
@@ -583,9 +600,6 @@ func Mapper() {
 			tmp.Height = shapeHeight
 			Pizza = append(Pizza, *tmp)
 
-
-
-
 		//ID, Value, Style, Vertex, Parent
 		case 8:
 			mxCell = root.CreateElement("mxCell")
@@ -594,7 +608,6 @@ func Mapper() {
 			mxCell.CreateAttr("value", resourceType) //?
 			mxCell.CreateAttr("vertex", fmt.Sprint(1))
 			mxCell.CreateAttr("style", fmt.Sprint(utility.LookupZone(parser.T.Resources[i].Name)))
-
 
 			//x, y, wid, hei, as
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -621,9 +634,6 @@ func Mapper() {
 
 		// Error case
 
-
-
-
 		default:
 			log.Println("Error: No match.", errCreate)
 			os.Exit(1)
@@ -631,7 +641,7 @@ func Mapper() {
 
 		elementID++
 	}
-	
+
 	// iterate through all resources
 	for r := 0; r < len(parser.T.Resources); r++ {
 
@@ -737,7 +747,7 @@ func coordinateFinder() (int, int) {
 	// set objects (x,y) position using previously defined offset
 	// first fill out row (left -> right), then move to new row
 	if (currentX + offsetX + shapeWidth) > globalXBound {
-		fmt.Sprint("The current X is ", currentX)
+		//fmt.Sprint("The current X is ", currentX)
 
 		currentX = 50
 		currentY += offsetY
@@ -747,4 +757,17 @@ func coordinateFinder() (int, int) {
 		currentX += offsetX
 		return currentX, currentY
 	}
+}
+
+/*** RETURNS WHETHER OR NOT A PROJECT EXISTS ***/
+
+func doesProjectExist(s []string, str string) bool {
+
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+
+	return false
 }

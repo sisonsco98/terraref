@@ -68,16 +68,17 @@ func Validator() {
 
 					fmt.Println("NEED BENDING")
 
-					if (arrow.XPosSource == 50) {
+					fmt.Println(arrow.XPosSource, arrow.XPosTarget)
+					if (arrow.XPosSource == 50 + slice.Width / 2) {
 						// left row, bend left
-						newX = arrow.XPosSource - 50
-					} else if (arrow.XPosSource == 50 + (slice.Width * 2)) {
+						newX = arrow.XPosSource - slice.Width / 2 - 25
+					} else if (arrow.XPosSource == 50 + slice.Width / 2 + (slice.Width * 2)) {
 						// right row, bend right
-						newX = arrow.XPosSource + slice.Width + 50
+						newX = arrow.XPosSource + slice.Width / 2 + 25
 					}
 
 					// XML for creating bends
-					path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", arrow.ArrowID+1)
+					path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", arrow.ArrowID + 1)
 					arrowGeom := xml.FindElement(path)
 
 					array := arrowGeom.CreateElement("Array")
@@ -114,16 +115,16 @@ func Validator() {
 
 				fmt.Println("NEED BENDING")
 
-				if (arrow.XPosSource < arrow.XPosTarget) {
+//				if (arrow.XPosSource < arrow.XPosTarget) {
 					// target is right of source
 					newX = (arrow.XPosSource + arrow.XPosTarget) / 2
-				} else if (arrow.XPosSource > arrow.XPosTarget) {
+//				} else if (arrow.XPosSource > arrow.XPosTarget) {
 					// target is left of source
-					newX = (arrow.XPosSource - arrow.XPosTarget) / 2
-				}
+//					newX = (arrow.XPosSource - arrow.XPosTarget) / 2
+//				}
 
 				// XML for creating bends
-				path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", arrow.ArrowID+1)
+				path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", arrow.ArrowID + 1)
 				arrowGeom := xml.FindElement(path)
 
 				array := arrowGeom.CreateElement("Array")

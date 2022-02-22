@@ -60,6 +60,9 @@ func Validator() {
 			// Check if arrows overlap boxes at all
 			if arrow.SourceID != slice.HiddenId && arrow.TargetID != slice.HiddenId {
 
+				fmt.Println(arrow, arrow.XPosSource, arrow.YPosSource, arrow.XPosTarget, arrow.YPosTarget, "test arrow")
+				// fmt.Println(slice, slice.XPosCenter, slice.YPosCenter, "test slice")
+
 				if Ymatch == true {
 					// Horizontal lines
 					if arrow.YPosSource > arrow.YPosTarget {
@@ -91,8 +94,26 @@ func Validator() {
 				}
 			}
 
-			// If the arrow does overlap AND it has not run through this function yet, create it's bending array
-			if ArrowsOverlap == true && arrow.HasMoved == false {
+//			if (arrow.XPosSource == arrow.XPosTarget) {
+			// if (ArrowsOverlap == true) && (arrow.XPosSource == arrow.XPosTarget) {
+			// 		// vertical arrow
+			// 	fmt.Println("VERTICAL ARROW")
+
+			// 	if (arrow.YPosSource + (60 * 2) == arrow.YPosTarget) {
+			// 		// source directly above target
+			// 		fmt.Println("SOURCE DIRECTLY ABOVE TARGET")
+			// 	} else if (arrow.YPosSource == arrow.YPosTarget + (60 * 2)) {
+			// 		// source directly below target
+			// 		fmt.Println("SOURCE DIRECTLY BELOW TARGET")
+			// 	} else { //////////////////////////////////////////////////////////////////////////////////////////
+			//// }
+
+			if (ArrowsOverlap == true) && !((arrow.XPosSource == arrow.XPosTarget) && (arrow.YPosSource + (60 * 2) == arrow.YPosTarget)) {
+			// 					fmt.Println(arrow.XPosSource, arrow.YPosSource, arrow.XPosTarget, arrow.YPosTarget, "VERTICAL")
+			// 				}
+
+				// If the arrow does overlap AND it has not run through this function yet, create it's bending array
+//			if ArrowsOverlap == true && arrow.HasMoved == false {
 				var newX int
 				var newY int
 				var stillOverlaps bool = true
@@ -227,7 +248,7 @@ func Validator() {
 					mxPoint.CreateAttr("x", fmt.Sprint(newX))
 					mxPoint.CreateAttr("y", fmt.Sprint(arrow.YPosTarget))
 				}
-			}
+			}//}
 		}
 	}
 

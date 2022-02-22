@@ -91,22 +91,20 @@ func Mapper() {
 
 	//Calculate the boundaries in the x and y direction for the purposes of establishing the grid.
 	xItemLimit := ((globalXBound - 50) / 250) / 2 + (((globalXBound - 50) / 250) % 2)
-	yItemLimit := len(parser.T.Resources) / xItemLimit
+	// yItemLimit := len(parser.T.Resources) / xItemLimit
 
-	//We're allocating coordinates on the grid based on the above parameters.
-	for i := 0; i < yItemLimit; i++ {
-		for j := 0; j < xItemLimit; j++ {
+	//We're allocating coordinates on the grid based on the how much elements we have
+	for i := 0; i < len(parser.T.Resources); i++ {
 			tempX, tempY := coordinateFinder()
 			tempObj := location{tempX, tempY}
 			grid = append(grid, tempObj)
 			calculatedLocations = append(calculatedLocations, 999)
 			dependencyOccurences = append(dependencyOccurences, 0)
-		}
 	}
 
 	//Display the grid - this should display coordinates in columns and rows based on their actual position.
-	for i := 0; i < len(parser.T.Resources) - 1; i++ {
-		if (i%xItemLimit != 0) {
+	for i := 0; i < len(parser.T.Resources); i++ {
+		if (i % xItemLimit != 0) {
 			fmt.Println(grid[i].x, grid[i].y)
 		} else {
 			fmt.Print(grid[i].x, grid[i].y,)
@@ -117,7 +115,7 @@ func Mapper() {
 
 
 	//Display it, but with more detail.
-	for i := 0; i < len(parser.T.Resources) - 1; i++ {
+	for i := 0; i < len(parser.T.Resources); i++ {
 		fmt.Println("Element ", i, " is located at ", grid[i].x, grid[i].y)
 	}
 	fmt.Println()
@@ -159,7 +157,10 @@ func Mapper() {
 	}
 
 
-
+	// FOR THE TIME BEING - Assign grid spots sequentially.
+	for i := 0; i < len(grid); i++{
+		calculatedLocations[i] = i
+	}
 
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
@@ -213,7 +214,8 @@ func Mapper() {
 
 		// set object's width, height and (x,y) location
 		var shapeWidth, shapeHeight = utility.Dimensions(t)
-		var xLocation, yLocation = coordinateFinder()
+		var xLocation = grid[calculatedLocations[i]].x
+		var yLocation = grid[calculatedLocations[i]].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 

@@ -39,7 +39,7 @@ func Parser() {
 
 	/*** READ IN THE terraform.tfstate FILE (entire file) ***/
 
-	inFile, errRead := ioutil.ReadFile("terraform.tfstate")
+	inFile, errRead := ioutil.ReadFile("shared_vpc.tfstate")
 	// error reading file
 	if errRead != nil {
 		log.Println("Error reading file.", errRead)

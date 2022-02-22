@@ -1,7 +1,6 @@
 package mapper
 
 import (
-	"bufio" // scanning files
 	"fmt"
 	"log" // logging errors
 	"os"  // create and open files
@@ -201,6 +200,113 @@ func Mapper() {
 	mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 	globalID = globalID + 1
 
+	/**		CREATING PROJECT REGIONS		**/
+	projectX := 30
+	projectY := 350
+	subX := 30
+
+	// iterate through all resoureces
+	for r := 0; r < len(parser.T.Resources); r++ {
+
+		// (1) store resource type (ex: google_api_gateway_gateway)
+		resourceType := parser.T.Resources[r].Type
+
+		// (2) use resource type to lookup the draw.io name (ex: Gateway)
+		objectName := utility.LookupName(resourceType)
+
+		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.gateway)
+		objectShape := utility.LookupShape(objectName)
+
+		// (5) use specific resource name for main text
+		resourceName := parser.T.Resources[r].Instances[0].Attributes.Name
+
+		if parser.T.Resources[r].Name != "default" {
+			nameDependencyMap[parser.T.Resources[r].Name] = elementID
+		}
+
+		// if name is network, create project area
+		if parser.T.Resources[r].Name == "network" {
+
+			minX := projectX
+			minY := projectY
+			maxX := 375
+			maxY := minY + 100
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			globalID = globalID + 1
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", fmt.Sprint(minX))
+			mxGeometry.CreateAttr("y", fmt.Sprint(minY))
+			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
+			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
+			mxGeometry.CreateAttr("as", "geometry")
+
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[r].Name
+			tmp.HiddenId = globalID - 2
+			tmp.XPosCenter = minX + (maxX / 2)
+			tmp.YPosCenter = minY + (maxY / 2)
+			tmp.Width = maxX
+			tmp.Height = maxY
+			tmp.Project = parser.T.Resources[r].Instances[0].Attributes.Project
+			Pizza = append(Pizza, *tmp)
+
+			projectX = projectX + 500
+		}
+
+		// if name is subnetwork, create project area
+		if parser.T.Resources[r].Name == "subnetwork" {
+
+			minX := subX + 5
+			minY := projectY + 30
+			maxX := 350
+			maxY := projectY + 60
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			globalID = globalID + 1
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", fmt.Sprint(minX))
+			mxGeometry.CreateAttr("y", fmt.Sprint(minY))
+			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
+			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
+			mxGeometry.CreateAttr("as", "geometry")
+
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[r].Name
+			tmp.HiddenId = globalID - 2
+			tmp.XPosCenter = minX + (maxX / 2)
+			tmp.YPosCenter = minY + (maxY / 2)
+			tmp.Width = maxX
+			tmp.Height = maxY
+			tmp.Project = parser.T.Resources[r].Instances[0].Attributes.Project
+			Pizza = append(Pizza, *tmp)
+		}
+	}
+
 	/* ITERATE THROUGH RESOURCES */
 
 	test := utility.LookupZone("User 1 (Default)")
@@ -236,6 +342,10 @@ func Mapper() {
 		var xLocation, yLocation = coordinateFinder()
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
+
+		if parser.T.Resources[i].Name == "network" || parser.T.Resources[i].Name == "subnetwork" {
+			continue
+		}
 
 		switch t {
 
@@ -651,77 +761,6 @@ func Mapper() {
 		}
 
 		elementID++
-	}
-
-	/**		MOVING ELEMENTS INTO PROJECT REGIONS		**/
-	projectX := 40
-	projectY := 400
-
-	scanner := bufio.NewScanner(outFile)
-	// error scanning file
-	errScan := scanner.Err()
-	if errScan != nil {
-		log.Println("Error scanning file.", errScan)
-		os.Exit(1)
-	}
-
-	// iterate through all resoureces
-	for r := 0; r < len(Pizza); r++ {
-		// if name is network, create project area
-		if Pizza[r].Name == "network" {
-			minX := projectX
-			minY := projectY
-			maxX := projectX
-			maxY := projectY
-			for j := 0; j < len(Pizza); j++ {
-				if Pizza[j].Project == Pizza[r].Project {
-					//if minX > (Pizza[j].XPosCenter - (Pizza[j].Width / 2)) {
-					//	minX = Pizza[j].XPosCenter - (Pizza[j].Width / 2)
-					//}
-
-					if minY > (Pizza[j].YPosCenter - (Pizza[j].Height / 2)) {
-						minY = Pizza[j].YPosCenter - (Pizza[j].Height / 2)
-					}
-					if maxX < (Pizza[j].XPosCenter + (Pizza[j].Width / 2)) {
-						maxX = Pizza[j].XPosCenter + (Pizza[j].Width / 2)
-					}
-
-					if maxY < (Pizza[j].YPosCenter + (Pizza[j].Height / 2)) {
-						maxY = Pizza[j].YPosCenter + (Pizza[j].Height / 2)
-					}
-				}
-			}
-
-			// Setting new project area
-			//path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", 1)
-			//projectGeom := xml.FindElement(path)
-			//projectGeom.CreateAttr("x", fmt.Sprint(minX))
-			//projectGeom.CreateAttr("y", fmt.Sprint(minY))
-
-			//projectGeom.CreateAttr("width", fmt.Sprint(maxX-minX))
-			//projectGeom.CreateAttr("height", fmt.Sprint(maxX-minY))
-			mxCell = root.CreateElement("mxCell")
-			mxCell.CreateAttr("id", fmt.Sprint(Pizza[r].HiddenId+1))
-			mxCell.CreateAttr("parent", fmt.Sprint(1))
-
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+Pizza[r].ObjectShape))
-			mxCell.CreateAttr("vertex", "1")
-
-			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(minX))
-			mxGeometry.CreateAttr("y", fmt.Sprint(minY))
-			mxGeometry.CreateAttr("width", fmt.Sprint(maxX-minX))
-			mxGeometry.CreateAttr("height", fmt.Sprint(maxX-minY))
-			mxGeometry.CreateAttr("as", "geometry")
-
-			projectX = projectX + 500
-			minX = minX
-		}
-
-		// if name is subnetwork, create project area
-		if Pizza[r].Name == "subnetwork" {
-
-		}
 	}
 
 	/**		USING DEPENDENCIES TO GET ARROWS DRAWN		**/

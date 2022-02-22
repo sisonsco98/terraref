@@ -59,14 +59,10 @@ func Validator() {
 					// NO BENDING, target is directly above / below source
 					// [source]--[target]
 
-					fmt.Println("NO BENDING")
-
 				} else if (arrow.YPosSource - (slice.Height * 2) > arrow.YPosTarget) || (arrow.YPosSource + (slice.Height * 2) < arrow.YPosTarget) {
 
 					// NEED BENDING, target is not directly above / below source
 					// [source]-x-[target]
-
-					fmt.Println("NEED BENDING")
 
 					fmt.Println(arrow.XPosSource, arrow.XPosTarget)
 					if (arrow.XPosSource == 50 + slice.Width / 2) {
@@ -102,8 +98,6 @@ func Validator() {
 				// NO BENDING, target is directly left / right of source
 				// [source]--[target]
 
-				fmt.Println("NO BENDING")
-
 			}
 
 			/*** DIAGONAL ARROWS ***/
@@ -113,15 +107,7 @@ func Validator() {
 				// NEED BENDING, target not directly above / below / left / right of source
 				// [source]-x-[target]
 
-				fmt.Println("NEED BENDING")
-
-//				if (arrow.XPosSource < arrow.XPosTarget) {
-					// target is right of source
-					newX = (arrow.XPosSource + arrow.XPosTarget) / 2
-//				} else if (arrow.XPosSource > arrow.XPosTarget) {
-					// target is left of source
-//					newX = (arrow.XPosSource - arrow.XPosTarget) / 2
-//				}
+				newX = (arrow.XPosSource + arrow.XPosTarget) / 2
 
 				// XML for creating bends
 				path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", arrow.ArrowID + 1)

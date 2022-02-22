@@ -1,6 +1,7 @@
 package mapper
 
 import (
+	"bufio" // scanning files
 	"fmt"
 	"log" // logging errors
 	"os"  // create and open files
@@ -16,12 +17,14 @@ import (
 var terraNav terraNavigator
 
 type terraNavigator struct {
-	HiddenId   int
-	Name       string
-	XPosCenter int
-	YPosCenter int
-	Width      int
-	Height     int
+	HiddenId    int
+	Name        string
+	XPosCenter  int
+	YPosCenter  int
+	Width       int
+	Height      int
+	Project     string
+	ObjectShape string
 }
 
 type relationNavigator struct {
@@ -316,6 +319,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -372,6 +376,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -439,6 +444,8 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
+			tmp.ObjectShape = objectShape
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -494,6 +501,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -530,6 +538,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
 			Pizza = append(Pizza, *tmp)
 
 		case 6: // Cloud Scheduler
@@ -562,6 +571,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
 			Pizza = append(Pizza, *tmp)
 
 		/****************************************************************************************************/
@@ -598,6 +608,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
 			Pizza = append(Pizza, *tmp)
 
 		//ID, Value, Style, Vertex, Parent
@@ -642,6 +653,78 @@ func Mapper() {
 		elementID++
 	}
 
+	/**		MOVING ELEMENTS INTO PROJECT REGIONS		**/
+	projectX := 40
+	projectY := 400
+
+	scanner := bufio.NewScanner(outFile)
+	// error scanning file
+	errScan := scanner.Err()
+	if errScan != nil {
+		log.Println("Error scanning file.", errScan)
+		os.Exit(1)
+	}
+
+	// iterate through all resoureces
+	for r := 0; r < len(Pizza); r++ {
+		// if name is network, create project area
+		if Pizza[r].Name == "network" {
+			minX := projectX
+			minY := projectY
+			maxX := projectX
+			maxY := projectY
+			for j := 0; j < len(Pizza); j++ {
+				if Pizza[j].Project == Pizza[r].Project {
+					//if minX > (Pizza[j].XPosCenter - (Pizza[j].Width / 2)) {
+					//	minX = Pizza[j].XPosCenter - (Pizza[j].Width / 2)
+					//}
+
+					if minY > (Pizza[j].YPosCenter - (Pizza[j].Height / 2)) {
+						minY = Pizza[j].YPosCenter - (Pizza[j].Height / 2)
+					}
+					if maxX < (Pizza[j].XPosCenter + (Pizza[j].Width / 2)) {
+						maxX = Pizza[j].XPosCenter + (Pizza[j].Width / 2)
+					}
+
+					if maxY < (Pizza[j].YPosCenter + (Pizza[j].Height / 2)) {
+						maxY = Pizza[j].YPosCenter + (Pizza[j].Height / 2)
+					}
+				}
+			}
+
+			// Setting new project area
+			//path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", 1)
+			//projectGeom := xml.FindElement(path)
+			//projectGeom.CreateAttr("x", fmt.Sprint(minX))
+			//projectGeom.CreateAttr("y", fmt.Sprint(minY))
+
+			//projectGeom.CreateAttr("width", fmt.Sprint(maxX-minX))
+			//projectGeom.CreateAttr("height", fmt.Sprint(maxX-minY))
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(Pizza[r].HiddenId+1))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+Pizza[r].ObjectShape))
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", fmt.Sprint(minX))
+			mxGeometry.CreateAttr("y", fmt.Sprint(minY))
+			mxGeometry.CreateAttr("width", fmt.Sprint(maxX-minX))
+			mxGeometry.CreateAttr("height", fmt.Sprint(maxX-minY))
+			mxGeometry.CreateAttr("as", "geometry")
+
+			projectX = projectX + 500
+			minX = minX
+		}
+
+		// if name is subnetwork, create project area
+		if Pizza[r].Name == "subnetwork" {
+
+		}
+	}
+
+	/**		USING DEPENDENCIES TO GET ARROWS DRAWN		**/
 	// iterate through all resources
 	for r := 0; r < len(parser.T.Resources); r++ {
 

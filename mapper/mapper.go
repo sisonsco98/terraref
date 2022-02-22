@@ -46,13 +46,31 @@ var globalXBound = 850
 var globalYBound = 1100
 
 // starting (x,y) position
-var currentX = 50
+var currentX = 50 - (250 * 2)
 var currentY = 50
 
 // slice (array?) of elements
 var Pizza []terraNavigator
 
 var ArrowRelationships []relationNavigator
+
+type location struct {
+	x int
+	y int
+}
+
+// Grid is a variably sized array containing the x, y coordinates for the needed number of elements.
+// Please keep in mind this is a 1 dimensional array - so there's no natural distinction between rows.
+var grid []location
+
+// Grid should be constant - we shouldn't be modifying that. It's just a reference.
+// calculatedLocations is an int array where calculatedLocations[i] = x, where i is the resource index
+// and x is the grid[x] where we're placing the elements.
+
+// A proper call might look like tempX, tempY := grid[calculatedLocations[i]], where i is the index.
+var calculatedLocations []int   // What spot on the grid is it assigned to?
+
+var nameList []string
 
 func Mapper() {
 
@@ -69,6 +87,79 @@ func Mapper() {
 
 	// dependency map
 	nameDependencyMap := make(map[string]int)
+	var dependencyOccurences []int
+
+	//Calculate the boundaries in the x and y direction for the purposes of establishing the grid.
+	xItemLimit := ((globalXBound - 50) / 250) / 2 + (((globalXBound - 50) / 250) % 2)
+	yItemLimit := len(parser.T.Resources) / xItemLimit
+
+	//We're allocating coordinates on the grid based on the above parameters.
+	for i := 0; i < yItemLimit; i++ {
+		for j := 0; j < xItemLimit; j++ {
+			tempX, tempY := coordinateFinder()
+			tempObj := location{tempX, tempY}
+			grid = append(grid, tempObj)
+			calculatedLocations = append(calculatedLocations, 999)
+			dependencyOccurences = append(dependencyOccurences, 0)
+		}
+	}
+
+	//Display the grid - this should display coordinates in columns and rows based on their actual position.
+	for i := 0; i < len(parser.T.Resources) - 1; i++ {
+		if (i%xItemLimit != 0) {
+			fmt.Println(grid[i].x, grid[i].y)
+		} else {
+			fmt.Print(grid[i].x, grid[i].y,)
+			fmt.Print("\t\t")
+		}
+	}
+	fmt.Println()
+
+
+	//Display it, but with more detail.
+	for i := 0; i < len(parser.T.Resources) - 1; i++ {
+		fmt.Println("Element ", i, " is located at ", grid[i].x, grid[i].y)
+	}
+	fmt.Println()
+
+	// iterate through all resources and grab unusual ones.
+	for i := 0; i < len(parser.T.Resources); i++ {
+		if parser.T.Resources[i].Name != "default" {
+			fmt.Println("Found an unusual resource called" , parser.T.Resources[i].Name, "at index ", i )
+			nameDependencyMap[parser.T.Resources[i].Name] = i
+		}
+	}
+
+	fmt.Println("~Calculating free spaces needed~")
+	// iterate through all resources and fetch COUNT.
+	for r := 0; r < len(parser.T.Resources); r++ {
+
+		// iterate through all instances of resource
+		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
+
+			// iterate through all dependencies of each instance
+			for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
+
+				// save dependency
+				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
+				dependencyName := strings.Split(resourceName, ".")
+
+				// testing outputs
+				// fmt.Println("Parent Resource Name : ", Pizza[r].Name)
+				// fmt.Println("Dependency Name : ", dependencyName[1])
+
+
+				dependencyIndex := nameDependencyMap[dependencyName[1]]
+
+				fmt.Println("Element", r, "needs element", dependencyIndex, "as a dependency.")
+
+				dependencyOccurences[dependencyIndex] += 1
+			}
+		}
+	}
+
+
+
 
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
@@ -122,7 +213,7 @@ func Mapper() {
 
 		// set object's width, height and (x,y) location
 		var shapeWidth, shapeHeight = utility.Dimensions(t)
-		var xLocation, yLocation = coordinateFinder(t)
+		var xLocation, yLocation = coordinateFinder()
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 
@@ -634,10 +725,10 @@ func Mapper() {
 
 /*** RETURNS COORDINATES FOR PLACING OBJECTS ***/
 
-func coordinateFinder(class int) (int, int) {
+func coordinateFinder() (int, int) {
 
 	// get shapeWidth and shapeHeight from libraries by class
-	var shapeWidth, shapeHeight = utility.Dimensions(class)
+	var shapeWidth, shapeHeight = 250, 60
 
 	// offset objects by 50
 	offsetX := shapeWidth * 2
@@ -646,10 +737,13 @@ func coordinateFinder(class int) (int, int) {
 	// set objects (x,y) position using previously defined offset
 	// first fill out row (left -> right), then move to new row
 	if (currentX + offsetX + shapeWidth) > globalXBound {
+		fmt.Sprint("The current X is ", currentX)
+
 		currentX = 50
 		currentY += offsetY
 		return currentX, currentY
 	} else {
+
 		currentX += offsetX
 		return currentX, currentY
 	}

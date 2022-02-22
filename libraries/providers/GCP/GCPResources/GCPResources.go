@@ -315,9 +315,10 @@ var CaseMap = map[string]int{
 	/*** GCP / ZONES ***/
 
 	// (2/12) - What's this for?
-	"Firewall":   7,
-	"Subnetwork": 7, //Main Shared VPC TODO: Fix later
-	"Network":    7, //Subnetworks
+	"Firewall":        7,
+	"Subnetwork":      7, //Main Shared VPC TODO: Fix later
+	"Network":         7, //Subnetworks
+	"Service Project": 7,
 
 	// (2/12) Added these so they'll hit the switch as well.
 	"User 1 (Default)":                  8,
@@ -655,9 +656,10 @@ var ShapeMap = map[string]string{
 
 	/*** GCP / ZONES ***/
 
-	"Firewall":   "fillColor=#FBE9E7;", // "Firewall"
-	"Subnetwork": "fillColor=#EDE7F6;",
-	"Network":    "fillColor=#E3F2FD;",
+	"Firewall":        "fillColor=#FBE9E7;", // "Firewall"
+	"Subnetwork":      "fillColor=#EDE7F6;",
+	"Network":         "fillColor=#E3F2FD;",
+	"Service Project": "fillColor=#F1F8E9;",
 
 	/****************************************************************************************************/
 
@@ -700,6 +702,7 @@ var NameMap = map[string]string{
 
 	"google_compute_subnetwork": "Subnetwork",
 	"google_compute_network":    "Network",
+	"google_project":            "Service Project",
 }
 
 var ZoneMap = map[string]string{

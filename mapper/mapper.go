@@ -212,7 +212,7 @@ func Mapper() {
 		// ???
 
 		// set object's width, height and (x,y) location
-		var shapeWidth, shapeHeight = utility.Dimensions(t)
+		var shapeWidth, shapeHeight = 250, 60
 		var xLocation, yLocation = coordinateFinder()
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/

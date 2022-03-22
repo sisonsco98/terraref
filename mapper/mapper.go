@@ -46,8 +46,8 @@ var globalXBound = 850
 var globalYBound = 1100
 
 // starting (x,y) position
-var currentX = 50 - (250 * 2)
-var currentY = 50
+var currentX = -450
+var currentY = -430
 
 // slice (array?) of elements
 var Pizza []terraNavigator

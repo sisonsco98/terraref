@@ -4,12 +4,19 @@ import (
 	"KSCD/mapper"
 	"KSCD/parser"
 	"KSCD/validator"
+	"flag"
 )
 
 func main() {
 
+	fileLoc := flag.String("statefile", "terraform.tfstate", "Filename that we're parsing from." )
+
+	flag.Parse()
+
+	var fileLocation = *fileLoc
+
 	// run parser.go
-	parser.Parser()
+	parser.Parser(fileLocation)
 
 	// run mapper.go
 	mapper.Mapper()

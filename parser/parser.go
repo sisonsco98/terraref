@@ -35,11 +35,11 @@ type Terraform struct {
 	} `json:"resources"`
 }
 
-func Parser() {
+func Parser(filename string) {
 
 	/*** READ IN THE terraform.tfstate FILE (entire file) ***/
 
-	inFile, errRead := ioutil.ReadFile("terraform.tfstate")
+	inFile, errRead := ioutil.ReadFile(filename)
 	// error reading file
 	if errRead != nil {
 		log.Println("Error reading file.", errRead)

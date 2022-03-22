@@ -14,7 +14,7 @@ func main() {
 	// Parse the flag arguments~!
 	flag.Parse()
 
-	// Return value fileLoc is actually the address of a string variable with the value I'm looking for. 
+	// Return value fileLoc is actually the address of a string variable with the value I'm looking for.
 	var fileLocation = *fileLoc
 
 	// run parser.go

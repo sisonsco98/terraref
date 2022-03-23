@@ -2,17 +2,19 @@ package mapper
 
 import (
 	"fmt"
-	"log" // logging errors
-	"os"  // create and open files
+	"log"			// logging errors
+	"os"			// create and open files
 	"strings"
 
-	"KSCD/libraries/providers/GCP/utility" //utility.go
-	"KSCD/parser"            // parser.go
+	"KSCD/parser"
+	"KSCD/libraries/providers/GCP/utility"
 
-	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
+	// creating xml file (go get github.com/beevik/etree)
+	"github.com/beevik/etree"
 )
 
-// to access (x,y) position of elements on map
+/*** GLOBAL STRUCTS TO STORE AND ACCESS INFO ABOUT ELEMENTS AND ARROWS ***/
+
 var terraNav terraNavigator
 
 type terraNavigator struct {
@@ -32,8 +34,14 @@ type relationNavigator struct {
 	YPosSource int
 	XPosTarget int
 	YPosTarget int
-	HasMoved   bool
 }
+
+/*** GLOBAL SLICES FOR ELEMENTS AND ARROWS ***/
+
+var Elements []terraNavigator
+var Arrows []relationNavigator
+
+/*** CREATE GLOBAL XML TREE ***/
 
 var xml = etree.NewDocument()
 
@@ -49,19 +57,12 @@ var globalYBound = 1100
 var currentX = -450
 var currentY = -430
 
-// slice (array?) of elements
-var Pizza []terraNavigator
-
-var ArrowRelationships []relationNavigator
-
+// variably sized array containing the (x, y) position for elements
+var grid []location
 type location struct {
 	x int
 	y int
 }
-
-// Grid is a variably sized array containing the x, y coordinates for the needed number of elements.
-// Please keep in mind this is a 1 dimensional array - so there's no natural distinction between rows.
-var grid []location
 
 // Grid should be constant - we shouldn't be modifying that. It's just a reference.
 // calculatedLocations is an int array where calculatedLocations[i] = x, where i is the resource index
@@ -71,6 +72,10 @@ var grid []location
 var calculatedLocations []int   // What spot on the grid is it assigned to?
 
 var nameList []string
+
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+//****************************************************************************************//
 
 func Mapper() {
 
@@ -105,30 +110,28 @@ func Mapper() {
 	}
 
 	//Display the grid - this should display coordinates in columns and rows based on their actual position.
+	fmt.Println()
 	for i := 0; i < len(parser.T.Resources) - 1; i++ {
 		if (i%xItemLimit != 0) {
-			fmt.Println(grid[i].x, grid[i].y)
+			fmt.Print("Element ", i, ": (", grid[i].x, ", ", grid[i].y, ")")
+			fmt.Println()
 		} else {
-			fmt.Print(grid[i].x, grid[i].y,)
+			fmt.Print("Element ", i, ": (", grid[i].x, ", ", grid[i].y, ")")
 			fmt.Print("\t\t")
 		}
-	}
-	fmt.Println()
-
-
-	//Display it, but with more detail.
-	for i := 0; i < len(parser.T.Resources) - 1; i++ {
-		fmt.Println("Element ", i, " is located at ", grid[i].x, grid[i].y)
 	}
 	fmt.Println()
 
 	// iterate through all resources and grab unusual ones.
 	for i := 0; i < len(parser.T.Resources); i++ {
 		if parser.T.Resources[i].Name != "default" {
-			fmt.Println("Found an unusual resource called" , parser.T.Resources[i].Name, "at index ", i )
+			fmt.Println("Found an unusual resource called", parser.T.Resources[i].Name, "at index ", i )
 			nameDependencyMap[parser.T.Resources[i].Name] = i
 		}
 	}
+
+	// for a dependency, prints the resource name and element number
+	fmt.Println("x", nameDependencyMap)
 
 	fmt.Println("~Calculating free spaces needed~")
 	// iterate through all resources and fetch COUNT.
@@ -145,7 +148,7 @@ func Mapper() {
 				dependencyName := strings.Split(resourceName, ".")
 
 				// testing outputs
-				// fmt.Println("Parent Resource Name : ", Pizza[r].Name)
+				// fmt.Println("Parent Resource Name : ", Elements[r].Name)
 				// fmt.Println("Dependency Name : ", dependencyName[1])
 
 
@@ -181,35 +184,31 @@ func Mapper() {
 	mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 	globalID = globalID + 1
 
+//BELOW DONE
 	/* ITERATE THROUGH RESOURCES */
-
-	test := utility.LookupZone("User 1 (Default)")
-	fmt.Println(test)
 
 	for i := 0; i < len(parser.T.Resources); i++ {
 
-		// (1) store resource type (ex: google_api_gateway_gateway)
+		// (1) store resource type (ex: google_storage_bucket)
 		resourceType := parser.T.Resources[i].Type
 
-		// (2) use resource type to lookup the draw.io name (ex: Gateway)
-		objectName := utility.LookupName(resourceType)
-
-		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.gateway)
-		objectShape := utility.LookupShape(objectName)
-
-		// (4) use object name to lookup the correct case of creating the draw.io shape
-		t := utility.LookupCase(objectName)
-
-		// (5) use specific resource name for main text
-		resourceName := parser.T.Resources[i].Instances[0].Attributes.Name
-
 		if parser.T.Resources[i].Name != "default" {
+			// store the name and id of dependency elements
 			nameDependencyMap[parser.T.Resources[i].Name] = elementID
 		}
 
-		// (5) Grab the object's name in case it's on a dependency.
+		// (2) use resource type to lookup the draw.io name (ex: Bucket)
+		objectName := utility.LookupName(resourceType)
 
-		// ???
+		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.bucket)
+		objectShape := utility.LookupShape(objectName)
+
+		// (4) use object name to lookup the correct case of creating the draw.io shape (ex: 1)
+		t := utility.LookupCase(objectName)
+
+		// (5) use specific resource name for main text (ex: example-storage-bucket)
+		resourceName := parser.T.Resources[i].Instances[0].Attributes.Name
+//ABOVE DONE
 
 		// set object's width, height and (x,y) location
 		var shapeWidth, shapeHeight = 250, 60
@@ -299,7 +298,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
 
@@ -355,7 +354,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
 
@@ -422,7 +421,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
 
@@ -477,7 +476,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
 
@@ -513,7 +512,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
 		case 6: // Cloud Scheduler
 
@@ -545,7 +544,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
 
@@ -581,13 +580,10 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
-
-
-
-		//ID, Value, Style, Vertex, Parent
 		case 8:
+
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
@@ -595,8 +591,6 @@ func Mapper() {
 			mxCell.CreateAttr("vertex", fmt.Sprint(1))
 			mxCell.CreateAttr("style", fmt.Sprint(utility.LookupZone(parser.T.Resources[i].Name)))
 
-
-			//x, y, wid, hei, as
 			mxGeometry := mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("x", "160")
 			mxGeometry.CreateAttr("y", "120")
@@ -605,6 +599,7 @@ func Mapper() {
 			mxGeometry.CreateAttr("as", "geometry")
 
 			globalID = globalID + 1
+
 		/****************************************************************************************************/
 
 		/*** GCP / EXPANDED PRODUCT CARDS ***/
@@ -620,9 +615,6 @@ func Mapper() {
 		/****************************************************************************************************/
 
 		// Error case
-
-
-
 
 		default:
 			log.Println("Error: No match.", errCreate)
@@ -645,62 +637,68 @@ func Mapper() {
 				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
 				dependencyName := strings.Split(resourceName, ".")
 
+				//****************************************************************************************//
 				// testing outputs
-				// fmt.Println("Parent Resource Name : ", Pizza[r].Name)
-				// fmt.Println("Dependency Name : ", dependencyName[1])
+				// fmt.Println("Parent Resource Name : ", Elements[r].Name, Elements[r].HiddenId, Elements[r].XPosCenter, Elements[r].YPosCenter)
+				// fmt.Println("Dependency Name : ", dependencyName[1], resourceName)
+				//****************************************************************************************//
 
 				ctr := 0
-				for range Pizza {
+				for range Elements {
 
 					// dependencyName[1] since we want the second name
-					if Pizza[ctr].Name == dependencyName[1] {
+					if Elements[ctr].Name == dependencyName[1] {
+
+						//****************************************************************************************//
+						//*** INSERT COUNTER FOR NUMBER OF TIMES AN ELEMENT IS A DEPENDENCY OF ANOTHER ELEMENT ***//
+						//****************************************************************************************//
+						fmt.Println(Elements[ctr].Name)
 
 						// testing outputs
 						// fmt.Println("We've matched the elements.")
-						// fmt.Println("We need to draw an arrow from element ", Pizza[r].Name, " to element ", Pizza[ctr].Name)
-						// fmt.Println(Pizza[r].Name, " is located at (", Pizza[r].XPosCenter, ",", Pizza[r].YPosCenter, ")")
-						// fmt.Println(Pizza[ctr].Name, " is located at (", Pizza[ctr].XPosCenter, ",", Pizza[ctr].YPosCenter, ")")
-						// fmt.Println(Pizza[r].Name, "'s ID is ", Pizza[r].HiddenId)
-						// fmt.Println(Pizza[ctr].Name, "'s ID is ", Pizza[ctr].HiddenId)
+						// fmt.Println("We need to draw an arrow from element ", Elements[r].Name, " to element ", Elements[ctr].Name)
+						// fmt.Println(Elements[r].Name, " is located at (", Elements[r].XPosCenter, ",", Elements[r].YPosCenter, ")")
+						// fmt.Println(Elements[ctr].Name, " is located at (", Elements[ctr].XPosCenter, ",", Elements[ctr].YPosCenter, ")")
+						// fmt.Println(Elements[r].Name, "'s ID is ", Elements[r].HiddenId)
+						// fmt.Println(Elements[ctr].Name, "'s ID is ", Elements[ctr].HiddenId)
 
 						/*** CREATE XML ELEMENT FOR ARROW TO CONNECT DEPENDENCIES ***/
 
 						mxCell = root.CreateElement("mxCell")
 						mxCell.CreateAttr("id", fmt.Sprint(globalID))
 						mxCell.CreateAttr("parent", fmt.Sprint(1))
-						// fmt.Println(mxCell.GetPath())
+						
 						globalID = globalID + 1
 						mxCell.CreateAttr("value", "")
 						mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
 						mxCell.CreateAttr("edge", "1")
-						mxCell.CreateAttr("target", fmt.Sprintf("%d", Pizza[ctr].HiddenId))
-						mxCell.CreateAttr("source", fmt.Sprintf("%d", Pizza[r].HiddenId))
+						mxCell.CreateAttr("target", fmt.Sprintf("%d", Elements[ctr].HiddenId))
+						mxCell.CreateAttr("source", fmt.Sprintf("%d", Elements[r].HiddenId))
 
 						mxGeometry := mxCell.CreateElement("mxGeometry")
 						mxGeometry.CreateAttr("relative", "1")
 						mxGeometry.CreateAttr("as", "geometry")
 
 						mxPoint := mxGeometry.CreateElement("mxPoint")
-						mxPoint.CreateAttr("x", fmt.Sprint(Pizza[r].XPosCenter))
-						mxPoint.CreateAttr("y", fmt.Sprint(Pizza[r].YPosCenter))
+						mxPoint.CreateAttr("x", fmt.Sprint(Elements[r].XPosCenter))
+						mxPoint.CreateAttr("y", fmt.Sprint(Elements[r].YPosCenter))
 						mxPoint.CreateAttr("as", "sourcePoint")
 
 						mxPoint = mxGeometry.CreateElement("mxPoint")
-						mxPoint.CreateAttr("x", fmt.Sprint(Pizza[ctr].XPosCenter))
-						mxPoint.CreateAttr("y", fmt.Sprint(Pizza[ctr].YPosCenter))
+						mxPoint.CreateAttr("x", fmt.Sprint(Elements[ctr].XPosCenter))
+						mxPoint.CreateAttr("y", fmt.Sprint(Elements[ctr].YPosCenter))
 						mxPoint.CreateAttr("as", "targetPoint")
 
 						// Creating ArrowNavigator for Validator
 						var tmp = new(relationNavigator)
 						tmp.ArrowID = globalID - 1
-						tmp.SourceID = Pizza[r].HiddenId
-						tmp.TargetID = Pizza[ctr].HiddenId
-						tmp.XPosSource = Pizza[r].XPosCenter
-						tmp.YPosSource = Pizza[r].YPosCenter
-						tmp.XPosTarget = Pizza[ctr].XPosCenter
-						tmp.YPosTarget = Pizza[ctr].YPosCenter
-						tmp.HasMoved = false
-						ArrowRelationships = append(ArrowRelationships, *tmp)
+						tmp.SourceID = Elements[r].HiddenId
+						tmp.TargetID = Elements[ctr].HiddenId
+						tmp.XPosSource = Elements[r].XPosCenter
+						tmp.YPosSource = Elements[r].YPosCenter
+						tmp.XPosTarget = Elements[ctr].XPosCenter
+						tmp.YPosTarget = Elements[ctr].YPosCenter
+						Arrows = append(Arrows, *tmp)
 					}
 
 					ctr++
@@ -708,16 +706,12 @@ func Mapper() {
 			}
 		}
 	}
+	fmt.Println("x", nameDependencyMap)
 
 	/*** PRINT TO THE terraform.drawio FILE ***/
 
 	xml.Indent(4)
 	xml.WriteToFile("terraform.drawio")
-
-	//	testing outputs
-	//	for key, element := range nameDependencyMap {
-	//		fmt.Println(key + " is the element with index " + fmt.Sprint(element))
-	//	}
 
 	// close file
 	outFile.Close()
@@ -737,13 +731,10 @@ func coordinateFinder() (int, int) {
 	// set objects (x,y) position using previously defined offset
 	// first fill out row (left -> right), then move to new row
 	if (currentX + offsetX + shapeWidth) > globalXBound {
-		fmt.Sprint("The current X is ", currentX)
-
 		currentX = 50
 		currentY += offsetY
 		return currentX, currentY
 	} else {
-
 		currentX += offsetX
 		return currentX, currentY
 	}

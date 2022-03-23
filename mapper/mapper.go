@@ -79,10 +79,10 @@ func Mapper() {
 	}
 	var grid []location
 
-	// dependency map								////////////////////////////////////////////////////////////////////////////////////////////////////
-	nameDependencyMap := make(map[string]int)		////////////////////////////////////////////////////////////////////////////////////////////////////
-	var numDependencies []int					////////////////////////////////////////////////////////////////////////////////////////////////////
-	var numDependents []int							////////////////////////////////////////////////////////////////////////////////////////////////////
+	// dependency map
+	nameDependencyMap := make(map[string]int)
+	var numDependents []int
+	var numDependencies []int
 
 	// determine the dimensions of the grid
 	var rows, cols int
@@ -99,15 +99,15 @@ func Mapper() {
 			tempX, tempY := coordinateFinder()
 			tempObj := location{tempX, tempY}
 			grid = append(grid, tempObj)
-			numDependencies = append(numDependencies, 0)
 			numDependents = append(numDependents, 0)
+			numDependencies = append(numDependencies, 0)
 		}
 	}
 
 	fmt.Println()
-	fmt.Println("/******************************/")
-	fmt.Println("/***     GRID LOCATIONS     ***/")
-	fmt.Println("/******************************/")
+	fmt.Println("/**************************************************/")
+	fmt.Println("/*                 GRID LOCATIONS                 */")
+	fmt.Println("/**************************************************/")
 	fmt.Println()
 
 	// display the grid locations and the element currently in each location
@@ -130,52 +130,48 @@ func Mapper() {
 		}
 	}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//************************************************************************************************//
-//************************************************************************************************//
-	// iterate through all resources and fetch COUNT.
+	fmt.Println()
+	fmt.Println("/**************************************************/")
+	fmt.Println("/*                  DEPENDENCIES                  */")
+	fmt.Println("/**************************************************/")
+	fmt.Println()
+
+
+	/*** FOR EACH RESOURCE, COUNT THE NUMBER OF DEPENDENCIES / DEPENDENTS  ***/
+
+	var dependency, resourceName, rName string
+	var dependencyName []string
+	var dependencyIndex int
+
+	// iterate through each resource -> instance -> dependency
 	for r := 0; r < len(parser.T.Resources); r++ {
-
-		// iterate through all instances of resource
 		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
-
-			// iterate through all dependencies of each instance
 			for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
 
-				// save dependency
-				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
-				dependencyName := strings.Split(resourceName, ".")
-				dependencyIndex := nameDependencyMap[dependencyName[1]]
+				// save any dependencies
+				dependency = parser.T.Resources[r].Instances[i].Dependencies[d]
+				dependencyName = strings.Split(dependency, ".")
+				dependencyIndex = nameDependencyMap[dependencyName[1]]
 
-				// increment depencies and numDependents counters
-				numDependencies[dependencyIndex] += 1
-				numDependents[r] += 1
+				// increment numDependencies and numDependents
+				numDependencies[r] += 1
+				numDependents[dependencyIndex] += 1
 
 			}
-
 		}
-
 	}
 
-	fmt.Println()
-	fmt.Println("/******************************/")
-	fmt.Println("/***      DEPENDENCIES      ***/")
-	fmt.Println("/******************************/")
-	fmt.Println()
+	/*** FOR EACH RESOURCE, FIND ITS DEPENDENCIES AND DEPENDENTS  ***/
 
-	dependencyName := strings.Split("#.#", ".")
-	dependencyIndex := -1
-	resourceName := "#"
-	rName := "#"
-
+	// iterate through each resource
 	for r := 0; r < len(parser.T.Resources); r++ {
 
-		fmt.Print("Element ", r, " has the ", numDependents[r], " dependencies: \t")
-
+		// find and print the index and name of each resource that is a dependency of the current element
+		fmt.Print("Element ", r, " has the ", numDependencies[r], " dependencies: \t")
 		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
 			if len(parser.T.Resources[r].Instances[i].Dependencies) > 0 {
 				for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
-					dependency := parser.T.Resources[r].Instances[i].Dependencies[d]
+					dependency = parser.T.Resources[r].Instances[i].Dependencies[d]
 					dependencyName = strings.Split(dependency, ".")
 					dependencyIndex = nameDependencyMap[dependencyName[1]]
 					fmt.Print(dependencyIndex, " (", dependencyName[1], ") / ")
@@ -184,15 +180,16 @@ func Mapper() {
 		}
 		fmt.Println()
 
-		fmt.Print(numDependencies[r], " elements are dependent on Element ", r, ": \t")
-		if (numDependencies[r] > 0) {
+		// find and print the index and name of each resource which has the current element as a dependency
+		fmt.Print(numDependents[r], " elements are dependent on Element ", r, ": \t")
+		if (numDependents[r] > 0) {
 			rName = parser.T.Resources[r].Name
 			for resource := 0; resource < len(parser.T.Resources); resource++ {
 				resourceName = parser.T.Resources[resource].Type
 				for i := 0; i < len(parser.T.Resources[resource].Instances); i++ {
 					for d := 0; d < len(parser.T.Resources[resource].Instances[i].Dependencies); d++ {
 						if len(parser.T.Resources[resource].Instances[i].Dependencies) > 0 {
-							dependency := parser.T.Resources[resource].Instances[i].Dependencies[d]
+							dependency = parser.T.Resources[resource].Instances[i].Dependencies[d]
 							dependencyName = strings.Split(dependency, ".")
 							dependencyIndex = nameDependencyMap[dependencyName[1]]
 							if rName == dependencyName[1] {
@@ -207,10 +204,6 @@ func Mapper() {
 		fmt.Println()
 
 	}
-//************************************************************************************************//
-//************************************************************************************************//
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 

@@ -56,27 +56,21 @@ var globalXBound, globalYBound = 850, 1100
 var shapeWidth, shapeHeight = 250, 60
 
 // starting (x,y) position
-var currentX = -450 //50
-var currentY = 50//-430
+var xPos, yPos = 50 - (2 * shapeWidth), 50
 
-// variably sized array containing the (x, y) position for elements
-var grid []location
-type location struct {
-	x int
-	y int
-}
+// // stores (x, y) position for elements to be placed on a grid
+// var grid []location
+// type location struct {
+// 	x, y int
+// }
 
+//****************************************************************************************//
 // Grid should be constant - we shouldn't be modifying that. It's just a reference.
 // calculatedLocations is an int array where calculatedLocations[i] = x, where i is the resource index
 // and x is the grid[x] where we're placing the elements.
-
 // A proper call might look like tempX, tempY := grid[calculatedLocations[i]], where i is the index.
-var calculatedLocations []int   // What spot on the grid is it assigned to?
-
-var nameList []string
-
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
+//////////var calculatedLocations []int   // What spot on the grid is it assigned to?
+//var nameList []string
 //****************************************************************************************//
 
 func Mapper() {
@@ -92,11 +86,17 @@ func Mapper() {
 	// keep open
 	defer outFile.Close()
 
-	// dependency map
-	nameDependencyMap := make(map[string]int)
-	var dependencyOccurences []int
+	// dependency map								////////////////////////////////////////////////////////////////////////////////////////////////////
+	nameDependencyMap := make(map[string]int)		////////////////////////////////////////////////////////////////////////////////////////////////////
+	var dependencyOccurences []int					////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/*** CREATE GRID FOR PLACING ELEMENTS ***/
+
+	// elements to be placed on the (x, y) locations on the grid
+	type location struct {
+		x, y int
+	}
+	var grid []location
 
 	// determine the dimensions of the grid
 	var rows, cols int
@@ -113,7 +113,7 @@ func Mapper() {
 			tempX, tempY := coordinateFinder()
 			tempObj := location{tempX, tempY}
 			grid = append(grid, tempObj)
-			calculatedLocations = append(calculatedLocations, 999)
+/////////			calculatedLocations = append(calculatedLocations, 999)
 			dependencyOccurences = append(dependencyOccurences, 0)
 		}
 	}
@@ -727,21 +727,18 @@ func Mapper() {
 
 func coordinateFinder() (int, int) {
 
-	// get shapeWidth and shapeHeight from libraries by class
-	var shapeWidth, shapeHeight = 250, 60
-
 	// offset objects by 50
 	offsetX := shapeWidth * 2
 	offsetY := shapeHeight * 2
 
 	// set objects (x,y) position using previously defined offset
 	// first fill out row (left -> right), then move to new row
-	if (currentX + offsetX + shapeWidth) > globalXBound {
-		currentX = 50
-		currentY += offsetY
-		return currentX, currentY
+	if (xPos + offsetX + shapeWidth) > globalXBound {
+		xPos = 50
+		yPos += offsetY
+		return xPos, yPos
 	} else {
-		currentX += offsetX
-		return currentX, currentY
+		xPos += offsetX
+		return xPos, yPos
 	}
 }

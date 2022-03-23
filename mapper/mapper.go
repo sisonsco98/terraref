@@ -161,7 +161,7 @@ func Mapper() {
 		}
 	}
 
-	/*** FOR EACH RESOURCE, FIND ITS DEPENDENCIES AND DEPENDENTS  ***/
+	/*** FOR EACH RESOURCE, FIND ITS DEPENDENCIES AND DEPENDENTS ***/
 
 	// iterate through each resource
 	for r := 0; r < len(parser.T.Resources); r++ {
@@ -174,7 +174,7 @@ func Mapper() {
 					dependency = parser.T.Resources[r].Instances[i].Dependencies[d]
 					dependencyName = strings.Split(dependency, ".")
 					dependencyIndex = nameDependencyMap[dependencyName[1]]
-					fmt.Print(dependencyIndex, " (", dependencyName[1], ") / ")
+					fmt.Print(dependencyIndex, " (", dependencyName[0], ") / ")
 				}
 			}
 		}
@@ -185,7 +185,7 @@ func Mapper() {
 		if (numDependents[r] > 0) {
 			rName = parser.T.Resources[r].Name
 			for resource := 0; resource < len(parser.T.Resources); resource++ {
-				resourceName = parser.T.Resources[resource].Type
+				resourceName = parser.T.Resources[resource].Instances[0].Attributes.Name
 				for i := 0; i < len(parser.T.Resources[resource].Instances); i++ {
 					for d := 0; d < len(parser.T.Resources[resource].Instances[i].Dependencies); d++ {
 						if len(parser.T.Resources[resource].Instances[i].Dependencies) > 0 {

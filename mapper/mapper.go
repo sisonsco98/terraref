@@ -58,21 +58,6 @@ var shapeWidth, shapeHeight = 250, 60
 // starting (x,y) position
 var xPos, yPos = 50 - (2 * shapeWidth), 50
 
-// // stores (x, y) position for elements to be placed on a grid
-// var grid []location
-// type location struct {
-// 	x, y int
-// }
-
-//****************************************************************************************//
-// Grid should be constant - we shouldn't be modifying that. It's just a reference.
-// calculatedLocations is an int array where calculatedLocations[i] = x, where i is the resource index
-// and x is the grid[x] where we're placing the elements.
-// A proper call might look like tempX, tempY := grid[calculatedLocations[i]], where i is the index.
-//////////var calculatedLocations []int   // What spot on the grid is it assigned to?
-//var nameList []string
-//****************************************************************************************//
-
 func Mapper() {
 
 	/*** CREATE THE terraform.drawio FILE ***/
@@ -113,7 +98,6 @@ func Mapper() {
 			tempX, tempY := coordinateFinder()
 			tempObj := location{tempX, tempY}
 			grid = append(grid, tempObj)
-/////////			calculatedLocations = append(calculatedLocations, 999)
 			dependencyOccurences = append(dependencyOccurences, 0)
 		}
 	}

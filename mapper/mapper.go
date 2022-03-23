@@ -50,12 +50,14 @@ var globalID int = 0
 var elementID int = 0
 
 // dimensions of diagram
-var globalXBound = 850
-var globalYBound = 1100
+var globalXBound, globalYBound = 850, 1100
+
+// dimensions of element (normal card)
+var shapeWidth, shapeHeight = 250, 60
 
 // starting (x,y) position
-var currentX = -450
-var currentY = -430
+var currentX = -450 //50
+var currentY = 50//-430
 
 // variably sized array containing the (x, y) position for elements
 var grid []location
@@ -94,13 +96,20 @@ func Mapper() {
 	nameDependencyMap := make(map[string]int)
 	var dependencyOccurences []int
 
-	//Calculate the boundaries in the x and y direction for the purposes of establishing the grid.
-	xItemLimit := ((globalXBound - 50) / 250) / 2 + (((globalXBound - 50) / 250) % 2)
-	yItemLimit := len(parser.T.Resources) / xItemLimit
+	/*** CREATE GRID FOR PLACING ELEMENTS ***/
+
+	// determine the dimensions of the grid
+	var rows, cols int
+	rows = ((globalXBound - 50) / 250) / 2 + (((globalXBound - 50) / 250) % 2)
+	if (len(parser.T.Resources) % 2 == 0) {
+		cols = len(parser.T.Resources) / rows
+	} else {
+		cols = len(parser.T.Resources) / rows + 1
+	}
 
 	//We're allocating coordinates on the grid based on the above parameters.
-	for i := 0; i < yItemLimit; i++ {
-		for j := 0; j < xItemLimit; j++ {
+	for i := 0; i < cols; i++ {
+		for j := 0; j < rows; j++ {
 			tempX, tempY := coordinateFinder()
 			tempObj := location{tempX, tempY}
 			grid = append(grid, tempObj)
@@ -111,8 +120,8 @@ func Mapper() {
 
 	//Display the grid - this should display coordinates in columns and rows based on their actual position.
 	fmt.Println()
-	for i := 0; i < len(parser.T.Resources) - 1; i++ {
-		if (i%xItemLimit != 0) {
+	for i := 0; i < len(parser.T.Resources); i++ {
+			if (i%rows != 0) {
 			fmt.Print("Element ", i, ": (", grid[i].x, ", ", grid[i].y, ")")
 			fmt.Println()
 		} else {
@@ -161,9 +170,6 @@ func Mapper() {
 		}
 	}
 
-
-
-
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
 	xml.CreateProcInst("xml", `version="1.0" encoding="UTF-8"`)
@@ -211,8 +217,8 @@ func Mapper() {
 //ABOVE DONE
 
 		// set object's width, height and (x,y) location
-		var shapeWidth, shapeHeight = 250, 60
-		var xLocation, yLocation = coordinateFinder()
+//		var shapeWidth, shapeHeight = 250, 60
+		var xLocation, yLocation = grid[i].x, grid[i].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 

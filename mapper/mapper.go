@@ -151,8 +151,18 @@ func Mapper() {
 
 	/*** FOR EACH RESOURCE, FIND ITS DEPENDENCIES AND DEPENDENTS ***/
 
+	// to store the dependencies of each resource
+	dependencyList := make(map[int] []int)
+	dependencyListNames := make(map[int] []string)
+	dependentList := make(map[int] []int)
+	dependentListNames := make(map[int] []string)
+
 	// iterate through each resource
 	for r := 0; r < len(parser.T.Resources); r++ {
+
+		// list of dependencies
+		var dList []int
+		var dListNames []string
 
 		// find and print the index and name of each resource that is a dependency of the current element
 		fmt.Print("Element ", r, " has the ", numDependencies[r], " dependencies: \t")
@@ -163,6 +173,11 @@ func Mapper() {
 					dependencyName = strings.Split(dependency, ".")
 					dependencyIndex = nameDependencyMap[dependencyName[1]]
 					fmt.Print(dependencyIndex, " (", dependencyName[0], ") / ")
+					dList = append(dList, dependencyIndex)
+					dependencyList[r] = dList
+					dListNames = append(dListNames, dependencyName[0])
+					dependencyListNames[r] = dListNames
+					// fmt.Println("\t", "Element", r, "has dependency", dependencyIndex, " (", dependencyName[0], ")")
 				}
 			}
 		}
@@ -182,6 +197,11 @@ func Mapper() {
 							dependencyIndex = nameDependencyMap[dependencyName[1]]
 							if rName == dependencyName[1] {
 								fmt.Print(resource, " (", resourceName, ") / ")
+								dList = append(dList, resource)
+								dependentList[r] = dList
+								dListNames = append(dListNames, resourceName)
+								dependencyListNames[r] = dListNames
+								// fmt.Println("\t", "Element", dependencyIndex, "has dependent", resource, " (", resourceName, ")")
 							}
 						}
 					}
@@ -192,6 +212,31 @@ func Mapper() {
 		fmt.Println()
 
 	}
+
+	// list dependencies of each resource
+	for r := 0; r < len(parser.T.Resources); r++ {
+		fmt.Println("Element", r, "has dependencies (index)", dependencyList[r])
+	}
+	fmt.Println()	// list dependencies of each resource
+	for r := 0; r < len(parser.T.Resources); r++ {
+		fmt.Println("Element", r, "has dependencies (name)", dependencyListNames[r])
+	}
+	fmt.Println()
+	// list dependencts of each resource
+	for r := 0; r < len(parser.T.Resources); r++ {
+		fmt.Println("Element", r, "has dependents (index)", dependentList[r])
+	}
+	fmt.Println()
+	// list dependencts of each resource
+	for r := 0; r < len(parser.T.Resources); r++ {
+		fmt.Println("Element", r, "has dependents (name)", dependentListNames[r])
+	}
+	fmt.Println()
+
+	// for r := 0; r < len(parser.T.Resources); r++ {
+	// 	fmt.Println("Element", r, "has dependency", dependencyIndex, "\t", "Element", dependencyIndex, "is dependent on", r)
+	// }
+	// fmt.Println()
 
 	// /*** REORDERING RESOURCES BASED ON NUMBER OF DEPENDENTS ***/
 

@@ -2,14 +2,14 @@ package validator
 
 import (
 	"fmt"
-	"log"	// logging errors
-	"os"	// create and open files
-	"bufio"	// scanning files
+	"log"			// logging errors
+	"os"			// create and open files
+	"bufio"			// scanning files
 
-	"KSCD/mapper" // Mapper File
+	"KSCD/mapper"
 
-	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
-)
+	// creating xml file (go get github.com/beevik/etree)
+	"github.com/beevik/etree")
 
 var xml = etree.NewDocument()
 
@@ -43,12 +43,12 @@ func Validator() {
 
 	// Checking for arrows overlapping boxes
 	// Goes through all the arrows existing
-	for _, arrow := range mapper.ArrowRelationships {
+	for _, arrow := range mapper.Arrows {
 
 		var newX int
 
-		// Loops through Pizza to get the slices
-		for _, slice := range mapper.Pizza {
+		// Loops through Elements to get the slices //?????
+		for _, slice := range mapper.Elements {
 
 			/*** VERTICAL ARROWS ***/
 
@@ -64,7 +64,6 @@ func Validator() {
 					// NEED BENDING, target is not directly above / below source
 					// [source]-x-[target]
 
-					fmt.Println(arrow.XPosSource, arrow.XPosTarget)
 					if (arrow.XPosSource == 50 + slice.Width / 2) {
 						// left row, bend left
 						newX = arrow.XPosSource - slice.Width / 2 - 25

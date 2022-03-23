@@ -1,10 +1,11 @@
 package main
 
 import (
+	"flag"
+	
 	"KSCD/mapper"
 	"KSCD/parser"
 	"KSCD/validator"
-	"flag"
 )
 
 func main() {

@@ -118,9 +118,8 @@ func Mapper() {
 	fmt.Println()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
+//************************************************************************************************//
+//************************************************************************************************//
 	// // iterate through all resources and grab unusual ones.			////////////////////////////////////////////////////////////////////////////////////////////////////
 	// for i := 0; i < len(parser.T.Resources); i++ {					////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 	if parser.T.Resources[i].Name != "default" {				////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -155,9 +154,8 @@ func Mapper() {
 			}
 		}
 	}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
+//************************************************************************************************//
+//************************************************************************************************//
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -220,6 +218,7 @@ func Mapper() {
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
 			globalID++
+
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
 			mxCell.CreateAttr("edge", "1")
@@ -248,6 +247,7 @@ func Mapper() {
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID++
+
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			mxCell.CreateAttr("vertex", "1")
@@ -325,6 +325,7 @@ func Mapper() {
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
 			globalID++
+
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
@@ -371,6 +372,7 @@ func Mapper() {
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID++
+
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			mxCell.CreateAttr("vertex", "1")
@@ -427,6 +429,7 @@ func Mapper() {
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
 			globalID++
+
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			mxCell.CreateAttr("vertex", "1")
@@ -581,6 +584,8 @@ func Mapper() {
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			globalID++
+
 			mxCell.CreateAttr("value", resourceType)
 			mxCell.CreateAttr("vertex", fmt.Sprint(1))
 			mxCell.CreateAttr("style", fmt.Sprint(utility.LookupZone(parser.T.Resources[i].Name)))
@@ -591,8 +596,6 @@ func Mapper() {
 			mxGeometry.CreateAttr("width", "160")
 			mxGeometry.CreateAttr("height", "120")
 			mxGeometry.CreateAttr("as", "geometry")
-
-			globalID++
 
 		/****************************************************************************************************/
 
@@ -617,7 +620,7 @@ func Mapper() {
 
 		elementID++
 	}
-	
+
 	// iterate through all resources
 	for r := 0; r < len(parser.T.Resources); r++ {
 
@@ -627,15 +630,18 @@ func Mapper() {
 			// iterate through all dependencies of each instance
 			for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//************************************************************************************************//
+//************************************************************************************************//
 				// save dependency
 				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
 				dependencyName := strings.Split(resourceName, ".")
 
-				//****************************************************************************************//
+				//********************************************************************************************************************************//
 				// testing outputs
 				// fmt.Println("Parent Resource Name : ", Elements[r].Name, Elements[r].HiddenId, Elements[r].XPosCenter, Elements[r].YPosCenter)
 				// fmt.Println("Dependency Name : ", dependencyName[1], resourceName)
-				//****************************************************************************************//
+				//********************************************************************************************************************************//
 
 				ctr := 0
 				for range Elements {
@@ -655,14 +661,17 @@ func Mapper() {
 						// fmt.Println(Elements[ctr].Name, " is located at (", Elements[ctr].XPosCenter, ",", Elements[ctr].YPosCenter, ")")
 						// fmt.Println(Elements[r].Name, "'s ID is ", Elements[r].HiddenId)
 						// fmt.Println(Elements[ctr].Name, "'s ID is ", Elements[ctr].HiddenId)
+//************************************************************************************************//
+//************************************************************************************************//
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 						/*** CREATE XML ELEMENT FOR ARROW TO CONNECT DEPENDENCIES ***/
 
 						mxCell = root.CreateElement("mxCell")
 						mxCell.CreateAttr("id", fmt.Sprint(globalID))
-						mxCell.CreateAttr("parent", fmt.Sprint(1))
-						
+						mxCell.CreateAttr("parent", fmt.Sprint(1))						
 						globalID++
+
 						mxCell.CreateAttr("value", "")
 						mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
 						mxCell.CreateAttr("edge", "1")
@@ -683,13 +692,12 @@ func Mapper() {
 						mxPoint.CreateAttr("y", fmt.Sprint(Elements[ctr].YPosCenter))
 						mxPoint.CreateAttr("as", "targetPoint")
 
-						// Creating ArrowNavigator for Validator
 						var tmp = new(relationNavigator)
 						tmp.ArrowID = globalID - 1
 						tmp.SourceID = Elements[r].HiddenId
-						tmp.TargetID = Elements[ctr].HiddenId
 						tmp.XPosSource = Elements[r].XPosCenter
 						tmp.YPosSource = Elements[r].YPosCenter
+						tmp.TargetID = Elements[ctr].HiddenId
 						tmp.XPosTarget = Elements[ctr].XPosCenter
 						tmp.YPosTarget = Elements[ctr].YPosCenter
 						Arrows = append(Arrows, *tmp)
@@ -700,7 +708,6 @@ func Mapper() {
 			}
 		}
 	}
-	fmt.Println("x", nameDependencyMap)
 
 	/*** PRINT TO THE terraform.drawio FILE ***/
 
@@ -715,18 +722,18 @@ func Mapper() {
 
 func coordinateFinder() (int, int) {
 
-	// offset objects by 50
-	offsetX := shapeWidth * 2
-	offsetY := shapeHeight * 2
+	// offset objects by shapeWidth, shapeHeight
+	xOffset := shapeWidth * 2
+	yOffset := shapeHeight * 2
 
 	// set objects (x,y) position using previously defined offset
 	// first fill out row (left -> right), then move to new row
-	if (xPos + offsetX + shapeWidth) > globalXBound {
+	if (xPos + xOffset + shapeWidth) > globalXBound {
 		xPos = 50
-		yPos += offsetY
+		yPos += yOffset
 		return xPos, yPos
 	} else {
-		xPos += offsetX
+		xPos += xOffset
 		return xPos, yPos
 	}
 }

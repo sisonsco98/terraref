@@ -64,6 +64,7 @@ func Validator() {
 					// NEED BENDING, target is not directly above / below source
 					// [source]-x-[target]
 
+					fmt.Println(arrow.XPosSource, arrow.XPosTarget)
 					if (arrow.XPosSource == 50 + slice.Width / 2) {
 						// left row, bend left
 						newX = arrow.XPosSource - slice.Width / 2 - 25

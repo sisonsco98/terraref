@@ -193,14 +193,14 @@ func Mapper() {
 
 	}
 
-	/*** REORDERING RESOURCES BASED ON NUMBER OF DEPENDENTS ***/
+	// /*** REORDERING RESOURCES BASED ON NUMBER OF DEPENDENTS ***/
 
-	// iterate through each resource
-	for r := 0; r < len(parser.T.Resources); r++ {
+	// // iterate through each resource
+	// for r := 0; r < len(parser.T.Resources); r++ {
 
-		// ???
+	// 	// ???
 		
-	}
+	// }
 
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
@@ -247,7 +247,8 @@ func Mapper() {
 		resourceName := parser.T.Resources[i].Instances[0].Attributes.Name
 
 		// place elements on grid where an elements x position corresponds to number of dependencies
-		xLocation, yLocation := grid[numDependents[i] + (len(parser.T.Resources) * i)].x, grid[numDependents[i] + (len(parser.T.Resources) * i)].y
+		currentRow, currentCol := i, numDependents[i]
+		xLocation, yLocation := grid[currentCol + (len(parser.T.Resources) * currentRow)].x, grid[currentCol + (len(parser.T.Resources) * currentRow)].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 

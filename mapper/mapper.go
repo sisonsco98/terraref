@@ -71,7 +71,7 @@ func Mapper() {
 	// keep open
 	defer outFile.Close()
 
-	/*** CREATE GRID FOR PLACING ELEMENTS ***/
+	/*** CREATE GRID (numResources x numResources) FOR PLACING ELEMENTS ***/
 
 	// elements to be placed on the (x, y) locations on the grid
 	type location struct {
@@ -84,19 +84,11 @@ func Mapper() {
 	var numDependents []int
 	var numDependencies []int
 
-	// determine the dimensions of the grid
-	var rows, cols int
-	cols = ((globalXBound - 50) / 250) / 2 + (((globalXBound - 50) / 250) % 2)
-	if (len(parser.T.Resources) % 2 == 0) {
-		rows = len(parser.T.Resources) / cols
-	} else {
-		rows = len(parser.T.Resources) / cols + 1
-	}
-
-	// allocate the (x, y) locations on the grid using coordinateFinder
+	// allocate the (x, y) locations on the grid
+	var rows, cols = len(parser.T.Resources), len(parser.T.Resources)
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
-			tempX, tempY := coordinateFinder()
+			tempX, tempY := 50 + (shapeWidth * 2 * j), 50 + (shapeHeight * 2 * i)
 			tempObj := location{tempX, tempY}
 			grid = append(grid, tempObj)
 			numDependents = append(numDependents, 0)
@@ -110,15 +102,11 @@ func Mapper() {
 	fmt.Println("/**************************************************/")
 	fmt.Println()
 
-	// display the grid locations and the element currently in each location
-	index := 0
+	// display the grid locations
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
-			if index < len(parser.T.Resources) {
-				fmt.Print("Element ", index, ": (", grid[index].x, ", ", grid[index].y, ")")
-				fmt.Print("\t")
-				index++
-			}
+			fmt.Print("(", grid[j + (i * len(parser.T.Resources))].x, ", ", grid[j + (i * len(parser.T.Resources))].y, ")")
+			fmt.Print("\t")
 		}
 		fmt.Println()
 	}
@@ -205,6 +193,15 @@ func Mapper() {
 
 	}
 
+	/*** REORDERING RESOURCES BASED ON NUMBER OF DEPENDENTS ***/
+
+	// iterate through each resource
+	for r := 0; r < len(parser.T.Resources); r++ {
+
+		// ???
+		
+	}
+
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
 	xml.CreateProcInst("xml", `version="1.0" encoding="UTF-8"`)
@@ -249,8 +246,8 @@ func Mapper() {
 		// (5) use specific resource name for main text (ex: example-storage-bucket)
 		resourceName := parser.T.Resources[i].Instances[0].Attributes.Name
 
-		// set current elements location based off grid (x, y) locations
-		var xLocation, yLocation = grid[i].x, grid[i].y
+		// place elements on grid where an elements x position corresponds to number of dependencies
+		xLocation, yLocation := grid[numDependents[i] + (len(parser.T.Resources) * i)].x, grid[numDependents[i] + (len(parser.T.Resources) * i)].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 
@@ -737,24 +734,4 @@ func Mapper() {
 
 	// close file
 	outFile.Close()
-}
-
-/*** RETURNS COORDINATES FOR PLACING OBJECTS ***/
-
-func coordinateFinder() (int, int) {
-
-	// offset objects by shapeWidth, shapeHeight
-	xOffset := shapeWidth * 2
-	yOffset := shapeHeight * 2
-
-	// set objects (x,y) position using previously defined offset
-	// first fill out row (left -> right), then move to new row
-	if (xPos + xOffset + shapeWidth) > globalXBound {
-		xPos = 50
-		yPos += yOffset
-		return xPos, yPos
-	} else {
-		xPos += xOffset
-		return xPos, yPos
-	}
 }

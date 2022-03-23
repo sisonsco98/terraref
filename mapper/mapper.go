@@ -82,6 +82,7 @@ func Mapper() {
 	// dependency map								////////////////////////////////////////////////////////////////////////////////////////////////////
 	nameDependencyMap := make(map[string]int)		////////////////////////////////////////////////////////////////////////////////////////////////////
 	var dependencyOccurences []int					////////////////////////////////////////////////////////////////////////////////////////////////////
+	var dependents []int							////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// determine the dimensions of the grid
 	var rows, cols int
@@ -99,11 +100,17 @@ func Mapper() {
 			tempObj := location{tempX, tempY}
 			grid = append(grid, tempObj)
 			dependencyOccurences = append(dependencyOccurences, 0)	////////////////////////////////////////////////////////////////////////////////////////////////////
+			dependents = append(dependents, 0)						////////////////////////////////////////////////////////////////////////////////////////////////////
 		}
 	}
 
-	// display the grid locations and the element currently in each location
 	fmt.Println()
+	fmt.Println("/******************************/")
+	fmt.Println("/*** CURRENT GRID LOCATIONS ***/")
+	fmt.Println("/******************************/")
+	fmt.Println()
+
+	// display the grid locations and the element currently in each location
 	index := 0
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
@@ -115,20 +122,18 @@ func Mapper() {
 		}
 		fmt.Println()
 	}
-	fmt.Println()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //************************************************************************************************//
 //************************************************************************************************//
-	// // iterate through all resources and grab unusual ones.			////////////////////////////////////////////////////////////////////////////////////////////////////
-	// for i := 0; i < len(parser.T.Resources); i++ {					////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 	if parser.T.Resources[i].Name != "default" {				////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 		fmt.Println("Found an unusual resource called", parser.T.Resources[i].Name, "at index ", i )	////////////////////////////////////////////////////////////
-	// 		nameDependencyMap[parser.T.Resources[i].Name] = i		////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 	}
-	// }
+	// iterate through all resources and grab unusual ones.			////////////////////////////////////////////////////////////////////////////////////////////////////
+	for i := 0; i < len(parser.T.Resources); i++ {					////////////////////////////////////////////////////////////////////////////////////////////////////
+		if parser.T.Resources[i].Name != "default" {				////////////////////////////////////////////////////////////////////////////////////////////////////
+			fmt.Println("Found an unusual resource called", parser.T.Resources[i].Name, "at index ", i )	////////////////////////////////////////////////////////////
+			nameDependencyMap[parser.T.Resources[i].Name] = i		////////////////////////////////////////////////////////////////////////////////////////////////////
+		}
+	}
 
-	fmt.Println("~Calculating free spaces needed~")
 	// iterate through all resources and fetch COUNT.
 	for r := 0; r < len(parser.T.Resources); r++ {
 
@@ -141,19 +146,57 @@ func Mapper() {
 				// save dependency
 				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
 				dependencyName := strings.Split(resourceName, ".")
-
-				// testing outputs
-				// fmt.Println("Parent Resource Name : ", Elements[r].Name)
-				// fmt.Println("Dependency Name : ", dependencyName[1])
-
 				dependencyIndex := nameDependencyMap[dependencyName[1]]
 
-				fmt.Println("Element", r, "needs element", dependencyIndex, "as a dependency.")
+				fmt.Println("resourceName:", resourceName)
+				fmt.Println("dependencyName:", dependencyName)
+				fmt.Println("dependencyIndex:", dependencyIndex)
 
-				dependencyOccurences[dependencyIndex] += 1
+				dependencyOccurences[dependencyIndex] += 1		////////////////////////////////////////////////////////////////////////////////////////////////////
+				dependents[r] += 1								////////////////////////////////////////////////////////////////////////////////////////////////////
+
 			}
+
 		}
+
 	}
+
+	fmt.Println()
+	fmt.Println("/******************************/")
+	fmt.Println("/***  ELEMENT DEPENDENCIES  ***/")
+	fmt.Println("/******************************/")
+	fmt.Println()
+
+	for resource := 0; resource < len(parser.T.Resources); resource++ {
+
+		fmt.Print("\t", dependencyOccurences[resource], " elements are dependent on Element ", resource)
+		fmt.Print("\t\t", "Element ", resource, " has ", dependents[resource], " dependencies")
+		fmt.Println()
+
+		// for r := 0; r < len(parser.T.Resources); r++ {
+		// 	for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
+		// 		for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
+
+		// 			if (d != resource) {
+		// 				fmt.Println(r, "r")
+		// 			}
+						
+		// 			dependency := parser.T.Resources[r].Instances[i].Dependencies[d]
+		// 			dependencyName := strings.Split(dependency, ".")
+		// 			dependencyIndex = nameDependencyMap[dependencyName[1]]
+		// 		}
+		// 	}
+		// }
+		// fmt.Println("\t", dependencyOccurences[resource], "elements are dependent on Element", resource, "(", dependencyName, ")")
+	}
+	fmt.Println()
+
+	// for i := 0; i < len(parser.T.Resources); i++ {
+	// 	if dependents[i] != 0 {
+	// 		fmt.Println("\t", "Element", i, "has", dependents[i], "dependencies")
+	// 	}
+	// }
+	fmt.Println()
 //************************************************************************************************//
 //************************************************************************************************//
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -652,7 +695,7 @@ func Mapper() {
 						//****************************************************************************************//
 						//*** INSERT COUNTER FOR NUMBER OF TIMES AN ELEMENT IS A DEPENDENCY OF ANOTHER ELEMENT ***//
 						//****************************************************************************************//
-						fmt.Println(Elements[ctr].Name)
+						// fmt.Println(Elements[ctr].Name)
 
 						// testing outputs
 						// fmt.Println("We've matched the elements.")

@@ -2,17 +2,19 @@ package mapper
 
 import (
 	"fmt"
-	"log" // logging errors
-	"os"  // create and open files
+	"log"			// logging errors
+	"os"			// create and open files
 	"strings"
 
 	"KSCD/libraries/providers/GCP/utility" //utility.go
 	"KSCD/parser"                          // parser.go
 
-	"github.com/beevik/etree" // creating xml file (go get github.com/beevik/etree)
+	// creating xml file (go get github.com/beevik/etree)
+	"github.com/beevik/etree"
 )
 
-// to access (x,y) position of elements on map
+/*** GLOBAL STRUCTS TO STORE AND ACCESS INFO ABOUT ELEMENTS AND ARROWS ***/
+
 var terraNav terraNavigator
 
 type terraNavigator struct {
@@ -34,8 +36,14 @@ type relationNavigator struct {
 	YPosSource int
 	XPosTarget int
 	YPosTarget int
-	HasMoved   bool
 }
+
+/*** GLOBAL SLICES FOR ELEMENTS AND ARROWS ***/
+
+var Elements []terraNavigator
+var Arrows []relationNavigator
+
+/*** CREATE GLOBAL XML TREE ***/
 
 var xml = etree.NewDocument()
 
@@ -44,35 +52,14 @@ var globalID int = 0
 var elementID int = 0
 
 // dimensions of diagram
-var globalXBound = 850
-var globalYBound = 1100
+var globalXBound, globalYBound = 850, 1100
+
+// dimensions of element (normal card)
+var shapeWidth, shapeHeight = 250, 60
 
 // starting (x,y) position
-var currentX = 50 - (250 * 2)
-var currentY = 50
+var xPos, yPos = 50 - (2 * shapeWidth), 50
 
-// slice (array?) of elements
-var Pizza []terraNavigator
-
-var ArrowRelationships []relationNavigator
-
-type location struct {
-	x int
-	y int
-}
-
-// Grid is a variably sized array containing the x, y coordinates for the needed number of elements.
-// Please keep in mind this is a 1 dimensional array - so there's no natural distinction between rows.
-var grid []location
-
-// Grid should be constant - we shouldn't be modifying that. It's just a reference.
-// calculatedLocations is an int array where calculatedLocations[i] = x, where i is the resource index
-// and x is the grid[x] where we're placing the elements.
-
-// A proper call might look like tempX, tempY := grid[calculatedLocations[i]], where i is the index.
-var calculatedLocations []int // What spot on the grid is it assigned to?
-
-var nameList []string
 
 func Mapper() {
 
@@ -87,98 +74,139 @@ func Mapper() {
 	// keep open
 	defer outFile.Close()
 
+	/*** CREATE GRID FOR PLACING ELEMENTS ***/
+
+	// elements to be placed on the (x, y) locations on the grid
+	type location struct {
+		x, y int
+	}
+	var grid []location
+
 	// dependency map
 	nameDependencyMap := make(map[string]int)
-	var dependencyOccurences []int
 
-	//Calculate the boundaries in the x and y direction for the purposes of establishing the grid.
-	xItemLimit := ((globalXBound-50)/250)/2 + (((globalXBound - 50) / 250) % 2)
-	yItemLimit := len(parser.T.Resources) / xItemLimit
+	var numDependents []int
+	var numDependencies []int
 
-	//We're allocating coordinates on the grid based on the above parameters.
-	for i := 0; i < yItemLimit; i++ {
-		for j := 0; j < xItemLimit; j++ {
+	// determine the dimensions of the grid
+	var rows, cols int
+	cols = ((globalXBound - 50) / 250) / 2 + (((globalXBound - 50) / 250) % 2)
+	if (len(parser.T.Resources) % 2 == 0) {
+		rows = len(parser.T.Resources) / cols
+	} else {
+		rows = len(parser.T.Resources) / cols + 1
+	}
+
+	// allocate the (x, y) locations on the grid using coordinateFinder
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
 			tempX, tempY := coordinateFinder()
 			tempObj := location{tempX, tempY}
 			grid = append(grid, tempObj)
-			calculatedLocations = append(calculatedLocations, 999)
-			dependencyOccurences = append(dependencyOccurences, 0)
+			numDependents = append(numDependents, 0)
+			numDependencies = append(numDependencies, 0)
 		}
 	}
 
-	// Display the grid - this should display coordinates in columns and rows based on their actual position.
-	for i := 0; i < len(parser.T.Resources)-1; i++ {
-		if i%xItemLimit != 0 {
-			fmt.Println(grid[i].x, grid[i].y)
-		} else {
-			fmt.Print(grid[i].x, grid[i].y)
-			fmt.Print("\t\t")
+	fmt.Println()
+	fmt.Println("/**************************************************/")
+	fmt.Println("/*                 GRID LOCATIONS                 */")
+	fmt.Println("/**************************************************/")
+	fmt.Println()
+
+	// display the grid locations and the element currently in each location
+	index := 0
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
+			if index < len(parser.T.Resources) {
+				fmt.Print("Element ", index, ": (", grid[index].x, ", ", grid[index].y, ")")
+				fmt.Print("\t")
+				index++
+			}
 		}
+		fmt.Println()
 	}
-	fmt.Println()
 
-	// Display it, but with more detail.
-	for i := 0; i < len(parser.T.Resources)-1; i++ {
-		fmt.Println("Element ", i, " is located at ", grid[i].x, grid[i].y)
-	}
-	fmt.Println()
-
-	// iterate through all resources and grab unusual ones.
+	// iterate through all resources and store dependencies (non default)
 	for i := 0; i < len(parser.T.Resources); i++ {
 		if parser.T.Resources[i].Name != "default" {
-			fmt.Println("Found an unusual resource called", parser.T.Resources[i].Name, "at index ", i)
+
 			nameDependencyMap[parser.T.Resources[i].Name] = i
 		}
 	}
 
-	fmt.Println("~Calculating free spaces needed~")
+	fmt.Println()
+	fmt.Println("/**************************************************/")
+	fmt.Println("/*                  DEPENDENCIES                  */")
+	fmt.Println("/**************************************************/")
+	fmt.Println()
 
-	var containedProjects []string
-	subnetNumber := 1
 
-	// Iterate through all resources and fetch COUNT. and
+	/*** FOR EACH RESOURCE, COUNT THE NUMBER OF DEPENDENCIES / DEPENDENTS  ***/
+
+	var dependency, resourceName, rName string
+	var dependencyName []string
+	var dependencyIndex int
+
+	// iterate through each resource -> instance -> dependency
 	for r := 0; r < len(parser.T.Resources); r++ {
-
-		// iterate through all instances of resource
 		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
-
-			// iterate through all dependencies of each instance
 			for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
 
-				// save dependency
-				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
-				dependencyName := strings.Split(resourceName, ".")
+				// save any dependencies
+				dependency = parser.T.Resources[r].Instances[i].Dependencies[d]
+				dependencyName = strings.Split(dependency, ".")
+				dependencyIndex = nameDependencyMap[dependencyName[1]]
 
-				// testing outputs
-				// fmt.Println("Parent Resource Name : ", Pizza[r].Name)
-				// fmt.Println("Dependency Name : ", dependencyName[1])
+				// increment numDependencies and numDependents
+				numDependencies[r] += 1
+				numDependents[dependencyIndex] += 1
 
-				dependencyIndex := nameDependencyMap[dependencyName[1]]
-
-				fmt.Println("Element", r, "needs element", dependencyIndex, "as a dependency.")
-
-				dependencyOccurences[dependencyIndex] += 1
 			}
 
-			// Finding dinstinct projects in the file, then creating zones for them
-			projectName := parser.T.Resources[r].Instances[i].Attributes.Project
+	/*** FOR EACH RESOURCE, FIND ITS DEPENDENCIES AND DEPENDENTS ***/
 
-			// If does not exist, add into list
-			if doesProjectExist(containedProjects, projectName) == false {
-				containedProjects = append(containedProjects, projectName)
+	// iterate through each resource
+	for r := 0; r < len(parser.T.Resources); r++ {
+
+		// find and print the index and name of each resource that is a dependency of the current element
+		fmt.Print("Element ", r, " has the ", numDependencies[r], " dependencies: \t")
+		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
+			if len(parser.T.Resources[r].Instances[i].Dependencies) > 0 {
+				for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
+					dependency = parser.T.Resources[r].Instances[i].Dependencies[d]
+					dependencyName = strings.Split(dependency, ".")
+					dependencyIndex = nameDependencyMap[dependencyName[1]]
+					fmt.Print(dependencyIndex, " (", dependencyName[0], ") / ")
+				}
 			}
-
-			// Checking to see if the project is part of a subnetwork
-			if strings.Contains(parser.T.Resources[r].Instances[i].Attributes.ID, "subnet") == true {
-				containedProjects = append(containedProjects, fmt.Sprint("subnet ", subnetNumber))
-				subnetNumber++
-				// TODO: This isnt necessarily correct, but cant fix until we add
-			}
-
 		}
-	}
+		fmt.Println()
 
-	fmt.Println("Contained Projects: ", containedProjects)
+		// find and print the index and name of each resource which has the current element as a dependency
+		fmt.Print(numDependents[r], " elements are dependent on Element ", r, ": \t")
+		if (numDependents[r] > 0) {
+			rName = parser.T.Resources[r].Name
+			for resource := 0; resource < len(parser.T.Resources); resource++ {
+				resourceName = parser.T.Resources[resource].Instances[0].Attributes.Name
+				for i := 0; i < len(parser.T.Resources[resource].Instances); i++ {
+					for d := 0; d < len(parser.T.Resources[resource].Instances[i].Dependencies); d++ {
+						if len(parser.T.Resources[resource].Instances[i].Dependencies) > 0 {
+							dependency = parser.T.Resources[resource].Instances[i].Dependencies[d]
+							dependencyName = strings.Split(dependency, ".")
+							dependencyIndex = nameDependencyMap[dependencyName[1]]
+							if rName == dependencyName[1] {
+								fmt.Print(resource, " (", resourceName, ") / ")
+							}
+						}
+					}
+				}
+			}
+		}
+		fmt.Println()
+		fmt.Println()
+
+	}
 
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
@@ -193,12 +221,12 @@ func Mapper() {
 
 	mxCell := root.CreateElement("mxCell")
 	mxCell.CreateAttr("id", fmt.Sprint(globalID))
-	globalID = globalID + 1
+	globalID++
 
 	mxCell = root.CreateElement("mxCell")
 	mxCell.CreateAttr("id", fmt.Sprint(globalID))
-	mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
-	globalID = globalID + 1
+	mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
+	globalID++
 
 	/**		CREATING PROJECT REGIONS		**/
 	projectX := 30
@@ -309,37 +337,30 @@ func Mapper() {
 
 	/* ITERATE THROUGH RESOURCES */
 
-	test := utility.LookupZone("User 1 (Default)")
-	fmt.Println(test)
-
 	for i := 0; i < len(parser.T.Resources); i++ {
 
-		// (1) store resource type (ex: google_api_gateway_gateway)
+		// (1) store resource type (ex: google_storage_bucket)
 		resourceType := parser.T.Resources[i].Type
 
-		// (2) use resource type to lookup the draw.io name (ex: Gateway)
-		objectName := utility.LookupName(resourceType)
-
-		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.gateway)
-		objectShape := utility.LookupShape(objectName)
-
-		// (4) use object name to lookup the correct case of creating the draw.io shape
-		t := utility.LookupCase(objectName)
-
-		// (5) use specific resource name for main text
-		resourceName := parser.T.Resources[i].Instances[0].Attributes.Name
-
 		if parser.T.Resources[i].Name != "default" {
+			// store the name and id of dependency elements
 			nameDependencyMap[parser.T.Resources[i].Name] = elementID
 		}
 
-		// (5) Grab the object's name in case it's on a dependency.
+		// (2) use resource type to lookup the draw.io name (ex: Bucket)
+		objectName := utility.LookupName(resourceType)
 
-		// ???
+		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.bucket)
+		objectShape := utility.LookupShape(objectName)
 
-		// set object's width, height and (x,y) location
-		var shapeWidth, shapeHeight = utility.Dimensions(t)
-		var xLocation, yLocation = coordinateFinder()
+		// (4) use object name to lookup the correct case of creating the draw.io shape (ex: 1)
+		t := utility.LookupCase(objectName)
+
+		// (5) use specific resource name for main text (ex: example-storage-bucket)
+		resourceName := parser.T.Resources[i].Instances[0].Attributes.Name
+
+		// set current elements location based off grid (x, y) locations
+		var xLocation, yLocation = grid[i].x, grid[i].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 
@@ -355,8 +376,9 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
-			globalID = globalID + 1
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
+			globalID++
+
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
 			mxCell.CreateAttr("edge", "1")
@@ -384,7 +406,8 @@ func Mapper() {
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
-			globalID = globalID + 1
+			globalID++
+
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			mxCell.CreateAttr("vertex", "1")
@@ -398,8 +421,8 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
-			globalID = globalID + 1
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
+			globalID++
 
 			if len(resourceName) > 0 {
 				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
@@ -407,7 +430,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -429,8 +452,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
 
@@ -441,7 +463,7 @@ func Mapper() {
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
-			globalID = globalID + 1
+			globalID++
 
 			if len(resourceName) > 0 {
 				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
@@ -449,7 +471,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprintln("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprintln("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -461,10 +483,11 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
-			globalID = globalID + 1
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
+			globalID++
+
 			mxCell.CreateAttr("value", "")
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -486,8 +509,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
 
@@ -509,7 +531,8 @@ func Mapper() {
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
-			globalID = globalID + 1
+			globalID++
+
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			mxCell.CreateAttr("vertex", "1")
@@ -523,8 +546,8 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
-			globalID = globalID + 1
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
+			globalID++
 
 			if len(resourceName) > 0 {
 				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
@@ -532,7 +555,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -554,9 +577,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
-			tmp.ObjectShape = objectShape
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
 
@@ -567,7 +588,8 @@ func Mapper() {
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
-			globalID = globalID + 1
+			globalID++
+
 			mxCell.CreateAttr("value", "")
 			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			mxCell.CreateAttr("vertex", "1")
@@ -581,8 +603,8 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
-			globalID = globalID + 1
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
+			globalID++
 
 			if len(resourceName) > 0 {
 				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
@@ -590,7 +612,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -611,8 +633,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
 
@@ -623,7 +644,7 @@ func Mapper() {
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
-			globalID = globalID + 1
+			globalID++
 
 			if len(resourceName) > 0 {
 				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
@@ -631,7 +652,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -648,15 +669,14 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
 		case 6: // Cloud Scheduler
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
-			globalID = globalID + 1
+			globalID++
 
 			if len(resourceName) > 0 {
 				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
@@ -664,7 +684,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -681,8 +701,7 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
 
@@ -693,7 +712,7 @@ func Mapper() {
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
-			globalID = globalID + 1
+			globalID++
 
 			if len(resourceName) > 0 {
 				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
@@ -701,7 +720,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -718,19 +737,19 @@ func Mapper() {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
-			tmp.Project = parser.T.Resources[i].Instances[0].Attributes.Project
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
-		//ID, Value, Style, Vertex, Parent
 		case 8:
+
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
-			mxCell.CreateAttr("value", resourceType) //?
+			globalID++
+
+			mxCell.CreateAttr("value", resourceType)
 			mxCell.CreateAttr("vertex", fmt.Sprint(1))
 			mxCell.CreateAttr("style", fmt.Sprint(utility.LookupZone(parser.T.Resources[i].Name)))
 
-			//x, y, wid, hei, as
 			mxGeometry := mxCell.CreateElement("mxGeometry")
 			mxGeometry.CreateAttr("x", "160")
 			mxGeometry.CreateAttr("y", "120")
@@ -738,7 +757,6 @@ func Mapper() {
 			mxGeometry.CreateAttr("height", "120")
 			mxGeometry.CreateAttr("as", "geometry")
 
-			globalID = globalID + 1
 		/****************************************************************************************************/
 
 		/*** GCP / EXPANDED PRODUCT CARDS ***/
@@ -777,62 +795,48 @@ func Mapper() {
 				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
 				dependencyName := strings.Split(resourceName, ".")
 
-				// testing outputs
-				// fmt.Println("Parent Resource Name : ", Pizza[r].Name)
-				// fmt.Println("Dependency Name : ", dependencyName[1])
+				/*** CREATE XML ELEMENT FOR ARROW TO CONNECT DEPENDENCIES ***/
 
 				ctr := 0
-				for range Pizza {
+				for range Elements {
 
-					// dependencyName[1] since we want the second name
-					if Pizza[ctr].Name == dependencyName[1] {
-
-						// testing outputs
-						// fmt.Println("We've matched the elements.")
-						// fmt.Println("We need to draw an arrow from element ", Pizza[r].Name, " to element ", Pizza[ctr].Name)
-						// fmt.Println(Pizza[r].Name, " is located at (", Pizza[r].XPosCenter, ",", Pizza[r].YPosCenter, ")")
-						// fmt.Println(Pizza[ctr].Name, " is located at (", Pizza[ctr].XPosCenter, ",", Pizza[ctr].YPosCenter, ")")
-						// fmt.Println(Pizza[r].Name, "'s ID is ", Pizza[r].HiddenId)
-						// fmt.Println(Pizza[ctr].Name, "'s ID is ", Pizza[ctr].HiddenId)
-
-						/*** CREATE XML ELEMENT FOR ARROW TO CONNECT DEPENDENCIES ***/
+					// find elements that are dependencies
+					if Elements[ctr].Name == dependencyName[1] {
 
 						mxCell = root.CreateElement("mxCell")
 						mxCell.CreateAttr("id", fmt.Sprint(globalID))
-						mxCell.CreateAttr("parent", fmt.Sprint(1))
-						// fmt.Println(mxCell.GetPath())
-						globalID = globalID + 1
+						mxCell.CreateAttr("parent", fmt.Sprint(1))						
+						globalID++
+
 						mxCell.CreateAttr("value", "")
 						mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
 						mxCell.CreateAttr("edge", "1")
-						mxCell.CreateAttr("target", fmt.Sprintf("%d", Pizza[ctr].HiddenId))
-						mxCell.CreateAttr("source", fmt.Sprintf("%d", Pizza[r].HiddenId))
+						mxCell.CreateAttr("target", fmt.Sprintf("%d", Elements[ctr].HiddenId))
+						mxCell.CreateAttr("source", fmt.Sprintf("%d", Elements[r].HiddenId))
 
 						mxGeometry := mxCell.CreateElement("mxGeometry")
 						mxGeometry.CreateAttr("relative", "1")
 						mxGeometry.CreateAttr("as", "geometry")
 
 						mxPoint := mxGeometry.CreateElement("mxPoint")
-						mxPoint.CreateAttr("x", fmt.Sprint(Pizza[r].XPosCenter))
-						mxPoint.CreateAttr("y", fmt.Sprint(Pizza[r].YPosCenter))
+						mxPoint.CreateAttr("x", fmt.Sprint(Elements[r].XPosCenter))
+						mxPoint.CreateAttr("y", fmt.Sprint(Elements[r].YPosCenter))
 						mxPoint.CreateAttr("as", "sourcePoint")
 
 						mxPoint = mxGeometry.CreateElement("mxPoint")
-						mxPoint.CreateAttr("x", fmt.Sprint(Pizza[ctr].XPosCenter))
-						mxPoint.CreateAttr("y", fmt.Sprint(Pizza[ctr].YPosCenter))
+						mxPoint.CreateAttr("x", fmt.Sprint(Elements[ctr].XPosCenter))
+						mxPoint.CreateAttr("y", fmt.Sprint(Elements[ctr].YPosCenter))
 						mxPoint.CreateAttr("as", "targetPoint")
 
-						// Creating ArrowNavigator for Validator
 						var tmp = new(relationNavigator)
 						tmp.ArrowID = globalID - 1
-						tmp.SourceID = Pizza[r].HiddenId
-						tmp.TargetID = Pizza[ctr].HiddenId
-						tmp.XPosSource = Pizza[r].XPosCenter
-						tmp.YPosSource = Pizza[r].YPosCenter
-						tmp.XPosTarget = Pizza[ctr].XPosCenter
-						tmp.YPosTarget = Pizza[ctr].YPosCenter
-						tmp.HasMoved = false
-						ArrowRelationships = append(ArrowRelationships, *tmp)
+						tmp.SourceID = Elements[r].HiddenId
+						tmp.XPosSource = Elements[r].XPosCenter
+						tmp.YPosSource = Elements[r].YPosCenter
+						tmp.TargetID = Elements[ctr].HiddenId
+						tmp.XPosTarget = Elements[ctr].XPosCenter
+						tmp.YPosTarget = Elements[ctr].YPosCenter
+						Arrows = append(Arrows, *tmp)
 					}
 
 					ctr++
@@ -846,11 +850,6 @@ func Mapper() {
 	xml.Indent(4)
 	xml.WriteToFile("terraform.drawio")
 
-	//	testing outputs
-	//	for key, element := range nameDependencyMap {
-	//		fmt.Println(key + " is the element with index " + fmt.Sprint(element))
-	//	}
-
 	// close file
 	outFile.Close()
 }
@@ -859,25 +858,20 @@ func Mapper() {
 
 func coordinateFinder() (int, int) {
 
-	// get shapeWidth and shapeHeight from libraries by class
-	var shapeWidth, shapeHeight = 250, 60
-
-	// offset objects by 50
-	offsetX := shapeWidth * 2
-	offsetY := shapeHeight * 2
+	// offset objects by shapeWidth, shapeHeight
+	xOffset := shapeWidth * 2
+	yOffset := shapeHeight * 2
 
 	// set objects (x,y) position using previously defined offset
 	// first fill out row (left -> right), then move to new row
-	if (currentX + offsetX + shapeWidth) > globalXBound {
-		//fmt.Sprint("The current X is ", currentX)
+	if (xPos + xOffset + shapeWidth) > globalXBound {
+		xPos = 50
+		yPos += yOffset
+		return xPos, yPos
 
-		currentX = 50
-		currentY += offsetY
-		return currentX, currentY
 	} else {
-
-		currentX += offsetX
-		return currentX, currentY
+		xPos += xOffset
+		return xPos, yPos
 	}
 }
 

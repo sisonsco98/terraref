@@ -1,21 +1,21 @@
 package parser
 
 import (
-	"encoding/json" // json.Unmarshal
 	"fmt"
-	"io/ioutil" // read files
-	"log"       // logging errors
-	"os"        // create and open files
-	"regexp"    // matching regex
+	"io/ioutil"		// read files
+	"log"			// logging errors
+	"os"			// create and open files
+	"encoding/json"	// json.Unmarshal
+	"regexp"		// matching regex
 )
 
-/*** GLOBAL SLICES FOR OUTPUTS AND PROVIDERS FROM THE terraform.tfstate FILE ***/
+/*** GLOBAL SLICES FOR OUTPUTS AND PROVIDERS FROM THE .tfstate FILE ***/
 
 var Outputs []string
 var Providers []string
 var Elements []string
 
-/*** STRUCTS USED TO UNMARSHAL THE terraform.tfstate FILE ***/
+/*** GLOBAL STRUCT USED TO UNMARSHAL THE .tfstate FILE ***/
 
 var T Terraform
 
@@ -35,18 +35,18 @@ type Terraform struct {
 	} `json:"resources"`
 }
 
-func Parser() {
+func Parser(filename string) {
 
-	/*** READ IN THE terraform.tfstate FILE (entire file) ***/
+	/*** READ IN THE .tfstate FILE (entire file) ***/
 
-	inFile, errRead := ioutil.ReadFile("shared_vpc.tfstate")
+	inFile, errRead := ioutil.ReadFile(filename)
 	// error reading file
 	if errRead != nil {
 		log.Println("Error reading file.", errRead)
 		os.Exit(1)
 	}
 
-	/*** UNMARSHAL THE terraform.tfstate FILE ***/
+	/*** UNMARSHAL THE .tfstate FILE ***/
 
 	// unmarshal "outputs" block and "resources" block
 	var outputBlock map[string]interface{}

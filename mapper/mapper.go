@@ -114,7 +114,7 @@ func Mapper(outputDestination string) {
 	// display the grid locations
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
-			fmt.Print("(", grid[j+(i*len(parser.T.Resources))].x, ", ", grid[j+(i*len(parser.T.Resources))].y, ")")
+			fmt.Print("(", grid[(i*len(parser.T.Resources))+j].x, ", ", grid[(i*len(parser.T.Resources))+j].y, ")")
 			fmt.Print("\t")
 		}
 		fmt.Println()
@@ -310,12 +310,13 @@ func Mapper(outputDestination string) {
 			mxCell.CreateAttr("vertex", "1")
 
 			// set current elements location based off grid (x, y) locations
+
 			currentRow, currentCol := len(parser.T.Resources), r
-			xLocation, yLocation := grid[currentCol+(len(parser.T.Resources)*currentRow)].x, grid[currentCol+(len(parser.T.Resources)*currentRow)].y
+			xLocation, yLocation := grid[(len(parser.T.Resources)*currentRow)+currentCol].x, grid[(len(parser.T.Resources)*currentRow)+currentCol].y
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(minX+xLocation-minX)) //
-			mxGeometry.CreateAttr("y", fmt.Sprint(minY+yLocation-minY)) //
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) //
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) //
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -357,11 +358,11 @@ func Mapper(outputDestination string) {
 
 			// set current elements location based off grid (x, y) locations
 			currentRow, currentCol := len(parser.T.Resources), r
-			xLocation, yLocation := grid[currentCol+(len(parser.T.Resources)*currentRow)].x, grid[currentCol+(len(parser.T.Resources)*currentRow)].y
+			xLocation, yLocation := grid[(len(parser.T.Resources)*currentRow)+currentCol].x, grid[(len(parser.T.Resources)*currentRow)+currentCol].y
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(minX+xLocation-minX)) //
-			mxGeometry.CreateAttr("y", fmt.Sprint(minY+yLocation-minY)) //
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) //
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) //
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -407,7 +408,7 @@ func Mapper(outputDestination string) {
 
 		// set current elements location based off grid (x, y) locations
 		currentRow, currentCol := i, numDependents[i]
-		xLocation, yLocation := grid[currentCol+(len(parser.T.Resources)*currentRow)].x, grid[currentCol+(len(parser.T.Resources)*currentRow)].y
+		xLocation, yLocation := grid[(len(parser.T.Resources)*currentRow)+currentCol].x, grid[(len(parser.T.Resources)*currentRow)+currentCol].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 
@@ -762,6 +763,7 @@ func Mapper(outputDestination string) {
 
 		case 7:
 
+			fmt.Println("hits for", parser.T.Resources[i].Name)
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
@@ -909,6 +911,7 @@ func Mapper(outputDestination string) {
 	outFile.Close()
 }
 
+// ********************************** LEGACY CODE, NOT SURE IF NEEDED *********************************//
 // ****************************************************************************************************//
 // ****************************************************************************************************//
 // ****************************************************************************************************//

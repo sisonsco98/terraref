@@ -42,6 +42,18 @@ func Validator(outputDestination string) {
 		os.Exit(1)
 	}
 
+	// Checking if there is an invalid shape, and if so remove it
+	for _, slice := range mapper.Elements {
+		if slice.ObjectShape == "shape=mxgraph.gcp2.blank" {
+			path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]", slice.HiddenId+2)
+			removeElement := xml.FindElement(path)
+			removeParent := removeElement.Parent()
+			removeParent.RemoveChildAt(slice.HiddenId + 10)
+			removeParent.RemoveChildAt(slice.HiddenId + 8)
+			fmt.Printf("ERROR: Element %s has either an invalid shape or is not implemented yet by terraref. Removing...\n", slice.Name)
+		}
+	}
+
 	// Checking for arrows overlapping boxes
 	// Goes through all the arrows existing
 	for _, arrow := range mapper.Arrows {

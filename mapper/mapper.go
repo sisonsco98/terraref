@@ -331,6 +331,7 @@ func Mapper(outputDestination string) {
 			tmp.Width = maxX
 			tmp.Height = maxY
 			tmp.Project = parser.T.Resources[r].Instances[0].Attributes.Project
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 			projectX = projectX + 550
@@ -379,6 +380,7 @@ func Mapper(outputDestination string) {
 			tmp.Width = maxX
 			tmp.Height = maxY
 			tmp.Project = parser.T.Resources[r].Instances[0].Attributes.Project
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 		}
 	}
@@ -511,6 +513,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
@@ -568,6 +571,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
@@ -636,6 +640,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
@@ -692,6 +697,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
@@ -728,6 +734,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		case 6: // Cloud Scheduler
@@ -760,6 +767,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
@@ -797,6 +805,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		case 8:

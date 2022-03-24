@@ -6,8 +6,8 @@ import (
 	"os"			// create and open files
 	"strings"
 
-	"KSCD/parser"
-	"KSCD/libraries/providers/GCP/utility"
+	"KSCD/libraries/providers/GCP/utility" //utility.go
+	"KSCD/parser"                          // parser.go
 
 	// creating xml file (go get github.com/beevik/etree)
 	"github.com/beevik/etree"
@@ -18,12 +18,14 @@ import (
 var terraNav terraNavigator
 
 type terraNavigator struct {
-	HiddenId   int
-	Name       string
-	XPosCenter int
-	YPosCenter int
-	Width      int
-	Height     int
+	HiddenId    int
+	Name        string
+	XPosCenter  int
+	YPosCenter  int
+	Width       int
+	Height      int
+	Project     string
+	ObjectShape string
 }
 
 type relationNavigator struct {
@@ -58,6 +60,7 @@ var shapeWidth, shapeHeight = 250, 60
 // starting (x,y) position
 var xPos, yPos = 50 - (2 * shapeWidth), 50
 
+
 func Mapper() {
 
 	/*** CREATE THE terraform.drawio FILE ***/
@@ -81,6 +84,7 @@ func Mapper() {
 
 	// dependency map
 	nameDependencyMap := make(map[string]int)
+
 	var numDependents []int
 	var numDependencies []int
 
@@ -126,6 +130,7 @@ func Mapper() {
 	// iterate through all resources and store dependencies (non default)
 	for i := 0; i < len(parser.T.Resources); i++ {
 		if parser.T.Resources[i].Name != "default" {
+
 			nameDependencyMap[parser.T.Resources[i].Name] = i
 		}
 	}
@@ -158,8 +163,6 @@ func Mapper() {
 				numDependents[dependencyIndex] += 1
 
 			}
-		}
-	}
 
 	/*** FOR EACH RESOURCE, FIND ITS DEPENDENCIES AND DEPENDENTS ***/
 
@@ -225,6 +228,113 @@ func Mapper() {
 	mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
 	globalID++
 
+	/**		CREATING PROJECT REGIONS		**/
+	projectX := 30
+	projectY := 350
+	subX := 30
+
+	// iterate through all resoureces
+	for r := 0; r < len(parser.T.Resources); r++ {
+
+		// (1) store resource type (ex: google_api_gateway_gateway)
+		resourceType := parser.T.Resources[r].Type
+
+		// (2) use resource type to lookup the draw.io name (ex: Gateway)
+		objectName := utility.LookupName(resourceType)
+
+		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.gateway)
+		objectShape := utility.LookupShape(objectName)
+
+		// (5) use specific resource name for main text
+		resourceName := parser.T.Resources[r].Instances[0].Attributes.Name
+
+		if parser.T.Resources[r].Name != "default" {
+			nameDependencyMap[parser.T.Resources[r].Name] = elementID
+		}
+
+		// if name is network, create project area
+		if parser.T.Resources[r].Name == "network" {
+
+			minX := projectX
+			minY := projectY
+			maxX := 375
+			maxY := minY + 100
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			globalID = globalID + 1
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", fmt.Sprint(minX))
+			mxGeometry.CreateAttr("y", fmt.Sprint(minY))
+			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
+			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
+			mxGeometry.CreateAttr("as", "geometry")
+
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[r].Name
+			tmp.HiddenId = globalID - 2
+			tmp.XPosCenter = minX + (maxX / 2)
+			tmp.YPosCenter = minY + (maxY / 2)
+			tmp.Width = maxX
+			tmp.Height = maxY
+			tmp.Project = parser.T.Resources[r].Instances[0].Attributes.Project
+			Pizza = append(Pizza, *tmp)
+
+			projectX = projectX + 500
+		}
+
+		// if name is subnetwork, create project area
+		if parser.T.Resources[r].Name == "subnetwork" {
+
+			minX := subX + 5
+			minY := projectY + 30
+			maxX := 350
+			maxY := projectY + 60
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			globalID = globalID + 1
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", fmt.Sprint(minX))
+			mxGeometry.CreateAttr("y", fmt.Sprint(minY))
+			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
+			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
+			mxGeometry.CreateAttr("as", "geometry")
+
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[r].Name
+			tmp.HiddenId = globalID - 2
+			tmp.XPosCenter = minX + (maxX / 2)
+			tmp.YPosCenter = minY + (maxY / 2)
+			tmp.Width = maxX
+			tmp.Height = maxY
+			tmp.Project = parser.T.Resources[r].Instances[0].Attributes.Project
+			Pizza = append(Pizza, *tmp)
+		}
+	}
+
 	/* ITERATE THROUGH RESOURCES */
 
 	for i := 0; i < len(parser.T.Resources); i++ {
@@ -253,6 +363,10 @@ func Mapper() {
 		var xLocation, yLocation = grid[i].x, grid[i].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
+
+		if parser.T.Resources[i].Name == "network" || parser.T.Resources[i].Name == "subnetwork" {
+			continue
+		}
 
 		switch t {
 
@@ -667,6 +781,7 @@ func Mapper() {
 		elementID++
 	}
 
+	/**		USING DEPENDENCIES TO GET ARROWS DRAWN		**/
 	// iterate through all resources
 	for r := 0; r < len(parser.T.Resources); r++ {
 
@@ -753,8 +868,22 @@ func coordinateFinder() (int, int) {
 		xPos = 50
 		yPos += yOffset
 		return xPos, yPos
+
 	} else {
 		xPos += xOffset
 		return xPos, yPos
 	}
+}
+
+/*** RETURNS WHETHER OR NOT A PROJECT EXISTS ***/
+
+func doesProjectExist(s []string, str string) bool {
+
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+
+	return false
 }

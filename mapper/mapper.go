@@ -66,11 +66,11 @@ var shapeWidth, shapeHeight = 250, 60
 // starting (x,y) position
 var xPos, yPos = 50 - (2 * shapeWidth), 50
 
-func Mapper() {
+func Mapper(outputDestination string) {
 
 	/*** CREATE THE terraform.drawio FILE ***/
 
-	outFile, errCreate := os.Create("terraform.drawio")
+	outFile, errCreate := os.Create(outputDestination)
 	// error creating file
 	if errCreate != nil {
 		log.Println("Error creating file.", errCreate)

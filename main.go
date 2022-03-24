@@ -10,19 +10,19 @@ import (
 
 func main() {
 	// Format -> Flag format, --argument, default value, help message.
-	fileLoc := flag.String("statefile", "terraform.tfstate", "Filename that we're parsing from." )
-
+	fileLoc := flag.String("in", "terraform.tfstate", "Filename that we're parsing from. This should be a .tfstate file." )
+	outfileLoc := flag.String("out", "out.drawio", "Destination for draw.io output file.")
 	// Parse the flag arguments~!
 	flag.Parse()
 
 	// Return value fileLoc is actually the address of a string variable with the value I'm looking for.
 	var fileLocation = *fileLoc
-
+	var outputLocation = *outfileLoc
 	// run parser.go
 	parser.Parser(fileLocation)
 
 	// run mapper.go
-	mapper.Mapper()
+	mapper.Mapper(outputLocation)
 
 	// run validator.go
 	validator.Validator()

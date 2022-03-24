@@ -1,7 +1,10 @@
 package utility
 
 import (
-	"KSCD/libraries/providers/GCP/GCPResources" //Additional resources
+	"KSCD/libraries/providers/GCP/GCPResources/Cases" //Additional resources
+	"KSCD/libraries/providers/GCP/GCPResources/Names"
+	"KSCD/libraries/providers/GCP/GCPResources/Shapes"
+	"KSCD/libraries/providers/GCP/GCPResources/Zones"
 	"fmt"
 	//"log"
 	"os"
@@ -9,9 +12,9 @@ import (
 )
 
 func LookupName(objectName string) string {
-	objectShape, success := GCPResources.NameMap[objectName]
+	objectShape, success := Names.NameMap[objectName]
 
-	if objectShape, success := GCPResources.NameMap[objectName]; success {
+	if objectShape, success := Names.NameMap[objectName]; success {
 		return objectShape
 	}
 
@@ -22,9 +25,9 @@ func LookupName(objectName string) string {
 }
 
 func LookupShape(resourceType string) string {
-	objectName, success := GCPResources.ShapeMap[resourceType]
+	objectName, success := Shapes.ShapeMap[resourceType]
 
-	if objectName, success := GCPResources.ShapeMap[resourceType]; success {
+	if objectName, success := Shapes.ShapeMap[resourceType]; success {
 		return objectName
 	}
 
@@ -35,8 +38,8 @@ func LookupShape(resourceType string) string {
 }
 
 func LookupZone(name string) string{
-	zone, success := GCPResources.ZoneMap[name]
-	if zone, success := GCPResources.ZoneMap[name]; success {
+	zone, success := Zones.ZoneMap[name]
+	if zone, success := Zones.ZoneMap[name]; success {
 		return zone
 	}
 
@@ -50,9 +53,9 @@ func LookupZone(name string) string{
 
 
 func LookupCase(name string) int {
-	value, success := GCPResources.CaseMap[name]
+	value, success := Cases.CaseMap[name]
 
-	if value, success := GCPResources.CaseMap[name]; success {
+	if value, success := Cases.CaseMap[name]; success {
 		return value
 	}
 

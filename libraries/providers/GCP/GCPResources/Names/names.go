@@ -13,7 +13,7 @@ var NameMap = map[string]string{
 
 	/****************************************************************************************************/
 
-	/*** ??? ***/
+	/*** GCP / SERVICES AND NETWORKING ***/
 
 	"google_app_engine_application":  "App Engine",
 	"google_storage_bucket":          "Bucket",

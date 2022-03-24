@@ -6,8 +6,8 @@ import (
 	"os"  // create and open files
 	"strings"
 
-	"KSCD/libraries/providers/GCP/utility" //utility.go
-	"KSCD/parser"                          // parser.go
+	"KSCD/libraries/providers/GCP/utility"
+	"KSCD/parser"
 
 	// creating xml file (go get github.com/beevik/etree)
 	"github.com/beevik/etree"
@@ -17,6 +17,9 @@ import (
 
 var terraNav terraNavigator
 
+// ****************************************************************************************************//
+// ****************************************************************************************************//
+// ****************************************************************************************************//
 type terraNavigator struct {
 	HiddenId    int
 	Name        string
@@ -27,6 +30,10 @@ type terraNavigator struct {
 	Project     string
 	ObjectShape string
 }
+
+// ****************************************************************************************************//
+// ****************************************************************************************************//
+// ****************************************************************************************************//
 
 type relationNavigator struct {
 	ArrowID    int
@@ -62,7 +69,7 @@ var xPos, yPos = 50 - (2 * shapeWidth), 50
 
 func Mapper(outputDestination string) {
 
-	/*** CREATE THE terraform.drawio FILE ***/
+	/*** CREATE THE outputDestination FILE ***/
 
 	outFile, errCreate := os.Create(outputDestination)
 	// error creating file
@@ -73,7 +80,7 @@ func Mapper(outputDestination string) {
 	// keep open
 	defer outFile.Close()
 
-	/*** CREATE GRID FOR PLACING ELEMENTS ***/
+	/*** CREATE GRID (numResources x numResources) FOR PLACING ELEMENTS ***/
 
 	// elements to be placed on the (x, y) locations on the grid
 	type location struct {
@@ -83,23 +90,14 @@ func Mapper(outputDestination string) {
 
 	// dependency map
 	nameDependencyMap := make(map[string]int)
-
 	var numDependents []int
 	var numDependencies []int
 
 	// determine the dimensions of the grid
-	var rows, cols int
-	cols = ((globalXBound-50)/250)/2 + (((globalXBound - 50) / 250) % 2)
-	if len(parser.T.Resources)%2 == 0 {
-		rows = len(parser.T.Resources) / cols
-	} else {
-		rows = len(parser.T.Resources)/cols + 1
-	}
-
-	// allocate the (x, y) locations on the grid using coordinateFinder
+	var rows, cols = len(parser.T.Resources) + 1, len(parser.T.Resources)
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
-			tempX, tempY := coordinateFinder()
+			tempX, tempY := 50+(shapeWidth*2*j), 50+(shapeHeight*2*i)
 			tempObj := location{tempX, tempY}
 			grid = append(grid, tempObj)
 			numDependents = append(numDependents, 0)
@@ -113,15 +111,11 @@ func Mapper(outputDestination string) {
 	fmt.Println("/**************************************************/")
 	fmt.Println()
 
-	// display the grid locations and the element currently in each location
-	index := 0
+	// display the grid locations
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
-			if index < len(parser.T.Resources) {
-				fmt.Print("Element ", index, ": (", grid[index].x, ", ", grid[index].y, ")")
-				fmt.Print("\t")
-				index++
-			}
+			fmt.Print("(", grid[(i*len(parser.T.Resources))+j].x, ", ", grid[(i*len(parser.T.Resources))+j].y, ")")
+			fmt.Print("\t")
 		}
 		fmt.Println()
 	}
@@ -129,7 +123,6 @@ func Mapper(outputDestination string) {
 	// iterate through all resources and store dependencies (non default)
 	for i := 0; i < len(parser.T.Resources); i++ {
 		if parser.T.Resources[i].Name != "default" {
-
 			nameDependencyMap[parser.T.Resources[i].Name] = i
 		}
 	}
@@ -166,25 +159,35 @@ func Mapper(outputDestination string) {
 
 	/*** FOR EACH RESOURCE, FIND ITS DEPENDENCIES AND DEPENDENTS ***/
 
+	// to store the dependencies of each resource
+	dependencyList := make(map[int][]int)
+	dependencyListNames := make(map[int][]string)
+	dependentList := make(map[int][]int)
+	dependentListNames := make(map[int][]string)
+
 	// iterate through each resource
 	for r := 0; r < len(parser.T.Resources); r++ {
 
+		// list of dependencies
+		var dList []int
+		var dListNames []string
+
 		// find and print the index and name of each resource that is a dependency of the current element
-		fmt.Print("Element ", r, " has the ", numDependencies[r], " dependencies: \t")
 		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
 			if len(parser.T.Resources[r].Instances[i].Dependencies) > 0 {
 				for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
 					dependency = parser.T.Resources[r].Instances[i].Dependencies[d]
 					dependencyName = strings.Split(dependency, ".")
 					dependencyIndex = nameDependencyMap[dependencyName[1]]
-					fmt.Print(dependencyIndex, " (", dependencyName[0], ") / ")
+					dList = append(dList, dependencyIndex)
+					dependencyList[r] = dList
+					dListNames = append(dListNames, dependencyName[0])
+					dependencyListNames[r] = dListNames
 				}
 			}
 		}
-		fmt.Println()
 
 		// find and print the index and name of each resource which has the current element as a dependency
-		fmt.Print(numDependents[r], " elements are dependent on Element ", r, ": \t")
 		if numDependents[r] > 0 {
 			rName = parser.T.Resources[r].Name
 			for resource := 0; resource < len(parser.T.Resources); resource++ {
@@ -196,17 +199,45 @@ func Mapper(outputDestination string) {
 							dependencyName = strings.Split(dependency, ".")
 							dependencyIndex = nameDependencyMap[dependencyName[1]]
 							if rName == dependencyName[1] {
-								fmt.Print(resource, " (", resourceName, ") / ")
+								dList = append(dList, resource)
+								dependentList[r] = dList
+								dListNames = append(dListNames, resourceName)
+								dependentListNames[r] = dListNames
 							}
 						}
 					}
 				}
 			}
 		}
-		fmt.Println()
-		fmt.Println()
 
 	}
+
+	// list numDependencies and numDependents of each resource
+	for r := 0; r < len(parser.T.Resources); r++ {
+		fmt.Print("(Element ", r, ") has ", numDependencies[r], " dependencies and ", numDependents[r], " dependents.")
+		fmt.Println()
+	}
+	fmt.Println()
+
+	// list dependencies of each resource
+	for r := 0; r < len(parser.T.Resources); r++ {
+		fmt.Print("(Element ", r, ") has dependencies")
+		for d := 0; d < len(dependencyList[r]); d++ {
+			fmt.Print(" (", (dependencyList[r])[d], " ", (dependencyListNames[r])[d], ")")
+		}
+		fmt.Println()
+	}
+	fmt.Println()
+
+	// list dependents of each resource
+	for r := 0; r < len(parser.T.Resources); r++ {
+		fmt.Print("(Element ", r, ") has dependents")
+		for d := 0; d < len(dependentList[r]); d++ {
+			fmt.Print(" (", (dependentList[r])[d], " ", (dependentListNames[r])[d], ")")
+		}
+		fmt.Println()
+	}
+	fmt.Println()
 
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
@@ -228,10 +259,14 @@ func Mapper(outputDestination string) {
 	mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 	globalID++
 
-	/**		CREATING PROJECT REGIONS		**/
-	projectX := 30
-	projectY := 350
-	subX := 30
+	// ****************************************************************************************************//
+	// ****************************************************************************************************//
+	// ****************************************************************************************************//
+	/*** CREATING PROJECT REGIONS ***/
+
+	projectX := 20
+	projectY := 380
+	subX := 5
 
 	// iterate through all resoureces
 	for r := 0; r < len(parser.T.Resources); r++ {
@@ -256,9 +291,9 @@ func Mapper(outputDestination string) {
 		if parser.T.Resources[r].Name == "network" {
 
 			minX := projectX
-			minY := projectY
-			maxX := 375
-			maxY := minY + 100
+			minY := 60
+			maxX := 350
+			maxY := projectY
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
@@ -274,9 +309,16 @@ func Mapper(outputDestination string) {
 			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
+			// set current elements location based off grid (x, y) locations
+
+			currentRow, currentCol := len(parser.T.Resources), r
+			// SHOULD NOT USE LINE BELOW
+			currentRow = 1
+			xLocation, yLocation := grid[(len(parser.T.Resources)*currentRow)+currentCol].x, grid[(len(parser.T.Resources)*currentRow)+currentCol].y
+
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(minX))
-			mxGeometry.CreateAttr("y", fmt.Sprint(minY))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation-minX))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation-minY))
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -289,18 +331,19 @@ func Mapper(outputDestination string) {
 			tmp.Width = maxX
 			tmp.Height = maxY
 			tmp.Project = parser.T.Resources[r].Instances[0].Attributes.Project
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
-			projectX = projectX + 500
+			projectX = projectX + 550
 		}
 
 		// if name is subnetwork, create project area
 		if parser.T.Resources[r].Name == "subnetwork" {
 
-			minX := subX + 5
-			minY := projectY + 30
-			maxX := 350
-			maxY := projectY + 60
+			minX := projectX - subX
+			minY := 30
+			maxX := 330
+			maxY := projectY - 40
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
@@ -316,9 +359,15 @@ func Mapper(outputDestination string) {
 			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
+			// set current elements location based off grid (x, y) locations
+			currentRow, currentCol := len(parser.T.Resources), r
+			// SHOULD NOT USE LINE BELOW
+			currentRow, currentCol = 1, 0
+			xLocation, yLocation := grid[(len(parser.T.Resources)*currentRow)+currentCol].x, grid[(len(parser.T.Resources)*currentRow)+currentCol].y
+
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(minX))
-			mxGeometry.CreateAttr("y", fmt.Sprint(minY))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation-10))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation-minY))
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -331,11 +380,16 @@ func Mapper(outputDestination string) {
 			tmp.Width = maxX
 			tmp.Height = maxY
 			tmp.Project = parser.T.Resources[r].Instances[0].Attributes.Project
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 		}
 	}
+	// ****************************************************************************************************//
+	// ****************************************************************************************************//
+	// ****************************************************************************************************//
 
-	/* ITERATE THROUGH RESOURCES */
+	rowOffset := -1
+	/*** ITERATE THROUGH RESOURCES ***/
 
 	for i := 0; i < len(parser.T.Resources); i++ {
 
@@ -359,14 +413,21 @@ func Mapper(outputDestination string) {
 		// (5) use specific resource name for main text (ex: example-storage-bucket)
 		resourceName := parser.T.Resources[i].Instances[0].Attributes.Name
 
+		// if network or subnetwork, skip and tick rowOffset
+		if parser.T.Resources[i].Name == "network" || parser.T.Resources[i].Name == "subnetwork" {
+			rowOffset++
+			continue
+		}
+
 		// set current elements location based off grid (x, y) locations
-		var xLocation, yLocation = grid[i].x, grid[i].y
+		currentRow, currentCol := i, numDependents[i]
+		xLocation, yLocation := grid[(len(parser.T.Resources)*(currentRow-rowOffset))+currentCol].x, grid[(len(parser.T.Resources)*(currentRow-rowOffset))+currentCol].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 
-		if parser.T.Resources[i].Name == "network" || parser.T.Resources[i].Name == "subnetwork" {
-			continue
-		}
+		// ****************************************************************************************************//
+		// ****************************************************************************************************//
+		// ****************************************************************************************************//
 
 		switch t {
 
@@ -452,6 +513,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
@@ -509,6 +571,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
@@ -577,6 +640,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
@@ -633,6 +697,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
@@ -669,6 +734,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		case 6: // Cloud Scheduler
@@ -701,6 +767,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		/****************************************************************************************************/
@@ -709,6 +776,7 @@ func Mapper(outputDestination string) {
 
 		case 7:
 
+			fmt.Println("hits for", parser.T.Resources[i].Name)
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
 			mxCell.CreateAttr("parent", fmt.Sprint(1))
@@ -737,6 +805,7 @@ func Mapper(outputDestination string) {
 			tmp.YPosCenter = yLocation + (shapeHeight / 2)
 			tmp.Width = shapeWidth
 			tmp.Height = shapeHeight
+			tmp.ObjectShape = objectShape
 			Elements = append(Elements, *tmp)
 
 		case 8:
@@ -776,12 +845,14 @@ func Mapper(outputDestination string) {
 		default:
 			log.Println("Error: No match.", errCreate)
 			os.Exit(1)
+
 		}
 
 		elementID++
 	}
 
-	/**		USING DEPENDENCIES TO GET ARROWS DRAWN		**/
+	/*** USE DEPENDENCIES TO CREATE ARROWS ***/
+
 	// iterate through all resources
 	for r := 0; r < len(parser.T.Resources); r++ {
 
@@ -845,45 +916,52 @@ func Mapper(outputDestination string) {
 		}
 	}
 
-	/*** PRINT TO THE terraform.drawio FILE ***/
+	/*** PRINT TO THE outputDestination FILE ***/
 
 	xml.Indent(4)
-	xml.WriteToFile("terraform.drawio")
+	xml.WriteToFile(outputDestination)
 
 	// close file
 	outFile.Close()
 }
 
-/*** RETURNS COORDINATES FOR PLACING OBJECTS ***/
+// ********************************** LEGACY CODE, NOT SURE IF NEEDED *********************************//
+// ****************************************************************************************************//
+// ****************************************************************************************************//
+// ****************************************************************************************************//
+// /*** RETURNS COORDINATES FOR PLACING OBJECTS ***/
 
-func coordinateFinder() (int, int) {
+// func coordinateFinder() (int, int) {
 
-	// offset objects by shapeWidth, shapeHeight
-	xOffset := shapeWidth * 2
-	yOffset := shapeHeight * 2
+// 	// offset objects by shapeWidth, shapeHeight
+// 	xOffset := shapeWidth * 2
+// 	yOffset := shapeHeight * 2
 
-	// set objects (x,y) position using previously defined offset
-	// first fill out row (left -> right), then move to new row
-	if (xPos + xOffset + shapeWidth) > globalXBound {
-		xPos = 50
-		yPos += yOffset
-		return xPos, yPos
+// 	// set objects (x,y) position using previously defined offset
+// 	// first fill out row (left -> right), then move to new row
+// 	if (xPos + xOffset + shapeWidth) > globalXBound {
+// 		xPos = 50
+// 		yPos += yOffset
+// 		return xPos, yPos
 
-	} else {
-		xPos += xOffset
-		return xPos, yPos
-	}
-}
+// 	} else {
+// 		xPos += xOffset
+// 		return xPos, yPos
+// 	}
+// }
 
-/*** RETURNS WHETHER OR NOT A PROJECT EXISTS ***/
+// /*** RETURNS WHETHER OR NOT A PROJECT EXISTS ***/
 
-func doesProjectExist(s []string, str string) bool {
+// func doesProjectExist(s []string, str string) bool {
 
-	for _, v := range s {
-		if v == str {
-			return true
-		}
-	}
+// 	for _, v := range s {
+// 		if v == str {
+// 			return true
+// 		}
+// 	}
 
-	return false
-}
+// 	return false
+// }
+// ****************************************************************************************************//
+// ****************************************************************************************************//
+// ****************************************************************************************************//

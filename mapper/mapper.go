@@ -264,9 +264,9 @@ func Mapper(outputDestination string) {
 	// ****************************************************************************************************//
 	/*** CREATING PROJECT REGIONS ***/
 
-	projectX := 30
-	projectY := 350
-	subX := 30
+	projectX := 20
+	projectY := 380
+	subX := 5
 
 	// iterate through all resoureces
 	for r := 0; r < len(parser.T.Resources); r++ {
@@ -291,9 +291,9 @@ func Mapper(outputDestination string) {
 		if parser.T.Resources[r].Name == "network" {
 
 			minX := projectX
-			minY := projectY
-			maxX := 375
-			maxY := minY + 100
+			minY := 60
+			maxX := 350
+			maxY := projectY
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
@@ -312,11 +312,13 @@ func Mapper(outputDestination string) {
 			// set current elements location based off grid (x, y) locations
 
 			currentRow, currentCol := len(parser.T.Resources), r
+			// SHOULD NOT USE LINE BELOW
+			currentRow = 1
 			xLocation, yLocation := grid[(len(parser.T.Resources)*currentRow)+currentCol].x, grid[(len(parser.T.Resources)*currentRow)+currentCol].y
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) //
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) //
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation-minX))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation-minY))
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -331,16 +333,16 @@ func Mapper(outputDestination string) {
 			tmp.Project = parser.T.Resources[r].Instances[0].Attributes.Project
 			Elements = append(Elements, *tmp)
 
-			projectX = projectX + 500
+			projectX = projectX + 550
 		}
 
 		// if name is subnetwork, create project area
 		if parser.T.Resources[r].Name == "subnetwork" {
 
-			minX := subX + 5
-			minY := projectY + 30
-			maxX := 350
-			maxY := projectY + 60
+			minX := projectX - subX
+			minY := 30
+			maxX := 330
+			maxY := projectY - 40
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
@@ -358,11 +360,13 @@ func Mapper(outputDestination string) {
 
 			// set current elements location based off grid (x, y) locations
 			currentRow, currentCol := len(parser.T.Resources), r
+			// SHOULD NOT USE LINE BELOW
+			currentRow, currentCol = 1, 0
 			xLocation, yLocation := grid[(len(parser.T.Resources)*currentRow)+currentCol].x, grid[(len(parser.T.Resources)*currentRow)+currentCol].y
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation)) //
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation)) //
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation-10))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation-minY))
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -382,6 +386,7 @@ func Mapper(outputDestination string) {
 	// ****************************************************************************************************//
 	// ****************************************************************************************************//
 
+	rowOffset := -1
 	/*** ITERATE THROUGH RESOURCES ***/
 
 	for i := 0; i < len(parser.T.Resources); i++ {
@@ -406,18 +411,18 @@ func Mapper(outputDestination string) {
 		// (5) use specific resource name for main text (ex: example-storage-bucket)
 		resourceName := parser.T.Resources[i].Instances[0].Attributes.Name
 
+		// if network or subnetwork, skip and tick rowOffset
+		if parser.T.Resources[i].Name == "network" || parser.T.Resources[i].Name == "subnetwork" {
+			rowOffset++
+			continue
+		}
+
 		// set current elements location based off grid (x, y) locations
 		currentRow, currentCol := i, numDependents[i]
-		xLocation, yLocation := grid[(len(parser.T.Resources)*currentRow)+currentCol].x, grid[(len(parser.T.Resources)*currentRow)+currentCol].y
+		xLocation, yLocation := grid[(len(parser.T.Resources)*(currentRow-rowOffset))+currentCol].x, grid[(len(parser.T.Resources)*(currentRow-rowOffset))+currentCol].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 
-		// ****************************************************************************************************//
-		// ****************************************************************************************************//
-		// ****************************************************************************************************//
-		if parser.T.Resources[i].Name == "network" || parser.T.Resources[i].Name == "subnetwork" {
-			continue
-		}
 		// ****************************************************************************************************//
 		// ****************************************************************************************************//
 		// ****************************************************************************************************//

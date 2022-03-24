@@ -9,7 +9,8 @@ import (
 	"KSCD/mapper"
 
 	// creating xml file (go get github.com/beevik/etree)
-	"github.com/beevik/etree")
+	"github.com/beevik/etree"
+)
 
 var xml = etree.NewDocument()
 

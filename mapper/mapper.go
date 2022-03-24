@@ -2,8 +2,8 @@ package mapper
 
 import (
 	"fmt"
-	"log"			// logging errors
-	"os"			// create and open files
+	"log" // logging errors
+	"os"  // create and open files
 	"strings"
 
 	"KSCD/libraries/providers/GCP/utility" //utility.go
@@ -60,7 +60,6 @@ var shapeWidth, shapeHeight = 250, 60
 // starting (x,y) position
 var xPos, yPos = 50 - (2 * shapeWidth), 50
 
-
 func Mapper() {
 
 	/*** CREATE THE terraform.drawio FILE ***/
@@ -90,11 +89,11 @@ func Mapper() {
 
 	// determine the dimensions of the grid
 	var rows, cols int
-	cols = ((globalXBound - 50) / 250) / 2 + (((globalXBound - 50) / 250) % 2)
-	if (len(parser.T.Resources) % 2 == 0) {
+	cols = ((globalXBound-50)/250)/2 + (((globalXBound - 50) / 250) % 2)
+	if len(parser.T.Resources)%2 == 0 {
 		rows = len(parser.T.Resources) / cols
 	} else {
-		rows = len(parser.T.Resources) / cols + 1
+		rows = len(parser.T.Resources)/cols + 1
 	}
 
 	// allocate the (x, y) locations on the grid using coordinateFinder
@@ -141,7 +140,6 @@ func Mapper() {
 	fmt.Println("/**************************************************/")
 	fmt.Println()
 
-
 	/*** FOR EACH RESOURCE, COUNT THE NUMBER OF DEPENDENCIES / DEPENDENTS  ***/
 
 	var dependency, resourceName, rName string
@@ -163,6 +161,8 @@ func Mapper() {
 				numDependents[dependencyIndex] += 1
 
 			}
+		}
+	}
 
 	/*** FOR EACH RESOURCE, FIND ITS DEPENDENCIES AND DEPENDENTS ***/
 
@@ -185,7 +185,7 @@ func Mapper() {
 
 		// find and print the index and name of each resource which has the current element as a dependency
 		fmt.Print(numDependents[r], " elements are dependent on Element ", r, ": \t")
-		if (numDependents[r] > 0) {
+		if numDependents[r] > 0 {
 			rName = parser.T.Resources[r].Name
 			for resource := 0; resource < len(parser.T.Resources); resource++ {
 				resourceName = parser.T.Resources[resource].Instances[0].Attributes.Name
@@ -225,7 +225,7 @@ func Mapper() {
 
 	mxCell = root.CreateElement("mxCell")
 	mxCell.CreateAttr("id", fmt.Sprint(globalID))
-	mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
+	mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 	globalID++
 
 	/**		CREATING PROJECT REGIONS		**/
@@ -289,7 +289,7 @@ func Mapper() {
 			tmp.Width = maxX
 			tmp.Height = maxY
 			tmp.Project = parser.T.Resources[r].Instances[0].Attributes.Project
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 
 			projectX = projectX + 500
 		}
@@ -331,7 +331,7 @@ func Mapper() {
 			tmp.Width = maxX
 			tmp.Height = maxY
 			tmp.Project = parser.T.Resources[r].Instances[0].Attributes.Project
-			Pizza = append(Pizza, *tmp)
+			Elements = append(Elements, *tmp)
 		}
 	}
 
@@ -376,7 +376,7 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 			globalID++
 
 			mxCell.CreateAttr("value", "")
@@ -421,7 +421,7 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 			globalID++
 
 			if len(resourceName) > 0 {
@@ -430,7 +430,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;" + objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -471,7 +471,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprintln("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;" + objectShape))
+			mxCell.CreateAttr("style", fmt.Sprintln("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -483,11 +483,11 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 			globalID++
 
 			mxCell.CreateAttr("value", "")
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;" + objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -546,7 +546,7 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 			globalID++
 
 			if len(resourceName) > 0 {
@@ -555,7 +555,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" + objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -603,7 +603,7 @@ func Mapper() {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 			globalID++
 
 			if len(resourceName) > 0 {
@@ -612,7 +612,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" + objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -652,7 +652,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;" + objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -684,7 +684,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;" + objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -720,7 +720,7 @@ func Mapper() {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -805,7 +805,7 @@ func Mapper() {
 
 						mxCell = root.CreateElement("mxCell")
 						mxCell.CreateAttr("id", fmt.Sprint(globalID))
-						mxCell.CreateAttr("parent", fmt.Sprint(1))						
+						mxCell.CreateAttr("parent", fmt.Sprint(1))
 						globalID++
 
 						mxCell.CreateAttr("value", "")

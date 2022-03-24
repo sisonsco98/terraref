@@ -2,12 +2,12 @@ package mapper
 
 import (
 	"fmt"
-	"log" // logging errors
-	"os"  // create and open files
+	"log"			// logging errors
+	"os"			// create and open files
 	"strings"
 
-	"KSCD/libraries/providers/GCP/utility" //utility.go
-	"KSCD/parser"                          // parser.go
+	"KSCD/parser"
+	"KSCD/libraries/providers/GCP/utility"
 
 	// creating xml file (go get github.com/beevik/etree)
 	"github.com/beevik/etree"
@@ -73,7 +73,7 @@ func Mapper() {
 	// keep open
 	defer outFile.Close()
 
-	/*** CREATE GRID FOR PLACING ELEMENTS ***/
+	/*** CREATE GRID (numResources x numResources) FOR PLACING ELEMENTS ***/
 
 	// elements to be placed on the (x, y) locations on the grid
 	type location struct {
@@ -83,23 +83,14 @@ func Mapper() {
 
 	// dependency map
 	nameDependencyMap := make(map[string]int)
-
 	var numDependents []int
 	var numDependencies []int
 
 	// determine the dimensions of the grid
-	var rows, cols int
-	cols = ((globalXBound-50)/250)/2 + (((globalXBound - 50) / 250) % 2)
-	if len(parser.T.Resources)%2 == 0 {
-		rows = len(parser.T.Resources) / cols
-	} else {
-		rows = len(parser.T.Resources)/cols + 1
-	}
-
-	// allocate the (x, y) locations on the grid using coordinateFinder
+	var rows, cols = len(parser.T.Resources), len(parser.T.Resources)
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
-			tempX, tempY := coordinateFinder()
+			tempX, tempY := 50 + (shapeWidth * 2 * j), 50 + (shapeHeight * 2 * i)
 			tempObj := location{tempX, tempY}
 			grid = append(grid, tempObj)
 			numDependents = append(numDependents, 0)
@@ -113,15 +104,11 @@ func Mapper() {
 	fmt.Println("/**************************************************/")
 	fmt.Println()
 
-	// display the grid locations and the element currently in each location
-	index := 0
+	// display the grid locations
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
-			if index < len(parser.T.Resources) {
-				fmt.Print("Element ", index, ": (", grid[index].x, ", ", grid[index].y, ")")
-				fmt.Print("\t")
-				index++
-			}
+			fmt.Print("(", grid[j + (i * len(parser.T.Resources))].x, ", ", grid[j + (i * len(parser.T.Resources))].y, ")")
+			fmt.Print("\t")
 		}
 		fmt.Println()
 	}
@@ -129,7 +116,6 @@ func Mapper() {
 	// iterate through all resources and store dependencies (non default)
 	for i := 0; i < len(parser.T.Resources); i++ {
 		if parser.T.Resources[i].Name != "default" {
-
 			nameDependencyMap[parser.T.Resources[i].Name] = i
 		}
 	}
@@ -139,6 +125,7 @@ func Mapper() {
 	fmt.Println("/*                  DEPENDENCIES                  */")
 	fmt.Println("/**************************************************/")
 	fmt.Println()
+
 
 	/*** FOR EACH RESOURCE, COUNT THE NUMBER OF DEPENDENCIES / DEPENDENTS  ***/
 
@@ -166,26 +153,36 @@ func Mapper() {
 
 	/*** FOR EACH RESOURCE, FIND ITS DEPENDENCIES AND DEPENDENTS ***/
 
+	// to store the dependencies of each resource
+	dependencyList := make(map[int] []int)
+	dependencyListNames := make(map[int] []string)
+	dependentList := make(map[int] []int)
+	dependentListNames := make(map[int] []string)
+
 	// iterate through each resource
 	for r := 0; r < len(parser.T.Resources); r++ {
 
+		// list of dependencies
+		var dList []int
+		var dListNames []string
+
 		// find and print the index and name of each resource that is a dependency of the current element
-		fmt.Print("Element ", r, " has the ", numDependencies[r], " dependencies: \t")
 		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
 			if len(parser.T.Resources[r].Instances[i].Dependencies) > 0 {
 				for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
 					dependency = parser.T.Resources[r].Instances[i].Dependencies[d]
 					dependencyName = strings.Split(dependency, ".")
 					dependencyIndex = nameDependencyMap[dependencyName[1]]
-					fmt.Print(dependencyIndex, " (", dependencyName[0], ") / ")
+					dList = append(dList, dependencyIndex)
+					dependencyList[r] = dList
+					dListNames = append(dListNames, dependencyName[0])
+					dependencyListNames[r] = dListNames
 				}
 			}
 		}
-		fmt.Println()
 
 		// find and print the index and name of each resource which has the current element as a dependency
-		fmt.Print(numDependents[r], " elements are dependent on Element ", r, ": \t")
-		if numDependents[r] > 0 {
+		if (numDependents[r] > 0) {
 			rName = parser.T.Resources[r].Name
 			for resource := 0; resource < len(parser.T.Resources); resource++ {
 				resourceName = parser.T.Resources[resource].Instances[0].Attributes.Name
@@ -196,17 +193,45 @@ func Mapper() {
 							dependencyName = strings.Split(dependency, ".")
 							dependencyIndex = nameDependencyMap[dependencyName[1]]
 							if rName == dependencyName[1] {
-								fmt.Print(resource, " (", resourceName, ") / ")
+								dList = append(dList, resource)
+								dependentList[r] = dList
+								dListNames = append(dListNames, resourceName)
+								dependentListNames[r] = dListNames
 							}
 						}
 					}
 				}
 			}
 		}
-		fmt.Println()
-		fmt.Println()
 
 	}
+
+	// list numDependencies and numDependents of each resource
+	for r := 0; r < len(parser.T.Resources); r++ {
+		fmt.Print("(Element ", r, ") has ", numDependencies[r], " dependencies and ", numDependents[r], " dependents.")
+		fmt.Println()
+	}
+	fmt.Println()
+
+	// list dependencies of each resource
+	for r := 0; r < len(parser.T.Resources); r++ {
+		fmt.Print("(Element ", r, ") has dependencies")
+		for d := 0; d < len(dependencyList[r]); d++ {
+			fmt.Print(" (", (dependencyList[r])[d], " ", (dependencyListNames[r])[d], ")")
+		}
+		fmt.Println()
+	}
+	fmt.Println()
+
+	// list dependents of each resource
+	for r := 0; r < len(parser.T.Resources); r++ {
+		fmt.Print("(Element ", r, ") has dependents")
+		for d := 0; d < len(dependentList[r]); d++ {
+			fmt.Print(" (", (dependentList[r])[d], " ", (dependentListNames[r])[d], ")")
+		}
+		fmt.Println()
+	}
+	fmt.Println()
 
 	/*** CREATE ELEMENT TREE WITH PARSED DATA ***/
 
@@ -225,9 +250,12 @@ func Mapper() {
 
 	mxCell = root.CreateElement("mxCell")
 	mxCell.CreateAttr("id", fmt.Sprint(globalID))
-	mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+	mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
 	globalID++
-
+	
+// ****************************************************************************************************//
+// ****************************************************************************************************//
+// ****************************************************************************************************//
 	/**		CREATING PROJECT REGIONS		**/
 	projectX := 30
 	projectY := 350
@@ -334,6 +362,9 @@ func Mapper() {
 			Elements = append(Elements, *tmp)
 		}
 	}
+// ****************************************************************************************************//
+// ****************************************************************************************************//
+// ****************************************************************************************************//
 
 	/* ITERATE THROUGH RESOURCES */
 
@@ -360,7 +391,8 @@ func Mapper() {
 		resourceName := parser.T.Resources[i].Instances[0].Attributes.Name
 
 		// set current elements location based off grid (x, y) locations
-		var xLocation, yLocation = grid[i].x, grid[i].y
+		currentRow, currentCol := i, numDependents[i]
+		xLocation, yLocation := grid[currentCol + (len(parser.T.Resources) * currentRow)].x, grid[currentCol + (len(parser.T.Resources) * currentRow)].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 

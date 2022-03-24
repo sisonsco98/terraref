@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	
+
 	"KSCD/mapper"
 	"KSCD/parser"
 	"KSCD/validator"
@@ -10,7 +10,7 @@ import (
 
 func main() {
 	// Format -> Flag format, --argument, default value, help message.
-	fileLoc := flag.String("in", "terraform.tfstate", "Filename that we're parsing from. This should be a .tfstate file." )
+	fileLoc := flag.String("in", "terraform.tfstate", "Filename that we're parsing from. This should be a .tfstate file.")
 	outfileLoc := flag.String("out", "out.drawio", "Destination for draw.io output file.")
 	// Parse the flag arguments~!
 	flag.Parse()
@@ -25,6 +25,6 @@ func main() {
 	mapper.Mapper(outputLocation)
 
 	// run validator.go
-	validator.Validator()
+	validator.Validator(outputLocation)
 
 }

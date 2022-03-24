@@ -2,12 +2,12 @@ package mapper
 
 import (
 	"fmt"
-	"log"			// logging errors
-	"os"			// create and open files
+	"log" // logging errors
+	"os"  // create and open files
 	"strings"
 
-	"KSCD/parser"
 	"KSCD/libraries/providers/GCP/utility"
+	"KSCD/parser"
 
 	// creating xml file (go get github.com/beevik/etree)
 	"github.com/beevik/etree"
@@ -30,6 +30,7 @@ type terraNavigator struct {
 	Project     string
 	ObjectShape string
 }
+
 // ****************************************************************************************************//
 // ****************************************************************************************************//
 // ****************************************************************************************************//
@@ -68,7 +69,7 @@ var xPos, yPos = 50 - (2 * shapeWidth), 50
 
 func Mapper(outputDestination string) {
 
-	/*** CREATE THE terraform.drawio FILE ***/
+	/*** CREATE THE outputDestination FILE ***/
 
 	outFile, errCreate := os.Create(outputDestination)
 	// error creating file
@@ -96,7 +97,7 @@ func Mapper(outputDestination string) {
 	var rows, cols = len(parser.T.Resources) + 1, len(parser.T.Resources)
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
-			tempX, tempY := 50 + (shapeWidth * 2 * j), 50 + (shapeHeight * 2 * i)
+			tempX, tempY := 50+(shapeWidth*2*j), 50+(shapeHeight*2*i)
 			tempObj := location{tempX, tempY}
 			grid = append(grid, tempObj)
 			numDependents = append(numDependents, 0)
@@ -113,7 +114,7 @@ func Mapper(outputDestination string) {
 	// display the grid locations
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
-			fmt.Print("(", grid[j + (i * len(parser.T.Resources))].x, ", ", grid[j + (i * len(parser.T.Resources))].y, ")")
+			fmt.Print("(", grid[j+(i*len(parser.T.Resources))].x, ", ", grid[j+(i*len(parser.T.Resources))].y, ")")
 			fmt.Print("\t")
 		}
 		fmt.Println()
@@ -131,7 +132,6 @@ func Mapper(outputDestination string) {
 	fmt.Println("/*                  DEPENDENCIES                  */")
 	fmt.Println("/**************************************************/")
 	fmt.Println()
-
 
 	/*** FOR EACH RESOURCE, COUNT THE NUMBER OF DEPENDENCIES / DEPENDENTS  ***/
 
@@ -160,10 +160,10 @@ func Mapper(outputDestination string) {
 	/*** FOR EACH RESOURCE, FIND ITS DEPENDENCIES AND DEPENDENTS ***/
 
 	// to store the dependencies of each resource
-	dependencyList := make(map[int] []int)
-	dependencyListNames := make(map[int] []string)
-	dependentList := make(map[int] []int)
-	dependentListNames := make(map[int] []string)
+	dependencyList := make(map[int][]int)
+	dependencyListNames := make(map[int][]string)
+	dependentList := make(map[int][]int)
+	dependentListNames := make(map[int][]string)
 
 	// iterate through each resource
 	for r := 0; r < len(parser.T.Resources); r++ {
@@ -188,7 +188,7 @@ func Mapper(outputDestination string) {
 		}
 
 		// find and print the index and name of each resource which has the current element as a dependency
-		if (numDependents[r] > 0) {
+		if numDependents[r] > 0 {
 			rName = parser.T.Resources[r].Name
 			for resource := 0; resource < len(parser.T.Resources); resource++ {
 				resourceName = parser.T.Resources[resource].Instances[0].Attributes.Name
@@ -256,12 +256,12 @@ func Mapper(outputDestination string) {
 
 	mxCell = root.CreateElement("mxCell")
 	mxCell.CreateAttr("id", fmt.Sprint(globalID))
-	mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
+	mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 	globalID++
-	
-// ****************************************************************************************************//
-// ****************************************************************************************************//
-// ****************************************************************************************************//
+
+	// ****************************************************************************************************//
+	// ****************************************************************************************************//
+	// ****************************************************************************************************//
 	/*** CREATING PROJECT REGIONS ***/
 
 	projectX := 30
@@ -306,16 +306,16 @@ func Mapper(outputDestination string) {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			// set current elements location based off grid (x, y) locations
 			currentRow, currentCol := len(parser.T.Resources), r
-			xLocation, yLocation := grid[currentCol + (len(parser.T.Resources) * currentRow)].x, grid[currentCol + (len(parser.T.Resources) * currentRow)].y
+			xLocation, yLocation := grid[currentCol+(len(parser.T.Resources)*currentRow)].x, grid[currentCol+(len(parser.T.Resources)*currentRow)].y
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(minX + xLocation - minX)) //
-			mxGeometry.CreateAttr("y", fmt.Sprint(minY + yLocation - minY)) //
+			mxGeometry.CreateAttr("x", fmt.Sprint(minX+xLocation-minX)) //
+			mxGeometry.CreateAttr("y", fmt.Sprint(minY+yLocation-minY)) //
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -352,16 +352,16 @@ func Mapper(outputDestination string) {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			// set current elements location based off grid (x, y) locations
 			currentRow, currentCol := len(parser.T.Resources), r
-			xLocation, yLocation := grid[currentCol + (len(parser.T.Resources) * currentRow)].x, grid[currentCol + (len(parser.T.Resources) * currentRow)].y
+			xLocation, yLocation := grid[currentCol+(len(parser.T.Resources)*currentRow)].x, grid[currentCol+(len(parser.T.Resources)*currentRow)].y
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(minX + xLocation - minX)) //
-			mxGeometry.CreateAttr("y", fmt.Sprint(minY + yLocation - minY)) //
+			mxGeometry.CreateAttr("x", fmt.Sprint(minX+xLocation-minX)) //
+			mxGeometry.CreateAttr("y", fmt.Sprint(minY+yLocation-minY)) //
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -377,9 +377,9 @@ func Mapper(outputDestination string) {
 			Elements = append(Elements, *tmp)
 		}
 	}
-// ****************************************************************************************************//
-// ****************************************************************************************************//
-// ****************************************************************************************************//
+	// ****************************************************************************************************//
+	// ****************************************************************************************************//
+	// ****************************************************************************************************//
 
 	/*** ITERATE THROUGH RESOURCES ***/
 
@@ -407,428 +407,428 @@ func Mapper(outputDestination string) {
 
 		// set current elements location based off grid (x, y) locations
 		currentRow, currentCol := i, numDependents[i]
-		xLocation, yLocation := grid[currentCol + (len(parser.T.Resources) * currentRow)].x, grid[currentCol + (len(parser.T.Resources) * currentRow)].y
+		xLocation, yLocation := grid[currentCol+(len(parser.T.Resources)*currentRow)].x, grid[currentCol+(len(parser.T.Resources)*currentRow)].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 
-// ****************************************************************************************************//
-// ****************************************************************************************************//
-// ****************************************************************************************************//
+		// ****************************************************************************************************//
+		// ****************************************************************************************************//
+		// ****************************************************************************************************//
 		if parser.T.Resources[i].Name == "network" || parser.T.Resources[i].Name == "subnetwork" {
 			continue
 		}
-// ****************************************************************************************************//
-// ****************************************************************************************************//
-// ****************************************************************************************************//
+		// ****************************************************************************************************//
+		// ****************************************************************************************************//
+		// ****************************************************************************************************//
 
 		switch t {
 
-			/*** GCP / PATHS ***/
-
-			case 0:
-
-				mxCell = root.CreateElement("mxCell")
-				mxCell.CreateAttr("id", fmt.Sprint(globalID))
-				mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
-				globalID++
-
-				mxCell.CreateAttr("value", "")
-				mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
-				mxCell.CreateAttr("edge", "1")
-
-				mxGeometry := mxCell.CreateElement("mxGeometry")
-				mxGeometry.CreateAttr("relative", "1")
-				mxGeometry.CreateAttr("as", "geometry")
-
-				mxPoint := mxGeometry.CreateElement("mxPoint")
-				mxPoint.CreateAttr("x", "80")
-				mxPoint.CreateAttr("y", "160")
-				mxPoint.CreateAttr("as", "sourcePoint")
-
-				mxPoint = mxGeometry.CreateElement("mxPoint")
-				mxPoint.CreateAttr("x", "180")
-				mxPoint.CreateAttr("y", "160")
-				mxPoint.CreateAttr("as", "targetPoint")
-
-			/****************************************************************************************************/
-
-			/*** GCP / SERVICE CARDS ***/
-
-			case 1:
-
-				mxCell = root.CreateElement("mxCell")
-				mxCell.CreateAttr("id", fmt.Sprint(globalID))
-				mxCell.CreateAttr("parent", fmt.Sprint(1))
-				globalID++
-
-				mxCell.CreateAttr("value", "")
-				mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
-				mxCell.CreateAttr("vertex", "1")
-
-				mxGeometry := mxCell.CreateElement("mxGeometry")
-				mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-				mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
-				mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
-				mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
-				mxGeometry.CreateAttr("as", "geometry")
-
-				mxCell = root.CreateElement("mxCell")
-				mxCell.CreateAttr("id", fmt.Sprint(globalID))
-				mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
-				globalID++
-
-				if len(resourceName) > 0 {
-					mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
-				} else {
-					mxCell.CreateAttr("value", resourceType)
-				}
-
-				mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;" + objectShape))
-				mxCell.CreateAttr("vertex", "1")
-
-				mxGeometry = mxCell.CreateElement("mxGeometry")
-				mxGeometry.CreateAttr("y", "0.5")
-				mxGeometry.CreateAttr("width", "32")
-				mxGeometry.CreateAttr("height", "32")
-				mxGeometry.CreateAttr("relative", "1")
-				mxGeometry.CreateAttr("as", "geometry")
-
-				mxPoint := mxGeometry.CreateElement("mxPoint")
-				mxPoint.CreateAttr("x", "5")
-				mxPoint.CreateAttr("y", "-16")
-				mxPoint.CreateAttr("as", "offset")
-
-				var tmp = new(terraNavigator)
-				tmp.Name = parser.T.Resources[i].Name
-				tmp.HiddenId = globalID - 2
-				tmp.XPosCenter = xLocation + (shapeWidth / 2)
-				tmp.YPosCenter = yLocation + (shapeHeight / 2)
-				tmp.Width = shapeWidth
-				tmp.Height = shapeHeight
-				Elements = append(Elements, *tmp)
-
-			/****************************************************************************************************/
-
-			/*** GCP / USER AND DEVICE CARDS ***/
-
-			case 2:
-
-				mxCell = root.CreateElement("mxCell")
-				mxCell.CreateAttr("id", fmt.Sprint(globalID))
-				mxCell.CreateAttr("parent", fmt.Sprint(1))
-				globalID++
-
-				if len(resourceName) > 0 {
-					mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
-				} else {
-					mxCell.CreateAttr("value", resourceType)
-				}
-
-				mxCell.CreateAttr("style", fmt.Sprintln("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;" + objectShape))
-				mxCell.CreateAttr("vertex", "1")
-
-				mxGeometry := mxCell.CreateElement("mxGeometry")
-				mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-				mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
-				mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
-				mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
-				mxGeometry.CreateAttr("as", "geometry")
-
-				mxCell = root.CreateElement("mxCell")
-				mxCell.CreateAttr("id", fmt.Sprint(globalID))
-				mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
-				globalID++
-
-				mxCell.CreateAttr("value", "")
-				mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;" + objectShape))
-				mxCell.CreateAttr("vertex", "1")
-
-				mxGeometry = mxCell.CreateElement("mxGeometry")
-				mxGeometry.CreateAttr("x", "0.5")
-				mxGeometry.CreateAttr("width", "50")
-				mxGeometry.CreateAttr("height", "50")
-				mxGeometry.CreateAttr("relative", "1")
-				mxGeometry.CreateAttr("as", "geometry")
-
-				mxPoint := mxGeometry.CreateElement("mxPoint")
-				mxPoint.CreateAttr("x", "-25")
-				mxPoint.CreateAttr("y", "15")
-				mxPoint.CreateAttr("as", "offset")
-
-				var tmp = new(terraNavigator)
-				tmp.Name = parser.T.Resources[i].Name
-				tmp.HiddenId = globalID - 2
-				tmp.XPosCenter = xLocation + (shapeWidth / 2)
-				tmp.YPosCenter = yLocation + (shapeHeight / 2)
-				tmp.Width = shapeWidth
-				tmp.Height = shapeHeight
-				Elements = append(Elements, *tmp)
-
-			/****************************************************************************************************/
-
-			/*** GCP / COMPUTE ***/
-			/*** GCP / API MANAGEMENT ***/
-			/*** GCP / SECURITY ***/
-			/*** GCP / DATA ANALYTICS ***/
-			/*** GCP / DATA TRANSFER ***/
-			/*** GCP / CLOUD AI ***/
-			/*** GCP / INTERNET OF THINGS ***/
-			/*** GCP / DATABASES ***/
-			/*** GCP / STORAGE ***/
-			/*** GCP / MANAGEMENT TOOLS ***/
-			/*** GCP / NETWORKING ***/
-			/*** GCP / DEVELOPER TOOLS ***/
-
-			case 3:
-
-				mxCell = root.CreateElement("mxCell")
-				mxCell.CreateAttr("id", fmt.Sprint(globalID))
-				mxCell.CreateAttr("parent", fmt.Sprint(1))
-				globalID++
-
-				mxCell.CreateAttr("value", "")
-				mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
-				mxCell.CreateAttr("vertex", "1")
-
-				mxGeometry := mxCell.CreateElement("mxGeometry")
-				mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-				mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
-				mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
-				mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
-				mxGeometry.CreateAttr("as", "geometry")
-
-				mxCell = root.CreateElement("mxCell")
-				mxCell.CreateAttr("id", fmt.Sprint(globalID))
-				mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
-				globalID++
-
-				if len(resourceName) > 0 {
-					mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
-				} else {
-					mxCell.CreateAttr("value", resourceType)
-				}
-
-				mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" + objectShape))
-				mxCell.CreateAttr("vertex", "1")
-
-				mxGeometry = mxCell.CreateElement("mxGeometry")
-				mxGeometry.CreateAttr("y", "0.5")
-				mxGeometry.CreateAttr("width", "44")
-				mxGeometry.CreateAttr("height", "39")
-				mxGeometry.CreateAttr("relative", "1")
-				mxGeometry.CreateAttr("as", "geometry")
-
-				mxPoint := mxGeometry.CreateElement("mxPoint")
-				mxPoint.CreateAttr("x", "5")
-				mxPoint.CreateAttr("y", "-19.5")
-				mxPoint.CreateAttr("as", "offset")
-
-				var tmp = new(terraNavigator)
-				tmp.Name = parser.T.Resources[i].Name
-				tmp.HiddenId = globalID - 2
-				tmp.XPosCenter = xLocation + (shapeWidth / 2)
-				tmp.YPosCenter = yLocation + (shapeHeight / 2)
-				tmp.Width = shapeWidth
-				tmp.Height = shapeHeight
-				Elements = append(Elements, *tmp)
-
-			/****************************************************************************************************/
-
-			/*** GCP / PRODUCT CARDS ***/
-
-			case 4:
-
-				mxCell = root.CreateElement("mxCell")
-				mxCell.CreateAttr("id", fmt.Sprint(globalID))
-				mxCell.CreateAttr("parent", fmt.Sprint(1))
-				globalID++
-
-				mxCell.CreateAttr("value", "")
-				mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
-				mxCell.CreateAttr("vertex", "1")
-
-				mxGeometry := mxCell.CreateElement("mxGeometry")
-				mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-				mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
-				mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
-				mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
-				mxGeometry.CreateAttr("as", "geometry")
-
-				mxCell = root.CreateElement("mxCell")
-				mxCell.CreateAttr("id", fmt.Sprint(globalID))
-				mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
-				globalID++
-
-				if len(resourceName) > 0 {
-					mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
-				} else {
-					mxCell.CreateAttr("value", resourceType)
-				}
-
-				mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" + objectShape))
-				mxCell.CreateAttr("vertex", "1")
-
-				mxGeometry = mxCell.CreateElement("mxGeometry")
-				mxGeometry.CreateAttr("width", "45")
-				mxGeometry.CreateAttr("height", "45")
-				mxGeometry.CreateAttr("relative", "1")
-				mxGeometry.CreateAttr("as", "geometry")
-
-				mxPoint := mxGeometry.CreateElement("mxPoint")
-				mxPoint.CreateAttr("x", "5")
-				mxPoint.CreateAttr("y", "7")
-				mxPoint.CreateAttr("as", "offset")
-
-				var tmp = new(terraNavigator)
-				tmp.Name = parser.T.Resources[i].Name
-				tmp.HiddenId = globalID - 2
-				tmp.XPosCenter = xLocation + (shapeWidth / 2)
-				tmp.YPosCenter = yLocation + (shapeHeight / 2)
-				tmp.Width = shapeWidth
-				tmp.Height = shapeHeight
-				Elements = append(Elements, *tmp)
-
-			/****************************************************************************************************/
-
-			/*** GCP ICONS ***/
-
-			case 5:
-
-				mxCell = root.CreateElement("mxCell")
-				mxCell.CreateAttr("id", fmt.Sprint(globalID))
-				mxCell.CreateAttr("parent", fmt.Sprint(1))
-				globalID++
-
-				if len(resourceName) > 0 {
-					mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
-				} else {
-					mxCell.CreateAttr("value", resourceType)
-				}
-
-				mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;" + objectShape))
-				mxCell.CreateAttr("vertex", "1")
-
-				mxGeometry := mxCell.CreateElement("mxGeometry")
-				mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-				mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
-				mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
-				mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
-				mxGeometry.CreateAttr("as", "geometry")
-
-				var tmp = new(terraNavigator)
-				tmp.Name = parser.T.Resources[i].Name
-				tmp.HiddenId = globalID - 2
-				tmp.XPosCenter = xLocation + (shapeWidth / 2)
-				tmp.YPosCenter = yLocation + (shapeHeight / 2)
-				tmp.Width = shapeWidth
-				tmp.Height = shapeHeight
-				Elements = append(Elements, *tmp)
-
-			case 6: // Cloud Scheduler
-
-				mxCell = root.CreateElement("mxCell")
-				mxCell.CreateAttr("id", fmt.Sprint(globalID))
-				mxCell.CreateAttr("parent", fmt.Sprint(1))
-				globalID++
-
-				if len(resourceName) > 0 {
-					mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
-				} else {
-					mxCell.CreateAttr("value", resourceType)
-				}
-
-				mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;" + objectShape))
-				mxCell.CreateAttr("vertex", "1")
-
-				mxGeometry := mxCell.CreateElement("mxGeometry")
-				mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-				mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
-				mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
-				mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
-				mxGeometry.CreateAttr("as", "geometry")
-
-				var tmp = new(terraNavigator)
-				tmp.Name = parser.T.Resources[i].Name
-				tmp.HiddenId = globalID - 2
-				tmp.XPosCenter = xLocation + (shapeWidth / 2)
-				tmp.YPosCenter = yLocation + (shapeHeight / 2)
-				tmp.Width = shapeWidth
-				tmp.Height = shapeHeight
-				Elements = append(Elements, *tmp)
-
-			/****************************************************************************************************/
-
-			/*** GCP / ZONES ***/
-
-			case 7:
-
-				mxCell = root.CreateElement("mxCell")
-				mxCell.CreateAttr("id", fmt.Sprint(globalID))
-				mxCell.CreateAttr("parent", fmt.Sprint(1))
-				globalID++
-
-				if len(resourceName) > 0 {
-					mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
-				} else {
-					mxCell.CreateAttr("value", resourceType)
-				}
-
-				mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
-				mxCell.CreateAttr("vertex", "1")
-
-				mxGeometry := mxCell.CreateElement("mxGeometry")
-				mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-				mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
-				mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
-				mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
-				mxGeometry.CreateAttr("as", "geometry")
-
-				var tmp = new(terraNavigator)
-				tmp.Name = parser.T.Resources[i].Name
-				tmp.HiddenId = globalID - 2
-				tmp.XPosCenter = xLocation + (shapeWidth / 2)
-				tmp.YPosCenter = yLocation + (shapeHeight / 2)
-				tmp.Width = shapeWidth
-				tmp.Height = shapeHeight
-				Elements = append(Elements, *tmp)
-
-			case 8:
-
-				mxCell = root.CreateElement("mxCell")
-				mxCell.CreateAttr("id", fmt.Sprint(globalID))
-				mxCell.CreateAttr("parent", fmt.Sprint(1))
-				globalID++
-
+		/*** GCP / PATHS ***/
+
+		case 0:
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			globalID++
+
+			mxCell.CreateAttr("value", "")
+			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
+			mxCell.CreateAttr("edge", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("relative", "1")
+			mxGeometry.CreateAttr("as", "geometry")
+
+			mxPoint := mxGeometry.CreateElement("mxPoint")
+			mxPoint.CreateAttr("x", "80")
+			mxPoint.CreateAttr("y", "160")
+			mxPoint.CreateAttr("as", "sourcePoint")
+
+			mxPoint = mxGeometry.CreateElement("mxPoint")
+			mxPoint.CreateAttr("x", "180")
+			mxPoint.CreateAttr("y", "160")
+			mxPoint.CreateAttr("as", "targetPoint")
+
+		/****************************************************************************************************/
+
+		/*** GCP / SERVICE CARDS ***/
+
+		case 1:
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			globalID++
+
+			mxCell.CreateAttr("value", "")
+			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
+			mxGeometry.CreateAttr("as", "geometry")
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			globalID++
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
 				mxCell.CreateAttr("value", resourceType)
-				mxCell.CreateAttr("vertex", fmt.Sprint(1))
-				mxCell.CreateAttr("style", fmt.Sprint(utility.LookupZone(parser.T.Resources[i].Name)))
+			}
 
-				mxGeometry := mxCell.CreateElement("mxGeometry")
-				mxGeometry.CreateAttr("x", "160")
-				mxGeometry.CreateAttr("y", "120")
-				mxGeometry.CreateAttr("width", "160")
-				mxGeometry.CreateAttr("height", "120")
-				mxGeometry.CreateAttr("as", "geometry")
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;"+objectShape))
+			mxCell.CreateAttr("vertex", "1")
 
-			/****************************************************************************************************/
+			mxGeometry = mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("y", "0.5")
+			mxGeometry.CreateAttr("width", "32")
+			mxGeometry.CreateAttr("height", "32")
+			mxGeometry.CreateAttr("relative", "1")
+			mxGeometry.CreateAttr("as", "geometry")
 
-			/*** GCP / EXPANDED PRODUCT CARDS ***/
+			mxPoint := mxGeometry.CreateElement("mxPoint")
+			mxPoint.CreateAttr("x", "5")
+			mxPoint.CreateAttr("y", "-16")
+			mxPoint.CreateAttr("as", "offset")
 
-			// skip for now
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.HiddenId = globalID - 2
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
+			Elements = append(Elements, *tmp)
 
-			/****************************************************************************************************/
+		/****************************************************************************************************/
 
-			/*** GCP / GENERAL ICONS ***/
+		/*** GCP / USER AND DEVICE CARDS ***/
 
-			// skip for now
+		case 2:
 
-			/****************************************************************************************************/
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			globalID++
 
-			// Error case
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
 
-			default:
-				log.Println("Error: No match.", errCreate)
-				os.Exit(1)
+			mxCell.CreateAttr("style", fmt.Sprintln("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;"+objectShape))
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
+			mxGeometry.CreateAttr("as", "geometry")
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			globalID++
+
+			mxCell.CreateAttr("value", "")
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;"+objectShape))
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry = mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", "0.5")
+			mxGeometry.CreateAttr("width", "50")
+			mxGeometry.CreateAttr("height", "50")
+			mxGeometry.CreateAttr("relative", "1")
+			mxGeometry.CreateAttr("as", "geometry")
+
+			mxPoint := mxGeometry.CreateElement("mxPoint")
+			mxPoint.CreateAttr("x", "-25")
+			mxPoint.CreateAttr("y", "15")
+			mxPoint.CreateAttr("as", "offset")
+
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.HiddenId = globalID - 2
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
+			Elements = append(Elements, *tmp)
+
+		/****************************************************************************************************/
+
+		/*** GCP / COMPUTE ***/
+		/*** GCP / API MANAGEMENT ***/
+		/*** GCP / SECURITY ***/
+		/*** GCP / DATA ANALYTICS ***/
+		/*** GCP / DATA TRANSFER ***/
+		/*** GCP / CLOUD AI ***/
+		/*** GCP / INTERNET OF THINGS ***/
+		/*** GCP / DATABASES ***/
+		/*** GCP / STORAGE ***/
+		/*** GCP / MANAGEMENT TOOLS ***/
+		/*** GCP / NETWORKING ***/
+		/*** GCP / DEVELOPER TOOLS ***/
+
+		case 3:
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			globalID++
+
+			mxCell.CreateAttr("value", "")
+			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
+			mxGeometry.CreateAttr("as", "geometry")
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			globalID++
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry = mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("y", "0.5")
+			mxGeometry.CreateAttr("width", "44")
+			mxGeometry.CreateAttr("height", "39")
+			mxGeometry.CreateAttr("relative", "1")
+			mxGeometry.CreateAttr("as", "geometry")
+
+			mxPoint := mxGeometry.CreateElement("mxPoint")
+			mxPoint.CreateAttr("x", "5")
+			mxPoint.CreateAttr("y", "-19.5")
+			mxPoint.CreateAttr("as", "offset")
+
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.HiddenId = globalID - 2
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
+			Elements = append(Elements, *tmp)
+
+		/****************************************************************************************************/
+
+		/*** GCP / PRODUCT CARDS ***/
+
+		case 4:
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			globalID++
+
+			mxCell.CreateAttr("value", "")
+			mxCell.CreateAttr("style", "whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
+			mxGeometry.CreateAttr("as", "geometry")
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			globalID++
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry = mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("width", "45")
+			mxGeometry.CreateAttr("height", "45")
+			mxGeometry.CreateAttr("relative", "1")
+			mxGeometry.CreateAttr("as", "geometry")
+
+			mxPoint := mxGeometry.CreateElement("mxPoint")
+			mxPoint.CreateAttr("x", "5")
+			mxPoint.CreateAttr("y", "7")
+			mxPoint.CreateAttr("as", "offset")
+
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.HiddenId = globalID - 2
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
+			Elements = append(Elements, *tmp)
+
+		/****************************************************************************************************/
+
+		/*** GCP ICONS ***/
+
+		case 5:
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			globalID++
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
+			mxGeometry.CreateAttr("as", "geometry")
+
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.HiddenId = globalID - 2
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
+			Elements = append(Elements, *tmp)
+
+		case 6: // Cloud Scheduler
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			globalID++
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
+			mxGeometry.CreateAttr("as", "geometry")
+
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.HiddenId = globalID - 2
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
+			Elements = append(Elements, *tmp)
+
+		/****************************************************************************************************/
+
+		/*** GCP / ZONES ***/
+
+		case 7:
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			globalID++
+
+			if len(resourceName) > 0 {
+				mxCell.CreateAttr("value", fmt.Sprintf("%s	%s", resourceName, resourceType))
+			} else {
+				mxCell.CreateAttr("value", resourceType)
+			}
+
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
+			mxCell.CreateAttr("vertex", "1")
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("width", fmt.Sprint(shapeWidth))
+			mxGeometry.CreateAttr("height", fmt.Sprint(shapeHeight))
+			mxGeometry.CreateAttr("as", "geometry")
+
+			var tmp = new(terraNavigator)
+			tmp.Name = parser.T.Resources[i].Name
+			tmp.HiddenId = globalID - 2
+			tmp.XPosCenter = xLocation + (shapeWidth / 2)
+			tmp.YPosCenter = yLocation + (shapeHeight / 2)
+			tmp.Width = shapeWidth
+			tmp.Height = shapeHeight
+			Elements = append(Elements, *tmp)
+
+		case 8:
+
+			mxCell = root.CreateElement("mxCell")
+			mxCell.CreateAttr("id", fmt.Sprint(globalID))
+			mxCell.CreateAttr("parent", fmt.Sprint(1))
+			globalID++
+
+			mxCell.CreateAttr("value", resourceType)
+			mxCell.CreateAttr("vertex", fmt.Sprint(1))
+			mxCell.CreateAttr("style", fmt.Sprint(utility.LookupZone(parser.T.Resources[i].Name)))
+
+			mxGeometry := mxCell.CreateElement("mxGeometry")
+			mxGeometry.CreateAttr("x", "160")
+			mxGeometry.CreateAttr("y", "120")
+			mxGeometry.CreateAttr("width", "160")
+			mxGeometry.CreateAttr("height", "120")
+			mxGeometry.CreateAttr("as", "geometry")
+
+		/****************************************************************************************************/
+
+		/*** GCP / EXPANDED PRODUCT CARDS ***/
+
+		// skip for now
+
+		/****************************************************************************************************/
+
+		/*** GCP / GENERAL ICONS ***/
+
+		// skip for now
+
+		/****************************************************************************************************/
+
+		// Error case
+
+		default:
+			log.Println("Error: No match.", errCreate)
+			os.Exit(1)
 
 		}
 
@@ -900,15 +900,14 @@ func Mapper(outputDestination string) {
 		}
 	}
 
-	/*** PRINT TO THE terraform.drawio FILE ***/
+	/*** PRINT TO THE outputDestination FILE ***/
 
 	xml.Indent(4)
-	xml.WriteToFile("terraform.drawio")
+	xml.WriteToFile(outputDestination)
 
 	// close file
 	outFile.Close()
 }
-
 
 // ****************************************************************************************************//
 // ****************************************************************************************************//

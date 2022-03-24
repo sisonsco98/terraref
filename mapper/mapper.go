@@ -93,7 +93,7 @@ func Mapper() {
 	var numDependencies []int
 
 	// determine the dimensions of the grid
-	var rows, cols = len(parser.T.Resources), len(parser.T.Resources)
+	var rows, cols = len(parser.T.Resources) + 1, len(parser.T.Resources)
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
 			tempX, tempY := 50 + (shapeWidth * 2 * j), 50 + (shapeHeight * 2 * i)
@@ -309,15 +309,15 @@ func Mapper() {
 			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
-// // set current elements location based off grid (x, y) locations
-// currentRow, currentCol := r, numDependents[r]
-// xLocation, yLocation := grid[currentCol + (len(parser.T.Resources) * currentRow)].x, grid[currentCol + (len(parser.T.Resources) * currentRow)].y
+// set current elements location based off grid (x, y) locations
+currentRow, currentCol := len(parser.T.Resources), r
+xLocation, yLocation := grid[currentCol + (len(parser.T.Resources) * currentRow)].x, grid[currentCol + (len(parser.T.Resources) * currentRow)].y
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-// mxGeometry.CreateAttr("x", fmt.Sprint(minX + xLocation - minX))
-			mxGeometry.CreateAttr("x", fmt.Sprint(minX))
-// mxGeometry.CreateAttr("y", fmt.Sprint(minY + yLocation - minY))
-			mxGeometry.CreateAttr("y", fmt.Sprint(minY))
+mxGeometry.CreateAttr("x", fmt.Sprint(minX + xLocation - minX))
+//			mxGeometry.CreateAttr("x", fmt.Sprint(minX))
+mxGeometry.CreateAttr("y", fmt.Sprint(minY + yLocation - minY))
+//			mxGeometry.CreateAttr("y", fmt.Sprint(minY))
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -357,15 +357,15 @@ func Mapper() {
 			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
-// // set current elements location based off grid (x, y) locations
-// currentRow, currentCol := r, numDependents[r]
-// xLocation, yLocation := grid[currentCol + (len(parser.T.Resources) * currentRow)].x, grid[currentCol + (len(parser.T.Resources) * currentRow)].y
+// set current elements location based off grid (x, y) locations
+currentRow, currentCol := len(parser.T.Resources), r
+xLocation, yLocation := grid[currentCol + (len(parser.T.Resources) * currentRow)].x, grid[currentCol + (len(parser.T.Resources) * currentRow)].y
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-// mxGeometry.CreateAttr("x", fmt.Sprint(minX + xLocation - minX))
-			mxGeometry.CreateAttr("x", fmt.Sprint(minX))
-// mxGeometry.CreateAttr("y", fmt.Sprint(minY + yLocation - minY))
-			mxGeometry.CreateAttr("y", fmt.Sprint(minY))
+mxGeometry.CreateAttr("x", fmt.Sprint(minX + xLocation - minX))
+//			mxGeometry.CreateAttr("x", fmt.Sprint(minX))
+mxGeometry.CreateAttr("y", fmt.Sprint(minY + yLocation - minY))
+//			mxGeometry.CreateAttr("y", fmt.Sprint(minY))
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")

@@ -199,8 +199,10 @@ func Mapper() {
 								fmt.Print(resource, " (", resourceName, ") / ")
 								dList = append(dList, resource)
 								dependentList[r] = dList
+								dependentListNames[r] = dListNames
 								dListNames = append(dListNames, resourceName)
-								dependencyListNames[r] = dListNames
+								//dependencyListNames[r] = dListNames
+								dependentListNames[r] = dListNames
 								// fmt.Println("\t", "Element", dependencyIndex, "has dependent", resource, " (", resourceName, ")")
 							}
 						}
@@ -222,6 +224,7 @@ func Mapper() {
 		fmt.Println("Element", r, "has dependencies (name)", dependencyListNames[r])
 	}
 	fmt.Println()
+
 	// list dependencts of each resource
 	for r := 0; r < len(parser.T.Resources); r++ {
 		fmt.Println("Element", r, "has dependents (index)", dependentList[r])

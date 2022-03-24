@@ -203,7 +203,6 @@ func Mapper() {
 		}
 
 	}
-	fmt.Println()
 
 	// list numDependencies and numDependents of each resource
 	for r := 0; r < len(parser.T.Resources); r++ {

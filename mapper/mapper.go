@@ -2,12 +2,12 @@ package mapper
 
 import (
 	"fmt"
-	"log" // logging errors
-	"os"  // create and open files
+	"log"			// logging errors
+	"os"			// create and open files
 	"strings"
 
-	"KSCD/libraries/providers/GCP/utility"
 	"KSCD/parser"
+	"KSCD/libraries/providers/GCP/utility"
 
 	// creating xml file (go get github.com/beevik/etree)
 	"github.com/beevik/etree"
@@ -17,9 +17,6 @@ import (
 
 var terraNav terraNavigator
 
-// ****************************************************************************************************//
-// ****************************************************************************************************//
-// ****************************************************************************************************//
 type terraNavigator struct {
 	HiddenId    int
 	Name        string
@@ -30,10 +27,6 @@ type terraNavigator struct {
 	Project     string
 	ObjectShape string
 }
-
-// ****************************************************************************************************//
-// ****************************************************************************************************//
-// ****************************************************************************************************//
 
 type relationNavigator struct {
 	ArrowID    int
@@ -259,9 +252,6 @@ func Mapper(outputDestination string) {
 	mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
 	globalID++
 
-	// ****************************************************************************************************//
-	// ****************************************************************************************************//
-	// ****************************************************************************************************//
 	/*** CREATING PROJECT REGIONS ***/
 
 	projectX := 20
@@ -310,7 +300,6 @@ func Mapper(outputDestination string) {
 			mxCell.CreateAttr("vertex", "1")
 
 			// set current elements location based off grid (x, y) locations
-
 			currentRow, currentCol := len(parser.T.Resources), r
 			// SHOULD NOT USE LINE BELOW
 			currentRow = 1
@@ -384,11 +373,9 @@ func Mapper(outputDestination string) {
 			Elements = append(Elements, *tmp)
 		}
 	}
-	// ****************************************************************************************************//
-	// ****************************************************************************************************//
-	// ****************************************************************************************************//
 
 	rowOffset := -1
+
 	/*** ITERATE THROUGH RESOURCES ***/
 
 	for i := 0; i < len(parser.T.Resources); i++ {
@@ -424,10 +411,6 @@ func Mapper(outputDestination string) {
 		xLocation, yLocation := grid[(len(parser.T.Resources)*(currentRow-rowOffset))+currentCol].x, grid[(len(parser.T.Resources)*(currentRow-rowOffset))+currentCol].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
-
-		// ****************************************************************************************************//
-		// ****************************************************************************************************//
-		// ****************************************************************************************************//
 
 		switch t {
 
@@ -911,9 +894,13 @@ func Mapper(outputDestination string) {
 					}
 
 					ctr++
+
 				}
+
 			}
+
 		}
+
 	}
 
 	/*** PRINT TO THE outputDestination FILE ***/
@@ -926,9 +913,7 @@ func Mapper(outputDestination string) {
 }
 
 // ********************************** LEGACY CODE, NOT SURE IF NEEDED *********************************//
-// ****************************************************************************************************//
-// ****************************************************************************************************//
-// ****************************************************************************************************//
+
 // /*** RETURNS COORDINATES FOR PLACING OBJECTS ***/
 
 // func coordinateFinder() (int, int) {
@@ -962,6 +947,3 @@ func Mapper(outputDestination string) {
 
 // 	return false
 // }
-// ****************************************************************************************************//
-// ****************************************************************************************************//
-// ****************************************************************************************************//

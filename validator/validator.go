@@ -1,10 +1,10 @@
 package validator
 
 import (
-	"bufio" // scanning files
 	"fmt"
-	"log" // logging errors
-	"os"  // create and open files
+	"log"			// logging errors
+	"os"			// create and open files
+	"bufio"			// scanning files
 
 	"KSCD/mapper"
 
@@ -28,8 +28,7 @@ func Validator(outputDestination string) {
 	if err := xml.ReadFromFile(outputDestination); err != nil {
 		panic(err)
 	}
-
-	// keep file open
+	// keep open
 	defer inFile.Close()
 
 	/*** SCAN THE terraform.drawio FILE (line by line) ***/
@@ -60,7 +59,7 @@ func Validator(outputDestination string) {
 
 		var newX int
 
-		// Loops through Elements to get the slices //?????
+		// Loops through Elements to get the slices
 		for _, slice := range mapper.Elements {
 
 			/*** VERTICAL ARROWS ***/

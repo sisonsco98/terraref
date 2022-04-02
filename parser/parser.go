@@ -72,7 +72,6 @@ func Parser(filename string) {
 	for i := 0; i < len(T.Resources); i++ {
 		provider := providerRegex.FindAllStringSubmatch(T.Resources[i].Provider, -1)
 		Providers = append(Providers, provider[1][0])
-		// fmt.Println(provider)
 	}
 
 }

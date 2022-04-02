@@ -44,7 +44,7 @@ func Validator(outputDestination string) {
 	// Checking if there is an invalid shape, and if so remove it
 	for _, slice := range mapper.Elements {
 		if slice.ObjectShape == "shape=mxgraph.gcp2.blank" {
-			path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]", slice.HiddenId+2)
+			path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]", slice.HiddenId + 2)
 			removeElement := xml.FindElement(path)
 			removeParent := removeElement.Parent()
 			removeParent.RemoveChildAt(slice.HiddenId + 10)
@@ -76,28 +76,16 @@ func Validator(outputDestination string) {
 					// NEED BENDING, target is not directly above / below source
 					// [source]-x-[target]
 
-					if arrow.XPosSource == 50+slice.Width/2 {
+					if arrow.XPosSource == 50 + slice.Width / 2 {
 						// left row, bend left
-						newX = arrow.XPosSource - slice.Width/2 - 25
-					} else if arrow.XPosSource == 50+slice.Width/2+(slice.Width*2) {
+						newX = arrow.XPosSource - slice.Width / 2 - 25
+					} else if arrow.XPosSource == 50 + slice.Width / 2 + (slice.Width * 2) {
 						// right row, bend right
-						newX = arrow.XPosSource + slice.Width/2 + 25
+						newX = arrow.XPosSource + slice.Width / 2 + 25
 					}
 
-					// XML for creating bends
-					path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", arrow.ArrowID+1)
-					arrowGeom := xml.FindElement(path)
-
-					array := arrowGeom.CreateElement("Array")
-					array.CreateAttr("as", "points")
-
-					mxPoint := array.CreateElement("mxPoint")
-					mxPoint.CreateAttr("x", fmt.Sprint(newX))
-					mxPoint.CreateAttr("y", fmt.Sprint(arrow.YPosSource))
-
-					mxPoint = array.CreateElement("mxPoint")
-					mxPoint.CreateAttr("x", fmt.Sprint(newX))
-					mxPoint.CreateAttr("y", fmt.Sprint(arrow.YPosTarget))
+					//////////////
+					createArrowBend(arrow.ArrowID, newX, arrow.YPosSource, newX, arrow.YPosTarget)
 
 				}
 			}
@@ -120,20 +108,8 @@ func Validator(outputDestination string) {
 
 				newX = (arrow.XPosSource + arrow.XPosTarget) / 2
 
-				// XML for creating bends
-				path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", arrow.ArrowID+1)
-				arrowGeom := xml.FindElement(path)
-
-				array := arrowGeom.CreateElement("Array")
-				array.CreateAttr("as", "points")
-
-				mxPoint := array.CreateElement("mxPoint")
-				mxPoint.CreateAttr("x", fmt.Sprint(newX))
-				mxPoint.CreateAttr("y", fmt.Sprint(arrow.YPosSource))
-
-				mxPoint = array.CreateElement("mxPoint")
-				mxPoint.CreateAttr("x", fmt.Sprint(newX))
-				mxPoint.CreateAttr("y", fmt.Sprint(arrow.YPosTarget))
+				//////////////
+				createArrowBend(arrow.ArrowID, newX, arrow.YPosSource, newX, arrow.YPosTarget)
 
 			}
 
@@ -145,5 +121,23 @@ func Validator(outputDestination string) {
 	xml.Indent(4)
 	xml.WriteToFile(outputDestination)
 	inFile.Close()
+
+}
+
+func createArrowBend(id int, xSource int, ySource int, xTarget int, yTarget int) {
+
+	path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", id + 1)
+	arrowGeom := xml.FindElement(path)
+
+	array := arrowGeom.CreateElement("Array")
+	array.CreateAttr("as", "points")
+
+	mxPoint := array.CreateElement("mxPoint")
+	mxPoint.CreateAttr("x", fmt.Sprint(xSource))
+	mxPoint.CreateAttr("y", fmt.Sprint(ySource))
+
+	mxPoint = array.CreateElement("mxPoint")
+	mxPoint.CreateAttr("x", fmt.Sprint(xTarget))
+	mxPoint.CreateAttr("y", fmt.Sprint(yTarget))
 
 }

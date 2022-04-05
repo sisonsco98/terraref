@@ -686,15 +686,7 @@ func Mapper(outFileLocation string) {
 						mxPoint.CreateAttr("y", fmt.Sprint(Elements[ctr].YPosCenter))
 						mxPoint.CreateAttr("as", "targetPoint")
 
-						tmp := new(RelationNavigator)
-						tmp.ArrowID = GlobalID - 1
-						tmp.SourceID = Elements[r].HiddenId
-						tmp.XPosSource = Elements[r].XPosCenter
-						tmp.YPosSource = Elements[r].YPosCenter
-						tmp.TargetID = Elements[ctr].HiddenId
-						tmp.XPosTarget = Elements[ctr].XPosCenter
-						tmp.YPosTarget = Elements[ctr].YPosCenter
-						Arrows = append(Arrows, *tmp)
+						cardRelationNavigator(r, ctr)
 					}
 
 					ctr++
@@ -792,5 +784,19 @@ func zoneTerraNavigator(index int, minX int, minY int, maxX int, maxY int, objec
 	tmp.Project = parser.T.Resources[index].Instances[0].Attributes.Project
 	tmp.ObjectShape = object
 	Elements = append(Elements, *tmp)
+
+}
+
+func cardRelationNavigator(index int, counter int) {
+
+	tmp := new(RelationNavigator)
+	tmp.ArrowID = GlobalID - 1
+	tmp.SourceID = Elements[index].HiddenId
+	tmp.XPosSource = Elements[index].XPosCenter
+	tmp.YPosSource = Elements[index].YPosCenter
+	tmp.TargetID = Elements[counter].HiddenId
+	tmp.XPosTarget = Elements[counter].XPosCenter
+	tmp.YPosTarget = Elements[counter].YPosCenter
+	Arrows = append(Arrows, *tmp)
 
 }

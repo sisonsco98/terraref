@@ -336,6 +336,9 @@ func Mapper(outFileLocation string) {
 	}
 
 	rowOffset := -1
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/*** ITERATE THROUGH RESOURCES ***/
 
@@ -460,23 +463,11 @@ func Mapper(outFileLocation string) {
 
 			style1 := fmt.Sprint("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;" + objectShape)
 			style2 := fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;" + objectShape)
-			// width, height := 50, 50
-			// x, y := -25, 15
+			attr := fmt.Sprint("x")
+			var width, height float64 = 50, 50
+			var x, y float64 = -25, 15
 
-			elementXML(resourceName, resourceType, xPos, yPos, style1, style2)//, width, height, x, y)
-
-			MXGeometry = MXCell.CreateElement("mxGeometry")
-			MXGeometry.CreateAttr("x", "0.5")
-			MXGeometry.CreateAttr("width", "50")
-			MXGeometry.CreateAttr("height", "50")
-			MXGeometry.CreateAttr("relative", "1")
-			MXGeometry.CreateAttr("as", "geometry")
-
-			mxPoint := MXGeometry.CreateElement("mxPoint")
-			mxPoint.CreateAttr("x", "-25")
-			mxPoint.CreateAttr("y", "15")
-			mxPoint.CreateAttr("as", "offset")
-
+			elementXML(resourceName, resourceType, xPos, yPos, style1, style2, attr, width, height, x, y)
 			cardTerraNavigator(i, xPos, yPos, objectShape)
 
 		/****************************************************************************************************/
@@ -498,23 +489,11 @@ func Mapper(outFileLocation string) {
 
 			style1 := fmt.Sprint("whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			style2 := fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" + objectShape)
-			// width, height := 50, 50
-			// x, y := -25, 15
+			attr := fmt.Sprint("y")
+			var width, height float64 = 44, 39
+			var x, y float64 = 5, -19.5
 
-			elementXML(resourceName, resourceType, xPos, yPos, style1, style2)//, width, height, x, y)
-
-			MXGeometry = MXCell.CreateElement("mxGeometry")
-			MXGeometry.CreateAttr("y", "0.5")
-			MXGeometry.CreateAttr("width", "44")
-			MXGeometry.CreateAttr("height", "39")
-			MXGeometry.CreateAttr("relative", "1")
-			MXGeometry.CreateAttr("as", "geometry")
-
-			mxPoint := MXGeometry.CreateElement("mxPoint")
-			mxPoint.CreateAttr("x", "5")
-			mxPoint.CreateAttr("y", "-19.5")
-			mxPoint.CreateAttr("as", "offset")
-
+			elementXML(resourceName, resourceType, xPos, yPos, style1, style2, attr, width, height, x, y)
 			cardTerraNavigator(i, xPos, yPos, objectShape)
 
 		/****************************************************************************************************/
@@ -525,22 +504,11 @@ func Mapper(outFileLocation string) {
 
 			style1 := fmt.Sprint("whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
 			style2 := fmt.Sprint("whiteSpace=wrap;html=1;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" + objectShape)
-			// width, height := 50, 50
-			// x, y := -25, 15
+			attr := fmt.Sprint("")
+			var width, height float64 = 45, 45
+			var x, y float64 = 5, 7
 
-			elementXML(resourceName, resourceType, xPos, yPos, style1, style2)//, width, height, x, y)
-
-			MXGeometry = MXCell.CreateElement("mxGeometry")
-			MXGeometry.CreateAttr("width", "45")
-			MXGeometry.CreateAttr("height", "45")
-			MXGeometry.CreateAttr("relative", "1")
-			MXGeometry.CreateAttr("as", "geometry")
-
-			mxPoint := MXGeometry.CreateElement("mxPoint")
-			mxPoint.CreateAttr("x", "5")
-			mxPoint.CreateAttr("y", "7")
-			mxPoint.CreateAttr("as", "offset")
-
+			elementXML(resourceName, resourceType, xPos, yPos, style1, style2, attr, width, height, x, y)
 			cardTerraNavigator(i, xPos, yPos, objectShape)
 
 		/****************************************************************************************************/
@@ -748,7 +716,7 @@ func Mapper(outFileLocation string) {
 	outFile.Close()
 }
 
-func elementXML(resourceName string, resourceType string, xPos int, yPos int, style1 string, style2 string) {//, width int, height int, x int, y int) {
+func elementXML(resourceName string, resourceType string, xPos int, yPos int, style1 string, style2 string, attr string, width float64, height float64, x float64, y float64) {
 	
 	MXCell = Root.CreateElement("mxCell")
 	MXCell.CreateAttr("id", fmt.Sprint(GlobalID))
@@ -780,16 +748,21 @@ func elementXML(resourceName string, resourceType string, xPos int, yPos int, st
 	MXCell.CreateAttr("style", style2)
 	MXCell.CreateAttr("vertex", "1")
 
-	// MXGeometry = MXCell.CreateElement("mxGeometry")
-	// MXGeometry.CreateAttr("width", fmt.Sprint(width))
-	// MXGeometry.CreateAttr("height", fmt.Sprint(height))
-	// MXGeometry.CreateAttr("relative", "1")
-	// MXGeometry.CreateAttr("as", "geometry")
+	MXGeometry = MXCell.CreateElement("mxGeometry")
 
-	// mxPoint := MXGeometry.CreateElement("mxPoint")
-	// mxPoint.CreateAttr("x", fmt.Sprint(x))
-	// mxPoint.CreateAttr("y", fmt.Sprint(y))
-	// mxPoint.CreateAttr("as", "offset")
+	if attr != "" {
+		MXGeometry.CreateAttr(fmt.Sprint(attr), fmt.Sprint(0.5))
+	}
+
+	MXGeometry.CreateAttr("width", fmt.Sprint(width))
+	MXGeometry.CreateAttr("height", fmt.Sprint(height))
+	MXGeometry.CreateAttr("relative", "1")
+	MXGeometry.CreateAttr("as", "geometry")
+
+	mxPoint := MXGeometry.CreateElement("mxPoint")
+	mxPoint.CreateAttr("x", fmt.Sprint(x))
+	mxPoint.CreateAttr("y", fmt.Sprint(y))
+	mxPoint.CreateAttr("as", "offset")
 
 }
 

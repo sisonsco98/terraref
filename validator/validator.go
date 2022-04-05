@@ -66,12 +66,12 @@ func Validator(outputDestination string) {
 
 			if arrow.XPosSource == arrow.XPosTarget {
 
-				if (arrow.YPosSource-(slice.Height*2) == arrow.YPosTarget) || (arrow.YPosSource+(slice.Height*2) == arrow.YPosTarget) {
+				if (arrow.YPosSource - (slice.Height * 2) == arrow.YPosTarget) || (arrow.YPosSource + (slice.Height * 2) == arrow.YPosTarget) {
 
 					// NO BENDING, target is directly above / below source
 					// [source]--[target]
 
-				} else if (arrow.YPosSource-(slice.Height*2) > arrow.YPosTarget) || (arrow.YPosSource+(slice.Height*2) < arrow.YPosTarget) {
+				} else if (arrow.YPosSource - (slice.Height * 2) > arrow.YPosTarget) || (arrow.YPosSource + (slice.Height * 2) < arrow.YPosTarget) {
 
 					// NEED BENDING, target is not directly above / below source
 					// [source]-x-[target]

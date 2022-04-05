@@ -90,7 +90,7 @@ func Mapper(outputDestination string) {
 	var rows, cols = len(parser.T.Resources) + 1, len(parser.T.Resources)
 	for i := 0; i < rows; i++ {
 		for j := 0; j < cols; j++ {
-			tempX, tempY := 50+(shapeWidth*2*j), 50+(shapeHeight*2*i)
+			tempX, tempY := 50 + (shapeWidth * 2 * j), 50 + (shapeHeight * 2 * i)
 			tempObj := location{tempX, tempY}
 			grid = append(grid, tempObj)
 			numDependents = append(numDependents, 0)
@@ -249,7 +249,7 @@ func Mapper(outputDestination string) {
 
 	mxCell = root.CreateElement("mxCell")
 	mxCell.CreateAttr("id", fmt.Sprint(globalID))
-	mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+	mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
 	globalID++
 
 	/*** CREATING PROJECT REGIONS ***/
@@ -296,18 +296,18 @@ func Mapper(outputDestination string) {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			// set current elements location based off grid (x, y) locations
 			currentRow, currentCol := len(parser.T.Resources), r
 			// SHOULD NOT USE LINE BELOW
 			currentRow = 1
-			xLocation, yLocation := grid[(len(parser.T.Resources)*currentRow)+currentCol].x, grid[(len(parser.T.Resources)*currentRow)+currentCol].y
+			xLocation, yLocation := grid[(len(parser.T.Resources) * currentRow) + currentCol].x, grid[(len(parser.T.Resources) * currentRow) + currentCol].y
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation-minX))
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation-minY))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation - minX))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation - minY))
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -345,18 +345,18 @@ func Mapper(outputDestination string) {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			// set current elements location based off grid (x, y) locations
 			currentRow, currentCol := len(parser.T.Resources), r
 			// SHOULD NOT USE LINE BELOW
 			currentRow, currentCol = 1, 0
-			xLocation, yLocation := grid[(len(parser.T.Resources)*currentRow)+currentCol].x, grid[(len(parser.T.Resources)*currentRow)+currentCol].y
+			xLocation, yLocation := grid[(len(parser.T.Resources) * currentRow) + currentCol].x, grid[(len(parser.T.Resources) * currentRow) + currentCol].y
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation-10))
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation-minY))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation - 10))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation - minY))
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -408,7 +408,7 @@ func Mapper(outputDestination string) {
 
 		// set current elements location based off grid (x, y) locations
 		currentRow, currentCol := i, numDependents[i]
-		xLocation, yLocation := grid[(len(parser.T.Resources)*(currentRow-rowOffset))+currentCol].x, grid[(len(parser.T.Resources)*(currentRow-rowOffset))+currentCol].y
+		xLocation, yLocation := grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].x, grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 
@@ -420,7 +420,7 @@ func Mapper(outputDestination string) {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
 			globalID++
 
 			mxCell.CreateAttr("value", "")
@@ -465,7 +465,7 @@ func Mapper(outputDestination string) {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
 			globalID++
 
 			if len(resourceName) > 0 {
@@ -474,7 +474,7 @@ func Mapper(outputDestination string) {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -516,7 +516,7 @@ func Mapper(outputDestination string) {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprintln("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprintln("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -528,11 +528,11 @@ func Mapper(outputDestination string) {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
 			globalID++
 
 			mxCell.CreateAttr("value", "")
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -592,7 +592,7 @@ func Mapper(outputDestination string) {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
 			globalID++
 
 			if len(resourceName) > 0 {
@@ -601,7 +601,7 @@ func Mapper(outputDestination string) {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -650,7 +650,7 @@ func Mapper(outputDestination string) {
 
 			mxCell = root.CreateElement("mxCell")
 			mxCell.CreateAttr("id", fmt.Sprint(globalID))
-			mxCell.CreateAttr("parent", fmt.Sprint(globalID-1))
+			mxCell.CreateAttr("parent", fmt.Sprint(globalID - 1))
 			globalID++
 
 			if len(resourceName) > 0 {
@@ -659,7 +659,7 @@ func Mapper(outputDestination string) {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;sketch=0;dashed=0;connectable=0;html=1;fillColor=#5184F3;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontColor=#999999;fontSize=12;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry = mxCell.CreateElement("mxGeometry")
@@ -700,7 +700,7 @@ func Mapper(outputDestination string) {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -733,7 +733,7 @@ func Mapper(outputDestination string) {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
@@ -771,7 +771,7 @@ func Mapper(outputDestination string) {
 				mxCell.CreateAttr("value", resourceType)
 			}
 
-			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
+			mxCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")

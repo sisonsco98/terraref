@@ -13,7 +13,6 @@ import (
 
 var Outputs []string
 var Providers []string
-var Elements []string
 
 /*** GLOBAL STRUCT USED TO UNMARSHAL THE .tfstate FILE ***/
 
@@ -35,11 +34,11 @@ type Terraform struct {
 	} `json:"resources"`
 }
 
-func Parser(filename string) {
+func Parser(inFileLocation string) {
 
 	/*** READ IN THE .tfstate FILE (entire file) ***/
 
-	inFile, errRead := ioutil.ReadFile(filename)
+	inFile, errRead := ioutil.ReadFile(inFileLocation)
 	// error reading file
 	if errRead != nil {
 		log.Println("Error reading file.", errRead)
@@ -64,7 +63,7 @@ func Parser(filename string) {
 		Outputs = append(Outputs, output[i][2])
 	}
 
-	// parser provider string to get just the provider within the quotes
+	// parse provider string to get just the provider within the quotes
 	// ex. provider["registry.terraform.io/hashicorp/google"]
 	providerRegex := regexp.MustCompile(`[^"]*()[^"]*`)
 

@@ -12,20 +12,20 @@ import (
 	"github.com/beevik/etree"
 )
 
-var xml = etree.NewDocument()
+var XML = etree.NewDocument()
 
-func Validator(outputDestination string) {
+func Validator(outFileLocation string) {
 
-	/*** OPEN THE outputDestination FILE ***/
+	/*** OPEN THE outFileLocation FILE ***/
 
-	inFile, errRead := os.Open(outputDestination)
+	inFile, errRead := os.Open(outFileLocation)
 	// error reading file
 	if errRead != nil {
 		log.Println("Error opening file.", errRead)
 		os.Exit(1)
 	}
 
-	if err := xml.ReadFromFile(outputDestination); err != nil {
+	if err := XML.ReadFromFile(outFileLocation); err != nil {
 		panic(err)
 	}
 	// keep open
@@ -45,7 +45,7 @@ func Validator(outputDestination string) {
 	for _, slice := range mapper.Elements {
 		if slice.ObjectShape == "shape=mxgraph.gcp2.blank" {
 			path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]", slice.HiddenId + 2)
-			removeElement := xml.FindElement(path)
+			removeElement := XML.FindElement(path)
 			removeParent := removeElement.Parent()
 			removeParent.RemoveChildAt(slice.HiddenId + 10)
 			removeParent.RemoveChildAt(slice.HiddenId + 8)
@@ -118,8 +118,8 @@ func Validator(outputDestination string) {
 	}
 
 	// Writing back to terraform.drawio
-	xml.Indent(4)
-	xml.WriteToFile(outputDestination)
+	XML.Indent(4)
+	XML.WriteToFile(outFileLocation)
 	inFile.Close()
 
 }
@@ -127,7 +127,7 @@ func Validator(outputDestination string) {
 func createArrowBend(id int, xSource int, ySource int, xTarget int, yTarget int) {
 
 	path := fmt.Sprintf("/mxGraphModel/root/mxCell[%d]/mxGeometry", id + 1)
-	arrowGeom := xml.FindElement(path)
+	arrowGeom := XML.FindElement(path)
 
 	array := arrowGeom.CreateElement("Array")
 	array.CreateAttr("as", "points")

@@ -49,7 +49,7 @@ var DimX, DimY = 850, 1100				// diagram
 var CardWidth, CardHeight = 250, 60		// normal cards
 var ZoneWidth, ZoneHeight = 350, 380	// project zones
 
-var GlobalID = 0
+var GlobalID = 2
 
 func Mapper(outFileLocation string) {
 
@@ -205,6 +205,7 @@ func Mapper(outFileLocation string) {
 		fmt.Println()
 	}
 	fmt.Println()
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -220,13 +221,14 @@ func Mapper(outFileLocation string) {
 	root := mxGraphModel.CreateElement("root")
 
 	mxCell := root.CreateElement("mxCell")
-	mxCell.CreateAttr("id", fmt.Sprint(GlobalID))
-	GlobalID++
+	mxCell.CreateAttr("id", fmt.Sprint(0))
 
 	mxCell = root.CreateElement("mxCell")
-	mxCell.CreateAttr("id", fmt.Sprint(GlobalID))
-	mxCell.CreateAttr("parent", fmt.Sprint(GlobalID - 1))
-	GlobalID++
+	mxCell.CreateAttr("id", fmt.Sprint(1))
+	mxCell.CreateAttr("parent", fmt.Sprint(0))
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/*** CREATING PROJECT REGIONS ***/
 
@@ -280,11 +282,11 @@ func Mapper(outFileLocation string) {
 			currentRow, currentCol := len(parser.T.Resources), r
 			// SHOULD NOT USE LINE BELOW
 			currentRow = 1
-			xLocation, yLocation := grid[(len(parser.T.Resources) * currentRow) + currentCol].x, grid[(len(parser.T.Resources) * currentRow) + currentCol].y
+			xPos, yPos := grid[(len(parser.T.Resources) * currentRow) + currentCol].x, grid[(len(parser.T.Resources) * currentRow) + currentCol].y
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation - minX))
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation - minY))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xPos - minX))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yPos - minY))
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -329,11 +331,11 @@ func Mapper(outFileLocation string) {
 			currentRow, currentCol := len(parser.T.Resources), r
 			// SHOULD NOT USE LINE BELOW
 			currentRow, currentCol = 1, 0
-			xLocation, yLocation := grid[(len(parser.T.Resources) * currentRow) + currentCol].x, grid[(len(parser.T.Resources) * currentRow) + currentCol].y
+			xPos, yPos := grid[(len(parser.T.Resources) * currentRow) + currentCol].x, grid[(len(parser.T.Resources) * currentRow) + currentCol].y
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation - 10))
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation - minY))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xPos - 10))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yPos - minY))
 			mxGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			mxGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -385,7 +387,7 @@ func Mapper(outFileLocation string) {
 
 		// set current elements location based off grid (x, y) locations
 		currentRow, currentCol := i, numDependents[i]
-		xLocation, yLocation := grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].x, grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].y
+		xPos, yPos := grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].x, grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 
@@ -434,8 +436,8 @@ func Mapper(outFileLocation string) {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xPos))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yPos))
 			mxGeometry.CreateAttr("width", fmt.Sprint(CardWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(CardHeight))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -466,15 +468,7 @@ func Mapper(outFileLocation string) {
 			mxPoint.CreateAttr("y", "-16")
 			mxPoint.CreateAttr("as", "offset")
 
-			tmp := new(TerraNavigator)
-			tmp.Name = parser.T.Resources[i].Name
-			tmp.HiddenId = GlobalID - 2
-			tmp.XPosCenter = xLocation + (CardWidth / 2)
-			tmp.YPosCenter = yLocation + (CardHeight / 2)
-			tmp.Width = CardWidth
-			tmp.Height = CardHeight
-			tmp.ObjectShape = objectShape
-			Elements = append(Elements, *tmp)
+			tmpTerraNavigator(i, xPos, yPos, objectShape)
 
 		/****************************************************************************************************/
 
@@ -497,8 +491,8 @@ func Mapper(outFileLocation string) {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xPos))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yPos))
 			mxGeometry.CreateAttr("width", fmt.Sprint(CardWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(CardHeight))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -524,15 +518,7 @@ func Mapper(outFileLocation string) {
 			mxPoint.CreateAttr("y", "15")
 			mxPoint.CreateAttr("as", "offset")
 
-			tmp := new(TerraNavigator)
-			tmp.Name = parser.T.Resources[i].Name
-			tmp.HiddenId = GlobalID - 2
-			tmp.XPosCenter = xLocation + (CardWidth / 2)
-			tmp.YPosCenter = yLocation + (CardHeight / 2)
-			tmp.Width = CardWidth
-			tmp.Height = CardHeight
-			tmp.ObjectShape = objectShape
-			Elements = append(Elements, *tmp)
+			tmpTerraNavigator(i, xPos, yPos, objectShape)
 
 		/****************************************************************************************************/
 
@@ -561,8 +547,8 @@ func Mapper(outFileLocation string) {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xPos))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yPos))
 			mxGeometry.CreateAttr("width", fmt.Sprint(CardWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(CardHeight))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -593,15 +579,7 @@ func Mapper(outFileLocation string) {
 			mxPoint.CreateAttr("y", "-19.5")
 			mxPoint.CreateAttr("as", "offset")
 
-			tmp := new(TerraNavigator)
-			tmp.Name = parser.T.Resources[i].Name
-			tmp.HiddenId = GlobalID - 2
-			tmp.XPosCenter = xLocation + (CardWidth / 2)
-			tmp.YPosCenter = yLocation + (CardHeight / 2)
-			tmp.Width = CardWidth
-			tmp.Height = CardHeight
-			tmp.ObjectShape = objectShape
-			Elements = append(Elements, *tmp)
+			tmpTerraNavigator(i, xPos, yPos, objectShape)
 
 		/****************************************************************************************************/
 
@@ -619,8 +597,8 @@ func Mapper(outFileLocation string) {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xPos))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yPos))
 			mxGeometry.CreateAttr("width", fmt.Sprint(CardWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(CardHeight))
 			mxGeometry.CreateAttr("as", "geometry")
@@ -650,15 +628,7 @@ func Mapper(outFileLocation string) {
 			mxPoint.CreateAttr("y", "7")
 			mxPoint.CreateAttr("as", "offset")
 
-			tmp := new(TerraNavigator)
-			tmp.Name = parser.T.Resources[i].Name
-			tmp.HiddenId = GlobalID - 2
-			tmp.XPosCenter = xLocation + (CardWidth / 2)
-			tmp.YPosCenter = yLocation + (CardHeight / 2)
-			tmp.Width = CardWidth
-			tmp.Height = CardHeight
-			tmp.ObjectShape = objectShape
-			Elements = append(Elements, *tmp)
+			tmpTerraNavigator(i, xPos, yPos, objectShape)
 
 		/****************************************************************************************************/
 
@@ -681,21 +651,13 @@ func Mapper(outFileLocation string) {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xPos))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yPos))
 			mxGeometry.CreateAttr("width", fmt.Sprint(CardWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(CardHeight))
 			mxGeometry.CreateAttr("as", "geometry")
 
-			tmp := new(TerraNavigator)
-			tmp.Name = parser.T.Resources[i].Name
-			tmp.HiddenId = GlobalID - 2
-			tmp.XPosCenter = xLocation + (CardWidth / 2)
-			tmp.YPosCenter = yLocation + (CardHeight / 2)
-			tmp.Width = CardWidth
-			tmp.Height = CardHeight
-			tmp.ObjectShape = objectShape
-			Elements = append(Elements, *tmp)
+			tmpTerraNavigator(i, xPos, yPos, objectShape)
 
 		case 6: // Cloud Scheduler
 
@@ -714,21 +676,13 @@ func Mapper(outFileLocation string) {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xPos))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yPos))
 			mxGeometry.CreateAttr("width", fmt.Sprint(CardWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(CardHeight))
 			mxGeometry.CreateAttr("as", "geometry")
 
-			tmp := new(TerraNavigator)
-			tmp.Name = parser.T.Resources[i].Name
-			tmp.HiddenId = GlobalID - 2
-			tmp.XPosCenter = xLocation + (CardWidth / 2)
-			tmp.YPosCenter = yLocation + (CardHeight / 2)
-			tmp.Width = CardWidth
-			tmp.Height = CardHeight
-			tmp.ObjectShape = objectShape
-			Elements = append(Elements, *tmp)
+			tmpTerraNavigator(i, xPos, yPos, objectShape)
 
 		/****************************************************************************************************/
 
@@ -752,21 +706,13 @@ func Mapper(outFileLocation string) {
 			mxCell.CreateAttr("vertex", "1")
 
 			mxGeometry := mxCell.CreateElement("mxGeometry")
-			mxGeometry.CreateAttr("x", fmt.Sprint(xLocation))
-			mxGeometry.CreateAttr("y", fmt.Sprint(yLocation))
+			mxGeometry.CreateAttr("x", fmt.Sprint(xPos))
+			mxGeometry.CreateAttr("y", fmt.Sprint(yPos))
 			mxGeometry.CreateAttr("width", fmt.Sprint(CardWidth))
 			mxGeometry.CreateAttr("height", fmt.Sprint(CardHeight))
 			mxGeometry.CreateAttr("as", "geometry")
 
-			tmp := new(TerraNavigator)
-			tmp.Name = parser.T.Resources[i].Name
-			tmp.HiddenId = GlobalID - 2
-			tmp.XPosCenter = xLocation + (CardWidth / 2)
-			tmp.YPosCenter = yLocation + (CardHeight / 2)
-			tmp.Width = CardWidth
-			tmp.Height = CardHeight
-			tmp.ObjectShape = objectShape
-			Elements = append(Elements, *tmp)
+			tmpTerraNavigator(i, xPos, yPos, objectShape)
 
 		case 8:
 
@@ -887,4 +833,18 @@ func Mapper(outFileLocation string) {
 
 	// close file
 	outFile.Close()
+}
+
+func tmpTerraNavigator(idk int, xPos int, yPos int, object string) {
+
+	tmp := new(TerraNavigator)
+	tmp.Name = parser.T.Resources[idk].Name
+	tmp.HiddenId = GlobalID - 2
+	tmp.XPosCenter = xPos + (CardWidth / 2)
+	tmp.YPosCenter = yPos + (CardHeight / 2)
+	tmp.Width = CardWidth
+	tmp.Height = CardHeight
+	tmp.ObjectShape = object
+	Elements = append(Elements, *tmp)
+
 }

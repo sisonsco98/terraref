@@ -91,122 +91,6 @@ func Mapper(outFileLocation string) {
 		}
 		fmt.Println()
 	}
-
-	/*** DETERMINE THE DEPENDENCIES AND DEPENDENTS OF EACH RESOURCE ***/
-
-	fmt.Println()
-	fmt.Println("****************************************************************************************************")
-	fmt.Println("*            R E S O U R C E    D E P E N D E N C I E S    A N D    D E P E N D E N T S            *")
-	fmt.Println("****************************************************************************************************")
-	fmt.Println()
-
-	// map each resource name to resource index
-	nameToIndex := make(map[string]int)
-	for i := 0; i < len(parser.T.Resources); i++ {
-		if parser.T.Resources[i].Name != "default" {
-			nameToIndex[parser.T.Resources[i].Name] = i
-		}
-	}
-
-	// number of dependents and dependencies for each resource
-	numDependents := make([]int, rows * cols)
-	numDependencies := make([]int, rows * cols)
-
-	// list of dependencies and dependents for each resource
-	dependencyNames := make(map[int][]string)
-	dependencyIndices := make(map[int][]int)
-	dependentNames := make(map[int][]string)
-	dependentIndices := make(map[int][]int)
-
-	// iterate through each resource -> instance -> dependency to count numDependencies and numDependents
-	for r := 0; r < len(parser.T.Resources); r++ {
-		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
-			for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
-				// save dependency info
-				dependency := parser.T.Resources[r].Instances[i].Dependencies[d]
-				dependencyName := strings.Split(dependency, ".")
-				dependencyIndex := nameToIndex[dependencyName[1]]
-				// increment numDependencies and numDependents
-				numDependencies[r] += 1
-				numDependents[dependencyIndex] += 1
-			}
-		}
-	}
-
-	// iterate through each resource
-	for r := 0; r < len(parser.T.Resources); r++ {
-
-		// temp list of dependencies and dependents for current resource
-		var tempDependencyNames []string
-		var tempDependencyIndices []int
-		var tempDependentNames []string
-		var tempDependentIndices []int
-
-		// find the name and index of each dependency of the current resource
-		if numDependencies[r] > 0 {
-			for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
-				for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
-					// save dependency info
-					dependency := parser.T.Resources[r].Instances[i].Dependencies[d]
-					dependencyName := strings.Split(dependency, ".")
-					dependencyIndex := nameToIndex[dependencyName[1]]
-					// append dependency
-					tempDependencyNames = append(tempDependencyNames, dependencyName[0])
-					tempDependencyIndices = append(tempDependencyIndices, dependencyIndex)
-				}
-			}
-			// store dependencies for current resource
-			dependencyNames[r] = tempDependencyNames
-			dependencyIndices[r] = tempDependencyIndices
-		}
-
-		// find the name and index of each dependent of the current resource
-		if numDependents[r] > 0 {
-			rName := parser.T.Resources[r].Name
-			for resource := 0; resource < len(parser.T.Resources); resource++ {
-				resourceName := parser.T.Resources[resource].Instances[0].Attributes.Name
-				for i := 0; i < len(parser.T.Resources[resource].Instances); i++ {
-					for d := 0; d < len(parser.T.Resources[resource].Instances[i].Dependencies); d++ {
-						if len(parser.T.Resources[resource].Instances[i].Dependencies) > 0 {
-							// save dependent info
-							dependency := parser.T.Resources[resource].Instances[i].Dependencies[d]
-							dependencyName := strings.Split(dependency, ".")
-							if rName == dependencyName[1] {
-								// append dependent
-								tempDependentNames = append(tempDependentNames, resourceName)
-								tempDependentIndices = append(tempDependentIndices, resource)
-							}
-						}
-					}
-				}
-			}
-			// store dependents for resource
-			dependentNames[r] = tempDependentNames
-			dependentIndices[r] = tempDependentIndices
-		}
-
-	}
-
-	/*** PRINT THE DEPENDENCIES AND DEPENDENTS OF EACH RESOURCE ***/
-
-	// dependencies
-	for r := 0; r < len(parser.T.Resources); r++ {
-		fmt.Print("(", r, ") has ", numDependencies[r], " dependencies:")
-		for d := 0; d < len(dependencyIndices[r]); d++ {
-			fmt.Print(" (", (dependencyIndices[r])[d], " ", (dependencyNames[r])[d], ")")
-		}
-		fmt.Println()
-	}
-	fmt.Println()
-
-	// dependents
-	for r := 0; r < len(parser.T.Resources); r++ {
-		fmt.Print("(", r, ") has ", numDependents[r], " dependents:")
-		for d := 0; d < len(dependentIndices[r]); d++ {
-			fmt.Print(" (", (dependentIndices[r])[d], " ", (dependentNames[r])[d], ")")
-		}
-		fmt.Println()
-	}
 	fmt.Println()
 
 	/*** CREATE DEFAULT ELEMENTS ***/
@@ -253,7 +137,7 @@ func Mapper(outFileLocation string) {
 		resourceName := parser.T.Resources[r].Instances[0].Attributes.Name
 
 		if parser.T.Resources[r].Name != "default" {
-			nameToIndex[parser.T.Resources[r].Name] = elementID
+			parser.NameToIndex[parser.T.Resources[r].Name] = elementID
 		}
 
 		// if name is network, create project area
@@ -349,7 +233,7 @@ func Mapper(outFileLocation string) {
 
 		if parser.T.Resources[i].Name != "default" {
 			// store the name and id of dependency elements
-			nameToIndex[parser.T.Resources[i].Name] = elementID
+			parser.NameToIndex[parser.T.Resources[i].Name] = elementID
 		}
 
 		// (2) use resource type to lookup the draw.io name (ex: Bucket)
@@ -371,7 +255,7 @@ func Mapper(outFileLocation string) {
 		}
 
 		// set current elements location based off grid (x, y) locations
-		currentRow, currentCol := i, numDependents[i]
+		currentRow, currentCol := i, parser.NumDependents[i]
 		xPos, yPos := grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].x, grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/

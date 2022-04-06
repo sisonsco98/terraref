@@ -89,8 +89,7 @@ func Parser(inFileLocation string) {
 		Providers = append(Providers, provider[1][0])
 	}
 
-	/*** COUNT AND STORE DEPENDENCIES AND DEPENDENTS ***/
-	/*** DETERMINE THE DEPENDENCIES AND DEPENDENTS OF EACH RESOURCE ***/
+	/*** FIND THE DEPENDENCIES AND DEPENDENTS OF EACH RESOURCE ***/
 
 	fmt.Println()
 	fmt.Println("****************************************************************************************************")
@@ -102,14 +101,27 @@ func Parser(inFileLocation string) {
 	NumDependents = make([]int, len(T.Resources) * len(T.Resources))
 	NumDependencies = make([]int, len(T.Resources) * len(T.Resources))
 
-	// store each resource name and resource index
+	// set resource name to resource index map
 	for i := 0; i < len(T.Resources); i++ {
 		if T.Resources[i].Name != "default" {
 			NameToIndex[T.Resources[i].Name] = i
 		}
 	}
 
-	// iterate through each resource -> instance -> dependency to count NumDependencies and NumDependents
+	countDependenciesDependents()
+
+	storeDependencies()
+	storeDependents()
+
+	printDependencies()
+	printDependents()
+
+}
+
+/*** FUNCTIONS ***/
+
+func countDependenciesDependents() {
+	// iterate through each resource -> instance -> dependency
 	for r := 0; r < len(T.Resources); r++ {
 		for i := 0; i < len(T.Resources[r].Instances); i++ {
 			for d := 0; d < len(T.Resources[r].Instances[i].Dependencies); d++ {
@@ -123,16 +135,14 @@ func Parser(inFileLocation string) {
 			}
 		}
 	}
+}
 
-	// iterate through each resource
+func storeDependencies() {
+	// iterate through each resource -> instance -> dependency
 	for r := 0; r < len(T.Resources); r++ {
-
-		// temp list of dependencies and dependents for current resource
+		// temp list of dependencies for current resource
 		var tempDependencyNames []string
 		var tempDependencyIndices []int
-		var tempDependentNames []string
-		var tempDependentIndices []int
-
 		// find the name and index of each dependency of the current resource
 		if NumDependencies[r] > 0 {
 			for i := 0; i < len(T.Resources[r].Instances); i++ {
@@ -150,7 +160,15 @@ func Parser(inFileLocation string) {
 			DependencyNames[r] = tempDependencyNames
 			DependencyIndices[r] = tempDependencyIndices
 		}
+	}
+}
 
+func storeDependents() {
+	// iterate through each resource -> instance -> dependency
+	for r := 0; r < len(T.Resources); r++ {
+		// temp list of dependents for current resource
+		var tempDependentNames []string
+		var tempDependentIndices []int
 		// find the name and index of each dependent of the current resource
 		if NumDependents[r] > 0 {
 			rName := T.Resources[r].Name
@@ -175,12 +193,10 @@ func Parser(inFileLocation string) {
 			DependentNames[r] = tempDependentNames
 			DependentIndices[r] = tempDependentIndices
 		}
-
 	}
+}
 
-	/*** PRINT THE DEPENDENCIES AND DEPENDENTS OF EACH RESOURCE ***/
-
-	// dependencies
+func printDependencies() {
 	for r := 0; r < len(T.Resources); r++ {
 		fmt.Print("(", r, ") has ", NumDependencies[r], " dependencies:")
 		for d := 0; d < len(DependencyIndices[r]); d++ {
@@ -189,8 +205,9 @@ func Parser(inFileLocation string) {
 		fmt.Println()
 	}
 	fmt.Println()
+}
 
-	// dependents
+func printDependents() {
 	for r := 0; r < len(T.Resources); r++ {
 		fmt.Print("(", r, ") has ", NumDependents[r], " dependents:")
 		for d := 0; d < len(DependentIndices[r]); d++ {
@@ -198,5 +215,4 @@ func Parser(inFileLocation string) {
 		}
 		fmt.Println()
 	}
-
 }

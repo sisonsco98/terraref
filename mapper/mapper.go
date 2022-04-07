@@ -13,6 +13,13 @@ import (
 	"github.com/beevik/etree"
 )
 
+/*** GLOBAL STRUCT TO STORE AND ACCESS GRID LOCATIONS ***/
+
+type Location struct {
+	x, y int
+}
+var Grid []Location
+
 /*** GLOBAL SLICES FOR ELEMENTS AND ARROWS ***/
 
 var Elements []TerraNavigator
@@ -73,25 +80,8 @@ func Mapper(outFileLocation string) {
 	fmt.Println("****************************************************************************************************")
 	fmt.Println()
 
-	// grid locations
-	type location struct {
-		x, y int
-	}
-	var grid []location
-
-	// set grid dimensions
-	rows, cols := len(parser.T.Resources) + 1, len(parser.T.Resources)
-	for r := 0; r < rows; r++ {
-		for c := 0; c < cols; c++ {
-			// store grid locations
-			tempX, tempY := 50 + (CardWidth * 2 * c), 50 + (CardHeight * 2 * r)
-			grid = append(grid, location{tempX, tempY})
-			// print grid locations
-			fmt.Print("(", grid[(r * len(parser.T.Resources)) + c].x, ", ", grid[(r * len(parser.T.Resources)) + c].y, ")", "\t")
-		}
-		fmt.Println()
-	}
-	fmt.Println()
+	createGrid()
+	printGrid()
 
 	/*** CREATE DEFAULT ELEMENTS ***/
 
@@ -166,7 +156,7 @@ func Mapper(outFileLocation string) {
 			currentRow, currentCol := len(parser.T.Resources), r
 			// SHOULD NOT USE LINE BELOW
 			currentRow = 1
-			xPos, yPos := grid[(len(parser.T.Resources) * currentRow) + currentCol].x, grid[(len(parser.T.Resources) * currentRow) + currentCol].y
+			xPos, yPos := Grid[(len(parser.T.Resources) * currentRow) + currentCol].x, Grid[(len(parser.T.Resources) * currentRow) + currentCol].y
 
 			MXGeometry = MXCell.CreateElement("mxGeometry")
 			MXGeometry.CreateAttr("x", fmt.Sprint(xPos - minX))
@@ -206,7 +196,7 @@ func Mapper(outFileLocation string) {
 			currentRow, currentCol := len(parser.T.Resources), r
 			// SHOULD NOT USE LINE BELOW
 			currentRow, currentCol = 1, 0
-			xPos, yPos := grid[(len(parser.T.Resources) * currentRow) + currentCol].x, grid[(len(parser.T.Resources) * currentRow) + currentCol].y
+			xPos, yPos := Grid[(len(parser.T.Resources) * currentRow) + currentCol].x, Grid[(len(parser.T.Resources) * currentRow) + currentCol].y
 
 			MXGeometry = MXCell.CreateElement("mxGeometry")
 			MXGeometry.CreateAttr("x", fmt.Sprint(xPos - 10))
@@ -256,7 +246,7 @@ func Mapper(outFileLocation string) {
 
 		// set current elements location based off grid (x, y) locations
 		currentRow, currentCol := i, parser.NumDependents[i]
-		xPos, yPos := grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].x, grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].y
+		xPos, yPos := Grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].x, Grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
 
@@ -590,6 +580,41 @@ func Mapper(outFileLocation string) {
 
 	// close file
 	outFile.Close()
+
+}
+
+/*** FUNCTIONS ***/
+
+func createGrid() {
+	// set grid dimensions
+	rows, cols := len(parser.T.Resources) + 1, len(parser.T.Resources)
+	for r := 0; r < rows; r++ {
+		for c := 0; c < cols; c++ {
+			// store grid locations
+			tempX, tempY := 50 + (CardWidth * 2 * c), 50 + (CardHeight * 2 * r)
+			Grid = append(Grid, Location{tempX, tempY})
+			// // print grid locations
+			// fmt.Print("(", Grid[(r * len(parser.T.Resources)) + c].x, ", ", Grid[(r * len(parser.T.Resources)) + c].y, ")", "\t")
+		}
+		// fmt.Println()
+	}
+	// fmt.Println()
+}
+
+func printGrid() {
+	// set grid dimensions
+	rows, cols := len(parser.T.Resources) + 1, len(parser.T.Resources)
+	for r := 0; r < rows; r++ {
+		for c := 0; c < cols; c++ {
+			// // store grid locations
+			// tempX, tempY := 50 + (CardWidth * 2 * c), 50 + (CardHeight * 2 * r)
+			// Grid = append(Grid, Location{tempX, tempY})
+			// print grid locations
+			fmt.Print("(", Grid[(r * len(parser.T.Resources)) + c].x, ", ", Grid[(r * len(parser.T.Resources)) + c].y, ")", "\t")
+		}
+		fmt.Println()
+	}
+	fmt.Println()
 }
 
 func elementXML(resourceName string, resourceType string, xPos int, yPos int, style1 string, style2 string, attr string, width float64, height float64, x float64, y float64) {

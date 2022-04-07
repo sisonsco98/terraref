@@ -98,8 +98,8 @@ func Parser(inFileLocation string) {
 	fmt.Println()
 
 	// number of dependents and dependencies for each resource
-	NumDependents = make([]int, len(T.Resources) * len(T.Resources))
-	NumDependencies = make([]int, len(T.Resources) * len(T.Resources))
+	NumDependents = make([]int, len(T.Resources))
+	NumDependencies = make([]int, len(T.Resources))
 
 	// set resource name to resource index map
 	for i := 0; i < len(T.Resources); i++ {

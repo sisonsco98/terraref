@@ -10,15 +10,9 @@ import (
 	"strings"
 )
 
-/*** GLOBAL SLICES FOR OUTPUTS AND PROVIDERS FROM THE .tfstate FILE ***/
-
-var Outputs []string
-var Providers []string
-
 /*** GLOBAL STRUCT USED TO UNMARSHAL THE .tfstate FILE ***/
 
 var T Terraform
-
 type Terraform struct {
 	Resources []struct {
 		Type      string `json:"type"`
@@ -35,14 +29,19 @@ type Terraform struct {
 	} `json:"resources"`
 }
 
-/*** ??? ***/
+/*** GLOBAL SLICES FOR OUTPUTS AND PROVIDERS FROM THE .tfstate FILE ***/
+
+var Outputs []string
+var Providers []string
+
+/*** GLOBAL SLICES AND MAPS FOR RELATIONSHIPS ***/
 
 // map each resource name to resource index
 var NameToIndex = make(map[string]int)
 
 // number of dependents and dependencies for each resource
-var NumDependents []int
 var NumDependencies []int
+var NumDependents []int
 
 // list of dependencies and dependents for each resource
 var DependencyNames = make(map[int][]string)
@@ -63,31 +62,9 @@ func Parser(inFileLocation string) {
 
 	/*** UNMARSHAL THE .tfstate FILE ***/
 
-	// unmarshal "outputs" block and "resources" block
-	var outputBlock map[string]interface{}
-	json.Unmarshal(inFile, &outputBlock)
-	json.Unmarshal(inFile, &T)
-
-	// parse the output string to get the outputs
-	// ex: map[ab:map[type:string value:34.105.77.168] ip:map[type:string value:34.105.77.168]]
-	outputStr := fmt.Sprintln(outputBlock["outputs"])
-	outputRegex := regexp.MustCompile(`(([a-z_]*):map)+`)
-	output := outputRegex.FindAllStringSubmatch(outputStr, -1)
-
-	// iterates through matches and stores each output in Outputs[] slice
-	for i := range output {
-		Outputs = append(Outputs, output[i][2])
-	}
-
-	// parse provider string to get just the provider within the quotes
-	// ex. provider["registry.terraform.io/hashicorp/google"]
-	providerRegex := regexp.MustCompile(`[^"]*()[^"]*`)
-
-	// iterates through matches and stores each output in Providers[] slice
-	for i := 0; i < len(T.Resources); i++ {
-		provider := providerRegex.FindAllStringSubmatch(T.Resources[i].Provider, -1)
-		Providers = append(Providers, provider[1][0])
-	}
+	unmarshalFile(inFile)
+	getOutputs(inFile, unmarshalFile(inFile))
+	getProviders(inFile, unmarshalFile(inFile))
 
 	/*** FIND THE DEPENDENCIES AND DEPENDENTS OF EACH RESOURCE ***/
 
@@ -97,10 +74,6 @@ func Parser(inFileLocation string) {
 	fmt.Println("****************************************************************************************************")
 	fmt.Println()
 
-	// number of dependents and dependencies for each resource
-	NumDependents = make([]int, len(T.Resources))
-	NumDependencies = make([]int, len(T.Resources))
-
 	// set resource name to resource index map
 	for i := 0; i < len(T.Resources); i++ {
 		if T.Resources[i].Name != "default" {
@@ -108,22 +81,60 @@ func Parser(inFileLocation string) {
 		}
 	}
 
+	// set initial number of dependencies and dependents to 0 for each resource
+	NumDependencies = make([]int, len(T.Resources))
+	NumDependents = make([]int, len(T.Resources))
+
 	countDependenciesDependents()
 
 	storeDependencies()
-	storeDependents()
-
 	printDependencies()
+
+	storeDependents()
 	printDependents()
 
 }
 
 /*** FUNCTIONS ***/
 
+func unmarshalFile(inFile []byte) map[string]interface{} {
+	// unmarshal "outputs" block and "resources" block
+	var outputBlock map[string]interface{}
+	json.Unmarshal(inFile, &outputBlock)
+	json.Unmarshal(inFile, &T)
+	// return outputs
+	return outputBlock
+}
+
+func getOutputs(inFile []byte, outputBlock map[string]interface{}) {
+	// parse the output string to get the outputs
+	// ex: map[ab:map[type:string value:34.105.77.168] ip:map[type:string value:34.105.77.168]]
+	outputStr := fmt.Sprintln(outputBlock["outputs"])
+	outputRegex := regexp.MustCompile(`(([a-z_]*):map)+`)
+	output := outputRegex.FindAllStringSubmatch(outputStr, -1)
+	// iterates through matches and stores each output in Outputs[] slice
+	for i := range output {
+		Outputs = append(Outputs, output[i][2])
+	}
+}
+
+func getProviders(inFile []byte, outputBlock map[string]interface{}) {
+	// parse provider string to get just the provider within the quotes
+	// ex. provider["registry.terraform.io/hashicorp/google"]
+	providerRegex := regexp.MustCompile(`[^"]*()[^"]*`)
+	// iterates through matches and stores each output in Providers[] slice
+	for i := 0; i < len(T.Resources); i++ {
+		provider := providerRegex.FindAllStringSubmatch(T.Resources[i].Provider, -1)
+		Providers = append(Providers, provider[1][0])
+	}
+}
+
 func countDependenciesDependents() {
-	// iterate through each resource -> instance -> dependency
+	// iterate through all resources
 	for r := 0; r < len(T.Resources); r++ {
+		// iterate through all instances of each resource
 		for i := 0; i < len(T.Resources[r].Instances); i++ {
+			// iterate through all dependencies of each instance
 			for d := 0; d < len(T.Resources[r].Instances[i].Dependencies); d++ {
 				// save dependency info
 				dependency := T.Resources[r].Instances[i].Dependencies[d]
@@ -138,14 +149,16 @@ func countDependenciesDependents() {
 }
 
 func storeDependencies() {
-	// iterate through each resource -> instance -> dependency
+	// iterate through all resources
 	for r := 0; r < len(T.Resources); r++ {
 		// temp list of dependencies for current resource
 		var tempDependencyNames []string
 		var tempDependencyIndices []int
 		// find the name and index of each dependency of the current resource
 		if NumDependencies[r] > 0 {
+			// iterate through all instances of each resource
 			for i := 0; i < len(T.Resources[r].Instances); i++ {
+				// iterate through all dependencies of each instance
 				for d := 0; d < len(T.Resources[r].Instances[i].Dependencies); d++ {
 					// save dependency info
 					dependency := T.Resources[r].Instances[i].Dependencies[d]
@@ -163,8 +176,19 @@ func storeDependencies() {
 	}
 }
 
+func printDependencies() {
+	for r := 0; r < len(T.Resources); r++ {
+		fmt.Print("(", r, ") has ", NumDependencies[r], " dependencies:")
+		for d := 0; d < len(DependencyIndices[r]); d++ {
+			fmt.Print(" (", (DependencyIndices[r])[d], " ", (DependencyNames[r])[d], ")")
+		}
+		fmt.Println()
+	}
+	fmt.Println()
+}
+
 func storeDependents() {
-	// iterate through each resource -> instance -> dependency
+	// iterate through all resources
 	for r := 0; r < len(T.Resources); r++ {
 		// temp list of dependents for current resource
 		var tempDependentNames []string
@@ -174,7 +198,9 @@ func storeDependents() {
 			rName := T.Resources[r].Name
 			for resource := 0; resource < len(T.Resources); resource++ {
 				resourceName := T.Resources[resource].Instances[0].Attributes.Name
+				// iterate through all instances of each resource
 				for i := 0; i < len(T.Resources[resource].Instances); i++ {
+					// iterate through all dependencies of each instance
 					for d := 0; d < len(T.Resources[resource].Instances[i].Dependencies); d++ {
 						if len(T.Resources[resource].Instances[i].Dependencies) > 0 {
 							// save dependent info
@@ -194,17 +220,6 @@ func storeDependents() {
 			DependentIndices[r] = tempDependentIndices
 		}
 	}
-}
-
-func printDependencies() {
-	for r := 0; r < len(T.Resources); r++ {
-		fmt.Print("(", r, ") has ", NumDependencies[r], " dependencies:")
-		for d := 0; d < len(DependencyIndices[r]); d++ {
-			fmt.Print(" (", (DependencyIndices[r])[d], " ", (DependencyNames[r])[d], ")")
-		}
-		fmt.Println()
-	}
-	fmt.Println()
 }
 
 func printDependents() {

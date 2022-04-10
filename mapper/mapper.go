@@ -593,12 +593,8 @@ func createGrid() {
 			// store grid locations
 			tempX, tempY := 50 + (CardWidth * 2 * c), 50 + (CardHeight * 2 * r)
 			Grid = append(Grid, Location{tempX, tempY})
-			// // print grid locations
-			// fmt.Print("(", Grid[(r * len(parser.T.Resources)) + c].x, ", ", Grid[(r * len(parser.T.Resources)) + c].y, ")", "\t")
 		}
-		// fmt.Println()
 	}
-	// fmt.Println()
 }
 
 func printGrid() {
@@ -606,10 +602,6 @@ func printGrid() {
 	rows, cols := len(parser.T.Resources) + 1, len(parser.T.Resources)
 	for r := 0; r < rows; r++ {
 		for c := 0; c < cols; c++ {
-			// // store grid locations
-			// tempX, tempY := 50 + (CardWidth * 2 * c), 50 + (CardHeight * 2 * r)
-			// Grid = append(Grid, Location{tempX, tempY})
-			// print grid locations
 			fmt.Print("(", Grid[(r * len(parser.T.Resources)) + c].x, ", ", Grid[(r * len(parser.T.Resources)) + c].y, ")", "\t")
 		}
 		fmt.Println()
@@ -668,7 +660,6 @@ func elementXML(resourceName string, resourceType string, xPos int, yPos int, st
 }
 
 func cardTerraNavigator(index int, xPos int, yPos int, object string) {
-
 	tmp := new(TerraNavigator)
 	tmp.Name = parser.T.Resources[index].Name
 	tmp.HiddenId = GlobalID - 2
@@ -678,11 +669,9 @@ func cardTerraNavigator(index int, xPos int, yPos int, object string) {
 	tmp.Height = CardHeight
 	tmp.ObjectShape = object
 	Elements = append(Elements, *tmp)
-
 }
 
 func zoneTerraNavigator(index int, minX int, minY int, maxX int, maxY int, object string) {
-
 	tmp := new(TerraNavigator)
 	tmp.Name = parser.T.Resources[index].Name
 	tmp.HiddenId = GlobalID - 2
@@ -693,11 +682,9 @@ func zoneTerraNavigator(index int, minX int, minY int, maxX int, maxY int, objec
 	tmp.Project = parser.T.Resources[index].Instances[0].Attributes.Project
 	tmp.ObjectShape = object
 	Elements = append(Elements, *tmp)
-
 }
 
 func cardRelationNavigator(index int, counter int) {
-
 	tmp := new(RelationNavigator)
 	tmp.ArrowID = GlobalID - 1
 	tmp.SourceID = Elements[index].HiddenId
@@ -707,5 +694,4 @@ func cardRelationNavigator(index int, counter int) {
 	tmp.XPosTarget = Elements[counter].XPosCenter
 	tmp.YPosTarget = Elements[counter].YPosCenter
 	Arrows = append(Arrows, *tmp)
-
 }

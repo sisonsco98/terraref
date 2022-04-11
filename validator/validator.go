@@ -52,7 +52,7 @@ func Validator(outFileLocation string) {
 	// iterate through all arrows and check for overlap
 	for _, arrow := range mapper.Arrows {
 
-		var newX int
+		var xBend int
 
 		// iterate through all elements to get the slices
 		for _, slice := range mapper.Elements {
@@ -68,12 +68,12 @@ func Validator(outFileLocation string) {
 					// [source]-x-[target]
 					if arrow.XPosSource == 50 + slice.Width / 2 {
 						// left row, bend left
-						newX = arrow.XPosSource - slice.Width / 2 - 25
+						xBend = arrow.XPosSource - slice.Width / 2 - 25
 					} else if arrow.XPosSource == 50 + slice.Width / 2 + (slice.Width * 2) {
 						// right row, bend right
-						newX = arrow.XPosSource + slice.Width / 2 + 25
+						xBend = arrow.XPosSource + slice.Width / 2 + 25
 					}
-					createArrowBend(arrow.ArrowID, newX, arrow.YPosSource, newX, arrow.YPosTarget)
+					createArrowBend(arrow.ArrowID, xBend, arrow.YPosSource, xBend, arrow.YPosTarget)
 				}
 			}
 
@@ -89,8 +89,8 @@ func Validator(outFileLocation string) {
 			if (arrow.XPosSource != arrow.XPosTarget) && (arrow.YPosSource != arrow.YPosTarget) {
 				// NEED BENDING, target not directly above / below / left / right of source
 				// [source]-x-[target]
-				newX = (arrow.XPosSource + arrow.XPosTarget) / 2
-				createArrowBend(arrow.ArrowID, newX, arrow.YPosSource, newX, arrow.YPosTarget)
+				xBend = (arrow.XPosSource + arrow.XPosTarget) / 2
+				createArrowBend(arrow.ArrowID, xBend, arrow.YPosSource, xBend, arrow.YPosTarget)
 			}
 
 		}

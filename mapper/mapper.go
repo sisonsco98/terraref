@@ -534,32 +534,7 @@ func Mapper(outFileLocation string) {
 
 					// find elements that are dependencies
 					if Elements[ctr].Name == dependencyName[1] {
-
-						MXCell = Root.CreateElement("mxCell")
-						MXCell.CreateAttr("id", fmt.Sprint(GlobalID))
-						MXCell.CreateAttr("parent", fmt.Sprint(1))
-						GlobalID++
-
-						MXCell.CreateAttr("value", "")
-						MXCell.CreateAttr("style", "whiteSpace=wrap;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
-						MXCell.CreateAttr("edge", "1")
-						MXCell.CreateAttr("target", fmt.Sprintf("%d", Elements[ctr].HiddenId))
-						MXCell.CreateAttr("source", fmt.Sprintf("%d", Elements[r].HiddenId))
-
-						MXGeometry = MXCell.CreateElement("mxGeometry")
-						MXGeometry.CreateAttr("relative", "1")
-						MXGeometry.CreateAttr("as", "geometry")
-
-						mxPoint := MXGeometry.CreateElement("mxPoint")
-						mxPoint.CreateAttr("x", fmt.Sprint(Elements[r].XPosCenter))
-						mxPoint.CreateAttr("y", fmt.Sprint(Elements[r].YPosCenter))
-						mxPoint.CreateAttr("as", "sourcePoint")
-
-						mxPoint = MXGeometry.CreateElement("mxPoint")
-						mxPoint.CreateAttr("x", fmt.Sprint(Elements[ctr].XPosCenter))
-						mxPoint.CreateAttr("y", fmt.Sprint(Elements[ctr].YPosCenter))
-						mxPoint.CreateAttr("as", "targetPoint")
-
+						createArrow(r, ctr)
 						cardRelationNavigator(r, ctr)
 					}
 
@@ -684,12 +659,41 @@ func zoneTerraNavigator(index int, minX int, minY int, maxX int, maxY int, objec
 	Elements = append(Elements, *tmp)
 }
 
-func cardRelationNavigator(index int, counter int) {
+func createArrow(resource int, counter int) {
+
+	MXCell = Root.CreateElement("mxCell")
+	MXCell.CreateAttr("id", fmt.Sprint(GlobalID))
+	MXCell.CreateAttr("parent", fmt.Sprint(1))
+	GlobalID++
+
+	MXCell.CreateAttr("value", "")
+	MXCell.CreateAttr("style", "whiteSpace=wrap;html=1;edgeStyle=orthogonalEdgeStyle;fontSize=12;html=1;endArrow=blockThin;endFill=1;rounded=0;strokeWidth=2;endSize=4;startSize=4;")
+	MXCell.CreateAttr("edge", "1")
+	MXCell.CreateAttr("target", fmt.Sprintf("%d", Elements[counter].HiddenId))
+	MXCell.CreateAttr("source", fmt.Sprintf("%d", Elements[resource].HiddenId))
+
+	MXGeometry = MXCell.CreateElement("mxGeometry")
+	MXGeometry.CreateAttr("relative", "1")
+	MXGeometry.CreateAttr("as", "geometry")
+
+	mxPoint := MXGeometry.CreateElement("mxPoint")
+	mxPoint.CreateAttr("x", fmt.Sprint(Elements[resource].XPosCenter))
+	mxPoint.CreateAttr("y", fmt.Sprint(Elements[resource].YPosCenter))
+	mxPoint.CreateAttr("as", "sourcePoint")
+
+	mxPoint = MXGeometry.CreateElement("mxPoint")
+	mxPoint.CreateAttr("x", fmt.Sprint(Elements[counter].XPosCenter))
+	mxPoint.CreateAttr("y", fmt.Sprint(Elements[counter].YPosCenter))
+	mxPoint.CreateAttr("as", "targetPoint")
+
+}
+
+func cardRelationNavigator(resource int, counter int) {
 	tmp := new(RelationNavigator)
 	tmp.ArrowID = GlobalID - 1
-	tmp.SourceID = Elements[index].HiddenId
-	tmp.XPosSource = Elements[index].XPosCenter
-	tmp.YPosSource = Elements[index].YPosCenter
+	tmp.SourceID = Elements[resource].HiddenId
+	tmp.XPosSource = Elements[resource].XPosCenter
+	tmp.YPosSource = Elements[resource].YPosCenter
 	tmp.TargetID = Elements[counter].HiddenId
 	tmp.XPosTarget = Elements[counter].XPosCenter
 	tmp.YPosTarget = Elements[counter].YPosCenter

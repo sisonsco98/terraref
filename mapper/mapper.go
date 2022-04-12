@@ -70,7 +70,7 @@ func Mapper(outFileLocation string) {
 		log.Println("We weren't able to create an output file named " + outFileLocation + " in mapper.go. Terminating...", errCreate)
 		os.Exit(1)
 	}
-	
+
 	// keep open
 	defer outFile.Close()
 

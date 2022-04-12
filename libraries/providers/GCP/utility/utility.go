@@ -6,9 +6,8 @@ import (
 	"KSCD/libraries/providers/GCP/GCPResources/Shapes"
 	"KSCD/libraries/providers/GCP/GCPResources/Zones"
 	"fmt"
-	//"log"
+	"log"
 	"os"
-	"syscall"
 )
 
 func LookupName(objectName string) string {
@@ -18,9 +17,17 @@ func LookupName(objectName string) string {
 		return objectShape
 	}
 
+
+
+	// Improved error message
+
+	log.Println("Utility.LookupName() wasn't able to find the draw.io name of " + objectName + ".")
+	log.Println("Returning \"General\" and resuming.....")
 	// bug
 	objectShape = "General"
 	_ = success
+
+
 	return objectShape
 }
 
@@ -33,7 +40,10 @@ func LookupShape(resourceType string) string {
 
 	fmt.Println(resourceType)
 	fmt.Println(objectName, success)
+	log.Println("Utility.LookupShape() wasn't able to find the draw.io shape of + " + resourceType + ".")
+	log.Println("Returning a blank shape and resuming....")
 
+	_, _, _ = resourceType, objectName, success
 	return "shape=mxgraph.gcp2.blank"
 }
 
@@ -43,11 +53,11 @@ func LookupZone(name string) string{
 		return zone
 	}
 
-	fmt.Println("Something might have failed in the LookupZone function.")
-	_ = zone
-	_ = success
+	log.Println("Utility.LookupZone() wasn't able to find the zone of + " + name + ".")
+	log.Println("This error is unfortunately fatal. Terminating....")
+	_, _ = zone, success
 
-	syscall.Exit(1)
+	os.Exit(1)
 	return ""
 }
 
@@ -59,9 +69,10 @@ func LookupCase(name string) int {
 		return value
 	}
 
-	fmt.Println(name)
-	fmt.Println(value, success)
-	fmt.Println("Something went wrong. Exiting.")
+	log.Println("Utility.LookupCase() wasn't able to find the case of + " + name + ".")
+	log.Println("This error is unfortunately fatal. Terminating....")
+
+	_ , _ = value, success
 	os.Exit(1)
 
 	return -1

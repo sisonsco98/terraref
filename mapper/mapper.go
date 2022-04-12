@@ -2,12 +2,12 @@ package mapper
 
 import (
 	"fmt"
-	"log"			// logging errors
-	"os"			// create and open files
+	"log" // logging errors
+	"os"  // create and open files
 	"strings"
 
-	"KSCD/parser"
 	"KSCD/libraries/providers/GCP/utility"
+	"KSCD/parser"
 
 	// creating xml file (go get github.com/beevik/etree)
 	"github.com/beevik/etree"
@@ -64,11 +64,13 @@ func Mapper(outFileLocation string) {
 	/*** CREATE THE .drawio FILE ***/
 
 	outFile, errCreate := os.Create(outFileLocation)
+
 	// error creating file
 	if errCreate != nil {
-		log.Println("Error creating file.", errCreate)
+		log.Println("We weren't able to create an output file named " + outFileLocation + " in mapper.go. Terminating...", errCreate)
 		os.Exit(1)
 	}
+
 	// keep open
 	defer outFile.Close()
 
@@ -104,23 +106,25 @@ func Mapper(outFileLocation string) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 	/*** CREATING PROJECT REGIONS ***/
 
 	projectX := 20
 	projectY := 380
 	subX := 5
 
-	// iterate through all resoureces (elements)
+	// iterate through all resources (elements)
 	elementID := 0
 	for r := 0; r < len(parser.T.Resources); r++ {
 
 		// (1) store resource type (ex: google_api_gateway_gateway)
 		resourceType := parser.T.Resources[r].Type
 
-		// (2) use resource type to lookup the draw.io name (ex: Gateway)
+		// (2) use resource type to look up the draw.io name (ex: Gateway)
 		objectName := utility.LookupName(resourceType)
 
-		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.gateway)
+		// (3) use object name to look up the draw.io shape (ex: shape=mxgraph.gcp2.gateway)
 		objectShape := utility.LookupShape(objectName)
 
 		// (5) use specific resource name for main text
@@ -207,9 +211,12 @@ func Mapper(outFileLocation string) {
 
 			zoneTerraNavigator(r, minX, minY, maxX, maxY, objectShape)
 		}
+
+
 	}
 
 	rowOffset := -1
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

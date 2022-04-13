@@ -185,8 +185,11 @@ func Mapper(outFileLocation string) {
 			projectX = projectX + 550
 
 			//Testing
-
-			Fields = append(Fields, ProjectArea{resourceType, ((len(parser.T.Resources) * currentRow) + currentCol)})
+			if (currentCol == 0) {
+				Fields = append(Fields, ProjectArea{resourceType, ((len(parser.T.Resources) * currentRow) + currentCol + 1)})
+			} else {
+				Fields = append(Fields, ProjectArea{resourceType, ((len(parser.T.Resources) * currentRow) + currentCol)})
+			}
 
 		}
 
@@ -225,9 +228,12 @@ func Mapper(outFileLocation string) {
 			MXGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			MXGeometry.CreateAttr("as", "geometry")
 
-			
-			Fields = append(Fields, ProjectArea{resourceType, ((len(parser.T.Resources) * currentRow) + currentCol)})
 
+			if (currentCol == 0) {
+				Fields = append(Fields, ProjectArea{resourceType, ((len(parser.T.Resources) * currentRow) + currentCol + 1)})
+			} else {
+				Fields = append(Fields, ProjectArea{resourceType, ((len(parser.T.Resources) * currentRow) + currentCol)})
+			}
 			zoneTerraNavigator(r, minX, minY, maxX, maxY, objectShape)
 		}
 

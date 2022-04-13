@@ -18,12 +18,19 @@ import (
 type Location struct {
 	x, y int
 }
+
+type ProjectArea struct {
+	name string
+	startingID int
+}
+
 var Grid []Location
 
 /*** GLOBAL SLICES FOR ELEMENTS AND ARROWS ***/
 
 var Elements []TerraNavigator
 var Arrows []RelationNavigator
+var Fields []ProjectArea
 
 /*** GLOBAL STRUCTS TO STORE AND ACCESS INFO ABOUT ELEMENTS AND ARROWS ***/
 
@@ -137,6 +144,10 @@ func Mapper(outFileLocation string) {
 		// if name is network, create project area
 		if parser.T.Resources[r].Name == "network" {
 
+
+
+
+
 			minX := projectX
 			minY := 60
 			maxX := 350
@@ -172,6 +183,11 @@ func Mapper(outFileLocation string) {
 			zoneTerraNavigator(r, minX, minY, maxX, maxY, objectShape)
 
 			projectX = projectX + 550
+
+			//Testing
+
+			Fields = append(Fields, ProjectArea{resourceType, ((len(parser.T.Resources) * currentRow) + currentCol)})
+
 		}
 
 		// if name is subnetwork, create project area
@@ -209,6 +225,9 @@ func Mapper(outFileLocation string) {
 			MXGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			MXGeometry.CreateAttr("as", "geometry")
 
+			
+			Fields = append(Fields, ProjectArea{resourceType, ((len(parser.T.Resources) * currentRow) + currentCol)})
+
 			zoneTerraNavigator(r, minX, minY, maxX, maxY, objectShape)
 		}
 
@@ -217,6 +236,19 @@ func Mapper(outFileLocation string) {
 
 	rowOffset := -1
 
+
+
+
+	//Fields shenanigans (TESTING)
+
+	for i := 0; i < len(Fields); i++{
+		fmt.Println(Fields[i].name + " covers the following grid slots. ")
+		temp := Fields[i].startingID
+		for j := 0; j < 3; j++{
+			fmt.Println(temp)
+			temp+= len(parser.T.Resources)
+		}
+	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

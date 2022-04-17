@@ -72,6 +72,18 @@ func Mapper(outFileLocation string) {
 	// keep open
 	defer outFile.Close()
 
+	// /*** REORDER RESOURCES BASED ON DEPENDENTS AND DEPENDENCIES ***/
+
+	// fmt.Println()
+	// for r := 0; r < len(parser.T.Resources); r++ {
+	// 	fmt.Print(parser.NumDependents[r])
+	// }
+	// fmt.Println()
+	// for r := 0; r < len(parser.T.Resources); r++ {
+	// 	fmt.Print(parser.NumDependencies[r])
+	// }
+	// fmt.Println()
+
 	/*** CREATE THE GRID FOR PLACING ELEMENTS ***/
 
 	fmt.Println()
@@ -245,7 +257,8 @@ func Mapper(outFileLocation string) {
 		}
 
 		// set current elements location based off grid (x, y) locations
-		currentRow, currentCol := i, parser.NumDependents[i]
+		currentRow, currentCol := i, parser.RelationshipLength[i]
+		// currentRow, currentCol := i, parser.NumDependents[i]
 		xPos, yPos := Grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].x, Grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/

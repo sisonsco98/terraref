@@ -43,6 +43,8 @@ var NameToIndex = make(map[string]int)
 var NumDependencies []int
 var NumDependents []int
 
+var RelationshipLength []int
+
 // list of dependencies and dependents for each resource
 var DependencyNames = make(map[int][]string)
 var DependencyIndices = make(map[int][]int)
@@ -92,6 +94,37 @@ func Parser(inFileLocation string) {
 
 	storeDependents()
 	printDependents()
+
+	/*** REORDER RESOURCES BASED ON DEPENDENTS AND DEPENDENCIES ***/
+
+	RelationshipLength = make([]int, len(T.Resources))
+
+	fmt.Println()
+	for r := 0; r < len(T.Resources); r++ {
+		index := r
+		fmt.Print(r, "\t")
+			if (NumDependents[index] > 0) {
+				RelationshipLength[index] += 1
+		 	}
+		fmt.Println()
+	}
+
+	fmt.Println()
+	fmt.Print("number of dependents:", "\t")
+	for r := 0; r < len(T.Resources); r++ {
+		fmt.Print(NumDependents[r])
+	}
+	fmt.Println()
+	fmt.Print("number of dependencies:", "\t")
+	for r := 0; r < len(T.Resources); r++ {
+		fmt.Print(NumDependencies[r])
+	}
+	fmt.Println()
+	fmt.Print("relationship length:", "\t")
+	for r := 0; r < len(T.Resources); r++ {
+		fmt.Print(RelationshipLength[r])
+	}
+	fmt.Println()
 
 }
 

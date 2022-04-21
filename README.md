@@ -24,5 +24,5 @@ You can also download it as a .zip file from the [repository](https://github.com
 
 ## License 
 
-This project is open source under the MIT Open Source License. 
+This project is open source under the MIT Open Source License. You can read the details in the LICENSE.txt file. 
 

@@ -21,6 +21,15 @@ After nagivating to the repository where you want to install it you can do so wi
 You can also download it as a .zip file from the [repository](https://github.com/sisonsco98/terraref) and save it to a location of your choosing later. 
 
 
+## Usage 
+
+From the main directory you can run the following command 
+
+`go run main.go -in (fileLocation) -out (fileLocation)`
+
+-in specifies the path where the input .tfstate file is located.
+-out (fileLocation) specifies where you want the output file to be saved.  
+
 
 ## License 
 

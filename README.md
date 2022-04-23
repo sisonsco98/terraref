@@ -38,8 +38,8 @@ From the main directory you can run the following command
 
 ## Roadmap 
 
-- [] Add support for Azure & AWS
-- [] Automated Build Pipeline
+- [ ] Add support for Azure & AWS
+- [ ] Automated Build Pipeline
 
 Please see the (current known issues)[https://github.com/sisonsco98/terraref/issues] for a list of fixes that still need to be implemented. 
 

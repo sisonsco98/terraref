@@ -40,8 +40,9 @@ From the main directory you can run the following command
 
 - [ ] Add support for Azure & AWS
 - [ ] Automated Build Pipeline
+- [ ] Expand range of supported terraform resources (VMs)
 
-Please see the (current known issues)[https://github.com/sisonsco98/terraref/issues] for a list of fixes that still need to be implemented. 
+Please see the [current known issues](https://github.com/sisonsco98/terraref/issues) for a list of fixes that still need to be implemented. 
 
 ## License 
 

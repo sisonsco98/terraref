@@ -51,6 +51,8 @@ This project is open source under the MIT Open Source License. You can read the 
 ## Contact
 
 Scott Sison - @sisonsco98 - sisonsco@hawaii.edu
+
 Kaley Fujii - @kaleyf - kaleyf@hawaii.edu
+
 Daniel Hoshino - @Reeseslover123 - danielmh@hawaii.edu
 

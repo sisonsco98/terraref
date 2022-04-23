@@ -48,3 +48,9 @@ Please see the [current known issues](https://github.com/sisonsco98/terraref/iss
 
 This project is open source under the MIT Open Source License. You can read the details in the LICENSE.txt file. 
 
+## Contact
+
+Scott Sison - @sisonsco98 - sisonsco@hawaii.edu
+Kaley Fujii - @kaleyf - kaleyf@hawaii.edu
+Daniel Hoshino - @Reeseslover123 - danielmh@hawaii.edu
+

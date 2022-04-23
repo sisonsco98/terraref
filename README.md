@@ -27,7 +27,11 @@ From the main directory you can run the following command
 
 `go run main.go -in (fileLocation) -out (fileLocation)`
 
--in specifies the path where the input .tfstate file is located.
+### Flags
+
+-in (fileLocation) specifies the path where the input .tfstate file is located.
+
+
 -out (fileLocation) specifies where you want the output file to be saved.  
 
 

@@ -27,6 +27,7 @@ From the main directory you can run the following command
 
 `go run main.go -in (fileLocation) -out (fileLocation)`
 
+
 ### Flags
 
 -in (fileLocation) specifies the path where the input .tfstate file is located.
@@ -34,6 +35,13 @@ From the main directory you can run the following command
 
 -out (fileLocation) specifies where you want the output file to be saved.  
 
+
+## Roadmap 
+
+[] Add support for Azure & AWS
+[] Automated Build Pipeline
+
+Please see the (current known issues)[https://github.com/sisonsco98/terraref/issues] for a list of fixes that still need to be implemented. 
 
 ## License 
 

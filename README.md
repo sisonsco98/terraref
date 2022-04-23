@@ -48,7 +48,7 @@ Please see the [current known issues](https://github.com/sisonsco98/terraref/iss
 
 ## License 
 
-This project is open source under the MIT Open Source License. You can read the details in the LICENSE.txt file. 
+This project is open source under the MIT Open Source License. You can read the details in the [LICENSE.txt](https://github.com/sisonsco98/terraref/blob/ReadmeBranch/LICENSE.txt) file. 
 
 ## Contact
 

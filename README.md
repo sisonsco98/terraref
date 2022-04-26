@@ -46,10 +46,6 @@ From the main directory you can run the following command
 
 Please see the [current known issues](https://github.com/sisonsco98/terraref/issues) for a list of fixes that still need to be implemented. 
 
-## License 
-
-This project is open source under the MIT Open Source License. You can read the details in the [LICENSE.txt](https://github.com/sisonsco98/terraref/blob/ReadmeBranch/LICENSE.txt) file. 
-
 ## Contact
 
 Scott Sison - @sisonsco98 - sisonsco@hawaii.edu
@@ -57,4 +53,10 @@ Scott Sison - @sisonsco98 - sisonsco@hawaii.edu
 Kaley Fujii - @kaleyf - kaleyf@hawaii.edu
 
 Daniel Hoshino - @Reeseslover123 - danielmh@hawaii.edu
+
+## License 
+
+This project is open source under the MIT Open Source License. You can read the details in the [LICENSE.txt](https://github.com/sisonsco98/terraref/blob/ReadmeBranch/LICENSE.txt) file. 
+
+
 

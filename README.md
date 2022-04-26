@@ -8,7 +8,7 @@ Turbo Sad Simulator (TSS) is a GoLang application created for CS 460 & CS 461 -S
 
 ## Installation 
 
-While not actually required to install, you will need to download [Go](https://go.dev/dl/) - ideally v1.17 or higher. 
+While not actually required to install, you will need to download [Go](https://go.dev/dl/) - This project was built on Go 1.17.2, so we suggest downloading the same. 
 
 ### Github CLI
 

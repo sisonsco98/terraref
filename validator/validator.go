@@ -45,7 +45,7 @@ func Validator(outFileLocation string) {
 
 	/*** UPDATE THE outFileLocation FILE ***/
 
-	removeInvalidShapes()
+	// removeInvalidShapes()
 
 	/*** ARROW COLLISION ***/
 

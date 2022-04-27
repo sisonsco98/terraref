@@ -124,7 +124,9 @@ func Mapper(outFileLocation string) {
 
 	// iterate through all resoureces (elements)
 	elementID := 0
-	for r := 0; r < len(parser.T.Resources); r++ {
+	// for r := 0; r < len(parser.T.Resources); r++ {
+	for currentResource := 0; currentResource < len(parser.T.Resources); currentResource++ {
+		r := parser.NewOrder[currentResource]
 
 		// (1) store resource type (ex: google_api_gateway_gateway)
 		resourceType := parser.T.Resources[r].Type

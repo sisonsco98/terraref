@@ -44,6 +44,7 @@ var NumDependencies []int
 var NumDependents []int
 
 var RelationshipLength []int
+var NewOrder []int// = make(map[int][]int)
 
 // list of dependencies and dependents for each resource
 var DependencyNames = make(map[int][]string)
@@ -98,6 +99,7 @@ func Parser(inFileLocation string) {
 	/*** REORDER RESOURCES BASED ON DEPENDENTS AND DEPENDENCIES ***/
 
 	RelationshipLength = make([]int, len(T.Resources))
+	NewOrder = make([]int, len(T.Resources))
 
 	fmt.Println()
 	for r := 0; r < len(T.Resources); r++ {
@@ -108,6 +110,28 @@ func Parser(inFileLocation string) {
 		 	}
 		fmt.Println()
 	}
+	j := 0
+	for r := 0; r < len(T.Resources); r++ {
+		if (NumDependents[r] == 0) && (NumDependencies[r] == 0) {
+			NewOrder[j] = r
+			j++
+		}
+	}
+	// for r := 0; r < len(T.Resources); r++ {
+	// 	if (NumDependents[r] == 0) && (NumDependencies[r] == 0) {
+	// 		NewOrder = append(NewOrder, r)
+	// 	}
+	// }
+	// for r := 0; r < len(T.Resources); r++ {
+	// 	if (NumDependencies[r] > 1) {
+	// 		NewOrder = append(NewOrder, r)
+	// 	}
+	// }
+	// for r := 0; r < len(T.Resources); r++ {
+	// 	if (NumDependents[r] > 1) {
+	// 		NewOrder = append(NewOrder, r)
+	// 	}
+	// }
 
 	fmt.Println()
 	fmt.Print("number of dependents:", "\t")
@@ -120,9 +144,9 @@ func Parser(inFileLocation string) {
 		fmt.Print(NumDependencies[r])
 	}
 	fmt.Println()
-	fmt.Print("relationship length:", "\t")
+	fmt.Print("new order:", "\t\t")
 	for r := 0; r < len(T.Resources); r++ {
-		fmt.Print(RelationshipLength[r])
+		fmt.Print(NewOrder[r])
 	}
 	fmt.Println()
 

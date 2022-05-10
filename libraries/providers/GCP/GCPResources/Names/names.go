@@ -23,6 +23,7 @@ var NameMap = map[string]string{
 	"google_compute_firewall":        "Firewall",
 	"google_api_gateway_api":         "Gateway",
 	"google_container_cluster":       "Kubernetes",
+	"google_data_catalog_entry":      "Cloud Data Catalog",
 
 	/****************************************************************************************************/
 

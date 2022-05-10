@@ -1,14 +1,14 @@
-# Turbo Sad Simulator
+# Terraref
 
 ## Introduction
 
-Turbo Sad Simulator (TSS) is a GoLang application created for CS 460 & CS 461 -Software Engineering I and II. The purpose of TSS is to transform a given Virtual Private Cloud infrastructure defined in a terraform file (.tfstate) into a reference architecture diagram defined in draw.io. 
+Terraref is a GoLang application created for CS 460 & CS 461 -Software Engineering I and II. The purpose of terraref is to transform a given Virtual Private Cloud infrastructure defined in a terraform file (.tfstate) into a reference architecture diagram defined in draw.io. 
 
 
 
 ## Installation 
 
-While not actually required to install, you will need to download [Go](https://go.dev/dl/) - This project was built on Go 1.17.2, so we suggest downloading the same. 
+While not actually required to install, you will need to download [Go](https://go.dev/dl/) - This project was built on Go 1.17.2, so we suggest downloading the same version. 
 
 ### Github CLI
 

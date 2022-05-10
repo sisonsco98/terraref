@@ -1,11 +1,11 @@
 package main
 
 import (
-	"flag"
-
 	"KSCD/mapper"
 	"KSCD/parser"
 	"KSCD/validator"
+	"flag"
+	"fmt"
 )
 
 func main() {
@@ -29,5 +29,7 @@ func main() {
 
 	// run validator.go
 	validator.Validator(outFileLocation)
+
+	fmt.Println("Program has completed.")
 
 }

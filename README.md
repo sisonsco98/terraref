@@ -28,9 +28,12 @@ You can also download it as a .zip file from the [repository](https://github.com
 Brief description of the main files
 
 main.go - Pilot code. Also where you're able to modify the default flag values, useful when testing. 
+
 parser.go - Takes in the .tfstate file and maps elements to GoLang structs. Also stores dependencies between elements. 
           Significant output from this is struct T of draw.io elements. 
+          
 mapper.go - Creates a XML tree and attaches elements with coordinates based on an underlying grid structure. Also draws arrows and zones to highlight relationships               between elements. 
+
 validator.go - Removes invalid elements and redraws arrows as necessary to present a logical draw.io diagram. 
 
 

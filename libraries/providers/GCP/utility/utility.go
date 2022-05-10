@@ -1,7 +1,7 @@
 package utility
 
 import (
-	"KSCD/libraries/providers/GCP/GCPResources/Cases" //Additional resources
+	"KSCD/libraries/providers/GCP/GCPResources/Cases"
 	"KSCD/libraries/providers/GCP/GCPResources/Names"
 	"KSCD/libraries/providers/GCP/GCPResources/Shapes"
 	"KSCD/libraries/providers/GCP/GCPResources/Zones"
@@ -10,6 +10,7 @@ import (
 	"os"
 )
 
+// Looks up name of resource in names library
 func LookupName(objectName string) string {
 	objectShape, success := Names.NameMap[objectName]
 
@@ -17,20 +18,16 @@ func LookupName(objectName string) string {
 		return objectShape
 	}
 
-
-
-	// Improved error message
-
 	log.Println("Utility.LookupName() wasn't able to find the draw.io name of " + objectName + ".")
 	log.Println("Returning \"General\" and resuming.....")
 	// bug
 	objectShape = "General"
 	_ = success
 
-
 	return objectShape
 }
 
+// Looks up name of resource in shapes library
 func LookupShape(resourceType string) string {
 	objectName, success := Shapes.ShapeMap[resourceType]
 
@@ -47,7 +44,8 @@ func LookupShape(resourceType string) string {
 	return "shape=mxgraph.gcp2.blank"
 }
 
-func LookupZone(name string) string{
+// Looks up name of resource in zones library
+func LookupZone(name string) string {
 	zone, success := Zones.ZoneMap[name]
 	if zone, success := Zones.ZoneMap[name]; success {
 		return zone
@@ -61,7 +59,7 @@ func LookupZone(name string) string{
 	return ""
 }
 
-
+// Looks up specific case instance of resource
 func LookupCase(name string) int {
 	value, success := Cases.CaseMap[name]
 
@@ -72,7 +70,7 @@ func LookupCase(name string) int {
 	log.Println("Utility.LookupCase() wasn't able to find the case of + " + name + ".")
 	log.Println("This error is unfortunately fatal. Terminating....")
 
-	_ , _ = value, success
+	_, _ = value, success
 	os.Exit(1)
 
 	return -1

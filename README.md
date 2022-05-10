@@ -25,17 +25,37 @@ You can also download it as a .zip file from the [repository](https://github.com
 
 ## Usage 
 
-From the main directory you can run the following command 
+Brief description of the main files
+
+main.go - Pilot code. Also where you're able to modify the default flag values, useful when testing. 
+
+parser.go - Takes in the .tfstate file and maps elements to GoLang structs. Also stores dependencies between elements. 
+          Significant output from this is struct T of draw.io elements. 
+          
+mapper.go - Creates a XML tree and attaches elements with coordinates based on an underlying grid structure. Also draws arrows and zones to highlight relationships               between elements. 
+
+validator.go - Removes invalid elements and redraws arrows as necessary to present a logical draw.io diagram. 
+
+
+
+
+
+
+From the main directory you can run the following command with the flags -in and -out. If not specified, they will default to a pre-set location (see below). 
 
 `go run main.go -in (fileLocation) -out (fileLocation)`
 
 
 ### Flags
 
--in (fileLocation) specifies the path where the input .tfstate file is located.
+-in (fileLocation) specifies the path where the input .tfstate file is located. Defaults to 'inputs/shared_vpc.tfstate', an example file. 
 
 
--out (fileLocation) specifies where you want the output file to be saved.  
+-out (fileLocation) specifies where you want the output file to be saved. Defaults to '"outputs/out.drawio"'. 
+
+### Libraries 
+
+It might seem a bit silly that we have the GCP folder buried under a series of subfolders with only one item each but this in an attempt to increase the extensibility - by segmenting the resources so throughly it greatly increases lookup speed if you ever need to do a deep dive in the code. It was also intended to seperate the provider specific functions from each other so if someone wanted to add support for AWS, they could do so without having to look at the GCP code.  
 
 
 ## Roadmap 

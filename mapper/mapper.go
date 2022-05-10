@@ -1,92 +1,79 @@
 package mapper
 
 import (
-	"fmt"
-	"log" // logging errors
-	"os"  // create and open files
-	"strings"
-
 	"KSCD/libraries/providers/GCP/utility"
 	"KSCD/parser"
+	"fmt"
+	"log"
+	"os"
+	"strings"
 
-	// creating xml file (go get github.com/beevik/etree)
 	"github.com/beevik/etree"
 )
 
 /*** GLOBAL STRUCT TO STORE AND ACCESS GRID LOCATIONS ***/
-
 type Location struct {
 	x, y int
 }
+
 var Grid []Location
 
 /*** GLOBAL SLICES FOR ELEMENTS AND ARROWS ***/
-
 var Elements []TerraNavigator
 var Arrows []RelationNavigator
 
 /*** GLOBAL STRUCTS TO STORE AND ACCESS INFO ABOUT ELEMENTS AND ARROWS ***/
-
 var TerraNav TerraNavigator
 
 type TerraNavigator struct {
-	Name					string
-	Project					string
-	ObjectShape				string
-	HiddenId				int
-	XPosCenter, YPosCenter	int
-	Width, Height			int
+	Name                   string
+	Project                string
+	ObjectShape            string
+	HiddenId               int
+	XPosCenter, YPosCenter int
+	Width, Height          int
 }
 
 type RelationNavigator struct {
-	ArrowID					int
-	SourceID				int
-	XPosSource, YPosSource	int
-	TargetID				int
-	XPosTarget, YPosTarget	int
+	ArrowID                int
+	SourceID               int
+	XPosSource, YPosSource int
+	TargetID               int
+	XPosTarget, YPosTarget int
 }
 
 /*** CREATE GLOBAL XML TREE ***/
-
 var XML = etree.NewDocument()
 var MXGraphModel, Root, MXCell, MXGeometry, MXPoint *etree.Element
 
 /*** DEFAULT DIMENSIONS ***/
-
-var DimX, DimY = 850, 1100				// diagram
-var CardWidth, CardHeight = 250, 60		// normal cards
-var ZoneWidth, ZoneHeight = 350, 380	// project zones
+var DimX, DimY = 850, 1100           // diagram
+var CardWidth, CardHeight = 250, 60  // normal cards
+var ZoneWidth, ZoneHeight = 350, 380 // project zones
 
 var GlobalID = 2
 
 func Mapper(outFileLocation string) {
-
-	/*** CREATE THE .drawio FILE ***/
-
 	outFile, errCreate := os.Create(outFileLocation)
 
-	// error creating file
+	// File creation error
 	if errCreate != nil {
-		log.Println("We weren't able to create an output file named " + outFileLocation + " in mapper.go. Terminating...", errCreate)
+		log.Println("We weren't able to create an output file named "+outFileLocation+" in mapper.go. Terminating...", errCreate)
 		os.Exit(1)
 	}
 
-	// keep open
 	defer outFile.Close()
 
 	/*** CREATE THE GRID FOR PLACING ELEMENTS ***/
-
 	fmt.Println()
 	fmt.Println("****************************************************************************************************")
 	fmt.Println("*                                   G R I D    L O C A T I O N S                                   *")
 	fmt.Println("****************************************************************************************************")
 	fmt.Println()
-
 	createGrid()
 	printGrid()
 
 	/*** CREATE DEFAULT ELEMENTS ***/
-
 	XML.CreateProcInst("xml", `version="1.0" encoding="UTF-8"`)
 
 	MXGraphModel = XML.CreateElement("mxGraphModel")
@@ -103,40 +90,24 @@ func Mapper(outFileLocation string) {
 	MXCell.CreateAttr("id", fmt.Sprint(1))
 	MXCell.CreateAttr("parent", fmt.Sprint(0))
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-	/*** CREATING PROJECT REGIONS ***/
-
+	/*** PROJECT REGION SCANNING ***/
 	projectX := 20
 	projectY := 380
 	subX := 5
 
-	// iterate through all resources (elements)
 	elementID := 0
 	for r := 0; r < len(parser.T.Resources); r++ {
 
-		// (1) store resource type (ex: google_api_gateway_gateway)
 		resourceType := parser.T.Resources[r].Type
-
-		// (2) use resource type to look up the draw.io name (ex: Gateway)
 		objectName := utility.LookupName(resourceType)
-
-		// (3) use object name to look up the draw.io shape (ex: shape=mxgraph.gcp2.gateway)
 		objectShape := utility.LookupShape(objectName)
-
-		// (5) use specific resource name for main text
 		resourceName := parser.T.Resources[r].Instances[0].Attributes.Name
 
 		if parser.T.Resources[r].Name != "default" {
 			parser.NameToIndex[parser.T.Resources[r].Name] = elementID
 		}
 
-		// if name is network, create project area
 		if parser.T.Resources[r].Name == "network" {
-
 			minX := projectX
 			minY := 60
 			maxX := 350
@@ -153,18 +124,18 @@ func Mapper(outFileLocation string) {
 				MXCell.CreateAttr("value", resourceType)
 			}
 
-			MXCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
+			MXCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
 			MXCell.CreateAttr("vertex", "1")
 
 			// set current elements location based off grid (x, y) locations
 			currentRow, currentCol := len(parser.T.Resources), r
 			// SHOULD NOT USE LINE BELOW
 			currentRow = 1
-			xPos, yPos := Grid[(len(parser.T.Resources) * currentRow) + currentCol].x, Grid[(len(parser.T.Resources) * currentRow) + currentCol].y
+			xPos, yPos := Grid[(len(parser.T.Resources)*currentRow)+currentCol].x, Grid[(len(parser.T.Resources)*currentRow)+currentCol].y
 
 			MXGeometry = MXCell.CreateElement("mxGeometry")
-			MXGeometry.CreateAttr("x", fmt.Sprint(xPos - minX))
-			MXGeometry.CreateAttr("y", fmt.Sprint(yPos - minY))
+			MXGeometry.CreateAttr("x", fmt.Sprint(xPos-minX))
+			MXGeometry.CreateAttr("y", fmt.Sprint(yPos-minY))
 			MXGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			MXGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			MXGeometry.CreateAttr("as", "geometry")
@@ -174,7 +145,6 @@ func Mapper(outFileLocation string) {
 			projectX = projectX + 550
 		}
 
-		// if name is subnetwork, create project area
 		if parser.T.Resources[r].Name == "subnetwork" {
 
 			minX := projectX - subX
@@ -193,79 +163,59 @@ func Mapper(outFileLocation string) {
 				MXCell.CreateAttr("value", resourceType)
 			}
 
-			MXCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
+			MXCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
 			MXCell.CreateAttr("vertex", "1")
 
 			// set current elements location based off grid (x, y) locations
 			currentRow, currentCol := len(parser.T.Resources), r
 			// SHOULD NOT USE LINE BELOW
 			currentRow, currentCol = 1, 0
-			xPos, yPos := Grid[(len(parser.T.Resources) * currentRow) + currentCol].x, Grid[(len(parser.T.Resources) * currentRow) + currentCol].y
+			xPos, yPos := Grid[(len(parser.T.Resources)*currentRow)+currentCol].x, Grid[(len(parser.T.Resources)*currentRow)+currentCol].y
 
 			MXGeometry = MXCell.CreateElement("mxGeometry")
-			MXGeometry.CreateAttr("x", fmt.Sprint(xPos - 10))
-			MXGeometry.CreateAttr("y", fmt.Sprint(yPos - minY))
+			MXGeometry.CreateAttr("x", fmt.Sprint(xPos-10))
+			MXGeometry.CreateAttr("y", fmt.Sprint(yPos-minY))
 			MXGeometry.CreateAttr("width", fmt.Sprint(maxX))
 			MXGeometry.CreateAttr("height", fmt.Sprint(maxY))
 			MXGeometry.CreateAttr("as", "geometry")
 
 			zoneTerraNavigator(r, minX, minY, maxX, maxY, objectShape)
 		}
-
-
 	}
 
 	rowOffset := -1
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	/*** ITERATE THROUGH RESOURCES ***/
-
+	/*** NORMAL RESOURCE SCANNING ***/
 	for i := 0; i < len(parser.T.Resources); i++ {
 
-		// (1) store resource type (ex: google_storage_bucket)
 		resourceType := parser.T.Resources[i].Type
 
 		if parser.T.Resources[i].Name != "default" {
-			// store the name and id of dependency elements
 			parser.NameToIndex[parser.T.Resources[i].Name] = elementID
 		}
 
-		// (2) use resource type to lookup the draw.io name (ex: Bucket)
 		objectName := utility.LookupName(resourceType)
-
-		// (3) use object name to lookup the draw.io shape (ex: shape=mxgraph.gcp2.bucket)
 		objectShape := utility.LookupShape(objectName)
-
-		// (4) use object name to lookup the correct case of creating the draw.io shape (ex: 1)
 		t := utility.LookupCase(objectName)
-
-		// (5) use specific resource name for main text (ex: example-storage-bucket)
 		resourceName := parser.T.Resources[i].Instances[0].Attributes.Name
 
-		// if network or subnetwork, skip and tick rowOffset
 		if parser.T.Resources[i].Name == "network" || parser.T.Resources[i].Name == "subnetwork" {
 			rowOffset++
 			continue
 		}
 
-		// set current elements location based off grid (x, y) locations
 		currentRow, currentCol := i, parser.NumDependents[i]
-		xPos, yPos := Grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].x, Grid[(len(parser.T.Resources) * (currentRow - rowOffset)) + currentCol].y
+		xPos, yPos := Grid[(len(parser.T.Resources)*(currentRow-rowOffset))+currentCol].x, Grid[(len(parser.T.Resources)*(currentRow-rowOffset))+currentCol].y
 
 		/*** DETERMINE WHICH XML STRUCTURE IS NEEDED ***/
-
 		switch t {
 
 		/*** GCP / PATHS ***/
-
 		case 0:
 
 			MXCell = Root.CreateElement("mxCell")
 			MXCell.CreateAttr("id", fmt.Sprint(GlobalID))
-			MXCell.CreateAttr("parent", fmt.Sprint(GlobalID - 1))
+			MXCell.CreateAttr("parent", fmt.Sprint(GlobalID-1))
 			GlobalID++
 
 			MXCell.CreateAttr("value", "")
@@ -289,7 +239,6 @@ func Mapper(outFileLocation string) {
 		/****************************************************************************************************/
 
 		/*** GCP / SERVICE CARDS ***/
-
 		case 1:
 
 			MXCell = Root.CreateElement("mxCell")
@@ -310,7 +259,7 @@ func Mapper(outFileLocation string) {
 
 			MXCell = Root.CreateElement("mxCell")
 			MXCell.CreateAttr("id", fmt.Sprint(GlobalID))
-			MXCell.CreateAttr("parent", fmt.Sprint(GlobalID - 1))
+			MXCell.CreateAttr("parent", fmt.Sprint(GlobalID-1))
 			GlobalID++
 
 			if len(resourceName) > 0 {
@@ -319,7 +268,7 @@ func Mapper(outFileLocation string) {
 				MXCell.CreateAttr("value", resourceType)
 			}
 
-			MXCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;" + objectShape))
+			MXCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;dashed=0;connectable=0;html=1;fillColor=#757575;strokeColor=none;part=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;spacingLeft=5;fontSize=12;"+objectShape))
 			MXCell.CreateAttr("vertex", "1")
 
 			MXGeometry = MXCell.CreateElement("mxGeometry")
@@ -339,7 +288,6 @@ func Mapper(outFileLocation string) {
 		/****************************************************************************************************/
 
 		/*** GCP / USER AND DEVICE CARDS ***/
-
 		case 2:
 
 			style1 := fmt.Sprint("strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=bottom;spacingLeft=0;fontColor=#999999;fontSize=12;whiteSpace=wrap;spacingBottom=2;" + objectShape)
@@ -365,7 +313,6 @@ func Mapper(outFileLocation string) {
 		/*** GCP / MANAGEMENT TOOLS ***/
 		/*** GCP / NETWORKING ***/
 		/*** GCP / DEVELOPER TOOLS ***/
-
 		case 3:
 
 			style1 := fmt.Sprint("whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
@@ -380,7 +327,6 @@ func Mapper(outFileLocation string) {
 		/****************************************************************************************************/
 
 		/*** GCP / PRODUCT CARDS ***/
-
 		case 4:
 
 			style1 := fmt.Sprint("whiteSpace=wrap;html=1;strokeColor=#dddddd;shadow=1;strokeWidth=1;rounded=1;absoluteArcSize=1;arcSize=2;")
@@ -395,7 +341,6 @@ func Mapper(outFileLocation string) {
 		/****************************************************************************************************/
 
 		/*** GCP ICONS ***/
-
 		case 5:
 
 			MXCell = Root.CreateElement("mxCell")
@@ -409,7 +354,7 @@ func Mapper(outFileLocation string) {
 				MXCell.CreateAttr("value", resourceType)
 			}
 
-			MXCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;" + objectShape))
+			MXCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;spacingTop=-6;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
 			MXCell.CreateAttr("vertex", "1")
 
 			MXGeometry = MXCell.CreateElement("mxGeometry")
@@ -434,7 +379,7 @@ func Mapper(outFileLocation string) {
 				MXCell.CreateAttr("value", resourceType)
 			}
 
-			MXCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;" + objectShape))
+			MXCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;html=1;fillColor=#5184F3;strokeColor=none;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=11;fontStyle=1;fontColor=#999999;"+objectShape))
 			MXCell.CreateAttr("vertex", "1")
 
 			MXGeometry = MXCell.CreateElement("mxGeometry")
@@ -449,7 +394,6 @@ func Mapper(outFileLocation string) {
 		/****************************************************************************************************/
 
 		/*** GCP / ZONES ***/
-
 		case 7:
 
 			fmt.Println("hits for", parser.T.Resources[i].Name)
@@ -464,7 +408,7 @@ func Mapper(outFileLocation string) {
 				MXCell.CreateAttr("value", resourceType)
 			}
 
-			MXCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;" + objectShape))
+			MXCell.CreateAttr("style", fmt.Sprint("whiteSpace=wrap;sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[1,1,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];rounded=1;absoluteArcSize=1;arcSize=2;html=1;strokeColor=none;gradientColor=none;shadow=0;dashed=0;fontSize=12;fontColor=#9E9E9E;align=left;verticalAlign=top;spacing=10;spacingTop=-4;"+objectShape))
 			MXCell.CreateAttr("vertex", "1")
 
 			MXGeometry = MXCell.CreateElement("mxGeometry")
@@ -498,101 +442,79 @@ func Mapper(outFileLocation string) {
 
 		/*** GCP / EXPANDED PRODUCT CARDS ***/
 
-		// skip for now
+		// Unimplemented
 
 		/****************************************************************************************************/
 
 		/*** GCP / GENERAL ICONS ***/
 
-		// skip for now
+		// Unimplemented
 
 		/****************************************************************************************************/
 
 		// Error case
-
 		default:
 			log.Println("Error: No match.", errCreate)
 			os.Exit(1)
-
 		}
 
 		elementID++
 	}
 
-	/*** USE DEPENDENCIES TO CREATE ARROWS ***/
-
-	// iterate through all resources
+	/*** ARROW CREATION ***/
 	for r := 0; r < len(parser.T.Resources); r++ {
-
-		// iterate through all instances of resource
 		for i := 0; i < len(parser.T.Resources[r].Instances); i++ {
-
-			// iterate through all dependencies of each instance
 			for d := 0; d < len(parser.T.Resources[r].Instances[i].Dependencies); d++ {
-
-				// save dependency
 				resourceName := parser.T.Resources[r].Instances[i].Dependencies[d]
 				dependencyName := strings.Split(resourceName, ".")
 
-				/*** CREATE XML ELEMENT FOR ARROW TO CONNECT DEPENDENCIES ***/
-
 				ctr := 0
 				for range Elements {
-
-					// find elements that are dependencies
 					if Elements[ctr].Name == dependencyName[1] {
 						createArrow(r, ctr)
 						cardRelationNavigator(r, ctr)
 					}
-
 					ctr++
-
 				}
-
 			}
-
 		}
-
 	}
 
-	/*** PRINT TO THE outFileLocation FILE ***/
-
+	// Writing to file and close
 	XML.Indent(4)
 	XML.WriteToFile(outFileLocation)
-
-	// close file
 	outFile.Close()
 
 }
 
 /*** FUNCTIONS ***/
 
+// Creates and stores initial grid locations
 func createGrid() {
-	// set grid dimensions
-	rows, cols := len(parser.T.Resources) + 1, len(parser.T.Resources)
+	rows, cols := len(parser.T.Resources)+1, len(parser.T.Resources)
 	for r := 0; r < rows; r++ {
 		for c := 0; c < cols; c++ {
-			// store grid locations
-			tempX, tempY := 50 + (CardWidth * 2 * c), 50 + (CardHeight * 2 * r)
+			tempX, tempY := 50+(CardWidth*2*c), 50+(CardHeight*2*r)
 			Grid = append(Grid, Location{tempX, tempY})
 		}
 	}
 }
 
+// Prints grid location to console
 func printGrid() {
-	// set grid dimensions
-	rows, cols := len(parser.T.Resources) + 1, len(parser.T.Resources)
+	rows, cols := len(parser.T.Resources)+1, len(parser.T.Resources)
 	for r := 0; r < rows; r++ {
 		for c := 0; c < cols; c++ {
-			fmt.Print("(", Grid[(r * len(parser.T.Resources)) + c].x, ", ", Grid[(r * len(parser.T.Resources)) + c].y, ")", "\t")
+			fmt.Print("(", Grid[(r*len(parser.T.Resources))+c].x, ", ", Grid[(r*len(parser.T.Resources))+c].y, ")", "\t")
 		}
 		fmt.Println()
 	}
 	fmt.Println()
 }
 
+// General resource logic condensed to a single functions
 func elementXML(resourceName string, resourceType string, xPos int, yPos int, style1 string, style2 string, attr string, width float64, height float64, x float64, y float64) {
-	
+
 	MXCell = Root.CreateElement("mxCell")
 	MXCell.CreateAttr("id", fmt.Sprint(GlobalID))
 	MXCell.CreateAttr("parent", fmt.Sprint(1))
@@ -611,7 +533,7 @@ func elementXML(resourceName string, resourceType string, xPos int, yPos int, st
 
 	MXCell = Root.CreateElement("mxCell")
 	MXCell.CreateAttr("id", fmt.Sprint(GlobalID))
-	MXCell.CreateAttr("parent", fmt.Sprint(GlobalID - 1))
+	MXCell.CreateAttr("parent", fmt.Sprint(GlobalID-1))
 	GlobalID++
 
 	if len(resourceName) > 0 {
@@ -641,6 +563,7 @@ func elementXML(resourceName string, resourceType string, xPos int, yPos int, st
 
 }
 
+// Writes element into TerraNavigator Struct
 func cardTerraNavigator(index int, xPos int, yPos int, object string) {
 	tmp := new(TerraNavigator)
 	tmp.Name = parser.T.Resources[index].Name
@@ -653,6 +576,7 @@ func cardTerraNavigator(index int, xPos int, yPos int, object string) {
 	Elements = append(Elements, *tmp)
 }
 
+// Writes zone into TerraNavigator Struct
 func zoneTerraNavigator(index int, minX int, minY int, maxX int, maxY int, object string) {
 	tmp := new(TerraNavigator)
 	tmp.Name = parser.T.Resources[index].Name
@@ -666,6 +590,20 @@ func zoneTerraNavigator(index int, minX int, minY int, maxX int, maxY int, objec
 	Elements = append(Elements, *tmp)
 }
 
+// Writes card into TerraNavigator Struct
+func cardRelationNavigator(resource int, counter int) {
+	tmp := new(RelationNavigator)
+	tmp.ArrowID = GlobalID - 1
+	tmp.SourceID = Elements[resource].HiddenId
+	tmp.XPosSource = Elements[resource].XPosCenter
+	tmp.YPosSource = Elements[resource].YPosCenter
+	tmp.TargetID = Elements[counter].HiddenId
+	tmp.XPosTarget = Elements[counter].XPosCenter
+	tmp.YPosTarget = Elements[counter].YPosCenter
+	Arrows = append(Arrows, *tmp)
+}
+
+// Creates arrow
 func createArrow(resource int, counter int) {
 
 	MXCell = Root.CreateElement("mxCell")
@@ -693,16 +631,4 @@ func createArrow(resource int, counter int) {
 	mxPoint.CreateAttr("y", fmt.Sprint(Elements[counter].YPosCenter))
 	mxPoint.CreateAttr("as", "targetPoint")
 
-}
-
-func cardRelationNavigator(resource int, counter int) {
-	tmp := new(RelationNavigator)
-	tmp.ArrowID = GlobalID - 1
-	tmp.SourceID = Elements[resource].HiddenId
-	tmp.XPosSource = Elements[resource].XPosCenter
-	tmp.YPosSource = Elements[resource].YPosCenter
-	tmp.TargetID = Elements[counter].HiddenId
-	tmp.XPosTarget = Elements[counter].XPosCenter
-	tmp.YPosTarget = Elements[counter].YPosCenter
-	Arrows = append(Arrows, *tmp)
 }

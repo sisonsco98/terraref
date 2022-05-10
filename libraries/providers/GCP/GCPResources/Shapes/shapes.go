@@ -323,7 +323,7 @@ var ShapeMap = map[string]string{
 
 	/*** GCP / EXPANDED PRODUCT CARDS ***/
 
-	// skip for now
+	// Unimplemented in current state
 
 	/****************************************************************************************************/
 
